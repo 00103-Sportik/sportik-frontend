@@ -1,4 +1,3 @@
-import styles from './Registration.module.scss';
 import { Field, Form, Formik } from 'formik';
 import {
   SignUpFields,
@@ -23,23 +22,13 @@ function Registration() {
   }
   return (
     <>
-      <Formik
-        initialValues={signUpInitialValues}
-        onSubmit={onSubmit}
-        validationSchema={signUpValidationSchema}
-      >
+      <Formik initialValues={signUpInitialValues} onSubmit={onSubmit} validationSchema={signUpValidationSchema}>
         {({ isValid, submitCount }) => (
           <Form className="layout">
-            {!isValid && !!submitCount && (
-              <div className={styles.errorNotification}>
-                Введите корректный email или пароль.
-              </div>
-            )}
-            <h1>
-              {mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}
-            </h1>
+            <h1>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
             <Field name="email"></Field>
             <Field name="password"></Field>
+            {!isValid && !!submitCount && <div>Введите корректный email или пароль.</div>}
             <button className="btn-black" type="submit">
               Зарегистрироваться
             </button>
