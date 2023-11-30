@@ -16,13 +16,9 @@ interface SuccessAuthResponse {
   };
 }
 
-interface AuthLayoutProps {
-  title: string;
-}
-
 export const mapPathToTitle = {
   '/signin': 'Вход',
   '/signup': 'Регистрация',
 };
 
-export type { AuthRequest, AuthResponse, SuccessAuthResponse, AuthLayoutProps };
+export type { AuthRequest, AuthResponse, SuccessAuthResponse };
