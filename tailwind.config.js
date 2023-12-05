@@ -19,14 +19,13 @@ export default {
     },
   },
   plugins: [
-    plugin(({ addComponents, theme }) => {
+    plugin(({ addComponents, addVariant, e }) => {
       addComponents({
         '.layout': {
-          '@apply flex flex-col items-center justify-center min-h-full p-10':
-            {},
+          '@apply flex flex-col items-center justify-center min-h-full': {},
         },
         '.auth-container': {
-          '@apply bg-radial-gradient-layout w-4/5 flex flex-col gap-6 justify-center items-center self-center flex-nowrap':
+          '@apply bg-radial-gradient-layout flex flex-col gap-6 justify-center items-center self-center flex-nowrap w-[min(80%,60rem)]':
             {},
         },
         '.btn': {
@@ -37,6 +36,30 @@ export default {
         },
         '.btn-red': {
           '@apply btn bg-btnRed': {},
+        },
+        '.nav': {
+          '@apply flex justify-between items-center w-full p-5': {},
+        },
+        '.span': {
+          '@apply absolute w-full bg-white h-0.5 transition duration-300 ease-in-out left-0': {},
+        },
+        '.menu-btn': {
+          '@apply inline-block w-3.5 h-5 bg-transparent order-1 cursor-pointer relative z-20 border-none mx-2': {},
+        },
+        '.menu': {
+          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-300 ease-in-out':
+            {},
+        },
+        '.menu-btn-open': {
+          '@apply [&>*:nth-child(1)]:scale-x-0 [&>*:nth-child(4)]:scale-x-0 [&>*:nth-child(2)]:rotate-45 [&>*:nth-child(3)]:-rotate-45 [&>*:nth-child(3)]:inline-block [&>*:nth-child(2)]:inline-block':
+            {},
+        },
+        '.menu-ul-open': {
+          '@apply translate-y-0': {},
+        },
+        '.dialog': {
+          '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
+            {},
         },
       });
     }),
