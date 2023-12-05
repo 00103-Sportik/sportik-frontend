@@ -1,10 +1,4 @@
-import {
-  BaseQueryApi,
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-  fetchBaseQuery,
-} from '@reduxjs/toolkit/query/react';
+import { BaseQueryApi, BaseQueryFn, createApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { AUTHENTICATION_URL, BASE_URL } from '../common/constants/api.ts';
 import { AppRootStateType } from '../store/types.ts';
 import { setLoading } from '../store/loading/loading.slice.ts';
@@ -24,7 +18,7 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
-
+// @ts-ignore
 export const query: BaseQueryFn<FetchArgs, unknown, ErrorResponse> = async (
   args: FetchArgs,
   api: BaseQueryApi,

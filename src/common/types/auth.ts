@@ -1,7 +1,6 @@
 interface AuthResponse {
   accessToken: string | null;
   refreshToken: string | null;
-  id: string | null;
 }
 
 interface AuthRequest {
@@ -11,14 +10,12 @@ interface AuthRequest {
 
 interface SuccessAuthResponse {
   message: string;
-  data: {
-    id: string;
-  };
+  data: {};
 }
 
 export const mapPathToTitle = {
-  '/signin': 'Вход',
-  '/signup': 'Регистрация',
+  '/signin': 'Authentication',
+  '/signup': 'Registration',
 };
 
 export type { AuthRequest, AuthResponse, SuccessAuthResponse };
