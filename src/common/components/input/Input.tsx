@@ -23,7 +23,9 @@ export function Input(props: InputProps) {
   const inpClassName = `${'form-input'} ${disabled ? 'form-input-disabled' : 'form-input'} ${
     error ? 'form-input-err' : 'form-input'
   }`;
-  const labelClassName = `${'form-label'} ${disabled ? 'form-label-disabled' : 'form-label'}`;
+  const labelClassName = `${'form-label'} ${disabled ? 'form-label-disabled' : 'form-label'} ${
+    error ? 'text-error' : 'form-label'
+  }`;
   return (
     <div>
       <div className="form-group">
@@ -31,6 +33,7 @@ export function Input(props: InputProps) {
           type={type !== 'password' ? type : isPassword}
           className={inpClassName}
           disabled={disabled}
+          placeholder={' '}
           required={required}
           {...otherProps}
         />

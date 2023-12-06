@@ -71,13 +71,13 @@ export default {
         },
         //--Input--
         '.form-group': {
-          '@apply relative mb-8': {},
+          '@apply relative mt-8': {},
         },
         '.form-label': {
-          '@apply absolute text-[white] transition duration-200 left-[0.2em] top-0 focus:z-[-1]': {},
+          '@apply absolute text-[white] transition-[0.2s] left-[0.2em] top-0 z-[1]': {},
         },
         '.form-input': {
-          '@apply bg-transparent transition duration-200 text-[white] pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid disabled:text-[gray] disabled:border-[gray]':
+          '@apply bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
             {},
           outline: 'none',
         },

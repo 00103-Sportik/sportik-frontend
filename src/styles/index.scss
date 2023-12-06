@@ -6,3 +6,8 @@
   @apply min-h-screen bg-layout text-white;
   font-family: 'Inter', serif;
 }
+
+.form-input:focus ~ .form-label,
+.form-input:not(:placeholder-shown) ~ .form-label {
+  @apply top-[-18px] text-xs text-[gray];
+}
