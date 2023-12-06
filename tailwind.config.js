@@ -28,15 +28,6 @@ export default {
           '@apply bg-radial-gradient-layout flex flex-col gap-6 justify-center items-center self-center flex-nowrap w-[min(80%,60rem)]':
             {},
         },
-        '.btn': {
-          '@apply rounded-lg': {},
-        },
-        '.btn-black': {
-          '@apply btn bg-btnBlack': {},
-        },
-        '.btn-red': {
-          '@apply btn bg-btnRed': {},
-        },
         '.nav': {
           '@apply flex justify-between items-center w-full p-5': {},
         },
@@ -59,6 +50,55 @@ export default {
         },
         '.dialog': {
           '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
+            {},
+        },
+        //--Buttons--
+        '.btn': {
+          '@apply relative w-[97px] h-[43px] flex items-center justify-center no-underline font-normal text-[15px] text-[white] rounded-[25px] border-solid':
+            {},
+          'font-family': 'Inter',
+        },
+        '.btn-black': {
+          '@apply bg-[#15171D] border-[#15171D]':
+            {},
+        },
+        '.btn-red': {
+          '@apply bg-[#AE3838] border-[#AE3838]':
+            {},
+        },
+        '.btn:active': {
+          '@apply transition-[0.2s] border-2 scale-110':
+            {},
+        },
+        //--Input--
+        '.form-group': {
+          '@apply relative mb-8':
+            {},
+        },
+        '.form-label': {
+          '@apply absolute z-[-1] text-[white] transition-[0.2s] left-[0.2em] top-0':
+            {},
+        },
+        '.form-input': {
+          '@apply w-full bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
+            {},
+          'font-family': 'Inter',
+          'outline': 'none',
+        },
+        '.form-input:focus ~ .form-label, .form-input:not(:placeholder-shown) ~ .form-label': {
+          '@apply top-[-18px] text-xs text-[gray]':
+            {},
+        },
+        '.form-input-err': {
+          '@apply border-[#FF2525]':
+            {},
+        },
+        '.form-input:disabled ~ .form-label': {
+          '@apply text-[gray]':
+            {},
+        },
+        '.form-input:disabled': {
+          '@apply text-[gray] border-[gray]':
             {},
         },
       });
