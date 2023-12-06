@@ -32,13 +32,13 @@ export default {
           '@apply flex justify-between items-center w-full p-5': {},
         },
         '.span': {
-          '@apply absolute w-full bg-white h-0.5 transition duration-500 ease-in-out left-0': {},
+          '@apply absolute w-full bg-white h-0.5 transition duration-300 ease-in-out left-0': {},
         },
         '.menu-btn': {
           '@apply inline-block w-3.5 h-5 bg-transparent order-1 cursor-pointer relative z-20 border-none mx-2': {},
         },
         '.menu': {
-          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-500 ease-in-out':
+          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-300 ease-in-out':
             {},
         },
         '.menu-btn-open': {
@@ -52,50 +52,63 @@ export default {
           '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
             {},
         },
-        '.text-err': {
-          '@apply fixed': {},
-        },
-        //--Button--
+        //--Buttons--
         '.btn': {
           '@apply relative w-[97px] h-[43px] flex items-center justify-center no-underline font-normal text-[15px] text-[white] rounded-[25px] border-solid':
             {},
+          'font-family': 'Inter',
         },
         '.btn-black': {
-          '@apply bg-[#15171D] border-[#15171D]': {},
+          '@apply btn bg-[#15171D] border-[#15171D]':
+            {},
         },
         '.btn-red': {
-          '@apply bg-[#AE3838] border-[#AE3838]': {},
+          '@apply btn bg-[#AE3838] border-[#AE3838]':
+            {},
         },
         '.btn:active': {
-          '@apply transition-[0.2s] border-2 scale-110': {},
+          '@apply transition-[0.2s] border-2 scale-110':
+            {},
         },
         //--Input--
         '.form-group': {
-          '@apply relative mt-8': {},
+          '@apply relative mb-8':
+            {},
         },
         '.form-label': {
-          '@apply absolute text-[white] transition-[0.2s] left-[0.2em] top-0 z-[1]': {},
+          '@apply absolute z-[-1] text-[white] transition-[0.2s] left-[0.2em] top-0':
+            {},
         },
         '.form-input': {
-          '@apply bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
+          '@apply w-full bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
             {},
-          outline: 'none',
+          'font-family': 'Inter',
+          'outline': 'none',
+        },
+        '.form-input:focus ~ .form-label, .form-input:not(:placeholder-shown) ~ .form-label': {
+          '@apply top-[-18px] text-xs text-[gray]':
+            {},
         },
         '.form-input-err': {
-          '@apply border-[#FF2525]': {},
+          '@apply form-input border-[#FF2525]':
+            {},
         },
-        '.form-label-disabled': {
-          '@apply text-[gray]': {},
+        '.form-input:disabled ~ .form-label': {
+          '@apply text-[gray]':
+            {},
         },
-        '.form-input-disabled': {
-          '@apply text-[gray] border-[gray]': {},
+        '.form-input:disabled': {
+          '@apply text-[gray] border-[gray]':
+            {},
         },
-        '.text-error': {
-          '@apply text-btnRed': {},
+        //Combobox
+        '.select-container': {
+          '@apply flex justify-center relative min-w-[360px] h-[33px] overflow-hidden':
+            {},
         },
-        //--Combobox--
-        '.combobox': {
-          '@apply cursor-pointer': {},
+        '.select-box': {
+          '@apply w-full bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid;':
+            {},
         },
       });
     }),
