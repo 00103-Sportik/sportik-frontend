@@ -10,7 +10,7 @@ interface AuthRequest {
 
 interface SuccessAuthResponse {
   message: string;
-  data: {};
+  data: AuthResponse | {};
 }
 
 export const mapPathToTitle = {

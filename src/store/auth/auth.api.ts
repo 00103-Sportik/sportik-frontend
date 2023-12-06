@@ -1,5 +1,5 @@
 import { AuthRequest, SuccessAuthResponse } from '../../common/types/auth.ts';
-import { AUTHENTICATION_URL, REGISTRATION_URL } from '../../common/constants/api.ts';
+import { AUTHENTICATION_URL, REGISTRATION_URL, RESEND_EMAIL_URL } from '../../common/constants/api.ts';
 import { apiSlice } from '../api.slice.ts';
 
 export const authApi = apiSlice.injectEndpoints({
@@ -18,7 +18,14 @@ export const authApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    resendEmail: builder.mutation<SuccessAuthResponse, Pick<AuthRequest, 'email'>>({
+      query: (body) => ({
+        url: RESEND_EMAIL_URL,
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useAuthenticationMutation, useRegistrationMutation } = authApi;
+export const { useAuthenticationMutation, useRegistrationMutation, useResendEmailMutation } = authApi;
