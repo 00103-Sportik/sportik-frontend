@@ -13,7 +13,7 @@ export type SignInFields = AuthRequest;
 
 export type SignUpFields = SignInFields;
 
-export type ResendEmail = Pick<AuthRequest, 'email'>;
+export type ResendEmailFields = Pick<AuthRequest, 'email'>;
 
 export const signInValidationSchema = Yup.object().shape({
   email: Yup.string()
