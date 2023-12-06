@@ -20,19 +20,22 @@ export function Input(props: InputProps) {
   }, [isVisible]);
 
   const isPassword = type === 'password' && !isVisible ? 'password' : 'text';
-  const inpClassName = `${'input'} ${disabled ? 'input-disabled' : 'input'} ${error ? 'input-error' : 'input'}`;
+  const inpClassName = `${'form-input'} ${disabled ? 'form-input-disabled' : 'form-input'} ${
+    error ? 'form-input-err' : 'form-input'
+  }`;
+  const labelClassName = `${'form-label'} ${disabled ? 'form-label-disabled' : 'form-label'}`;
   return (
     <div>
-      <div>
+      <div className="form-group">
         <input
           type={type !== 'password' ? type : isPassword}
           className={inpClassName}
           disabled={disabled}
-          placeholder={placeholder}
           required={required}
           {...otherProps}
         />
         {children}
+        <label className={labelClassName}>{placeholder}</label>
 
         {(type === 'text' || type === 'email' || type === 'number') && (
           <button type="button" onClick={onClear} className="">
