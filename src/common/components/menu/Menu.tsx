@@ -28,7 +28,7 @@ export function Menu() {
           </a>
         </li>
         <li>
-          <a href="javascript:void(0);" onClick={() => setOpen(true)} className="menu-link">
+          <a href={undefined} onClick={() => setOpen(true)} className="menu-link @apply cursor-pointer">
             Sign out
           </a>
         </li>

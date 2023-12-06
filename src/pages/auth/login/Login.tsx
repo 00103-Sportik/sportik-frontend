@@ -3,7 +3,7 @@ import {
   SignInFields,
   signInInitialValues,
   signInValidationSchema,
-} from '../../../common/validations/validationSchema.ts';
+} from '../../../common/validations/authValidationSchema.ts';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';

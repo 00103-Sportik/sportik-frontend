@@ -3,17 +3,17 @@ import {
   SignUpFields,
   signUpInitialValues,
   signUpValidationSchema,
-} from '../../../common/validations/validationSchema.ts';
+} from '../../../common/validations/authValidationSchema.ts';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useRegistrationMutation } from '../../../store/auth/auth.api.ts';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';
 
 function Registration() {
-  const [register, { isSuccess }] = useRegistrationMutation();
+  const [registration, { isSuccess }] = useRegistrationMutation();
   const navigate = useNavigate();
   const onSubmit = (values: SignUpFields) => {
-    register(values);
+    registration(values);
   };
 
   if (isSuccess) {

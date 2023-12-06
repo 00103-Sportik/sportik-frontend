@@ -1,8 +1,8 @@
 import { BaseQueryApi, BaseQueryFn, createApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { AUTHENTICATION_URL, BASE_URL } from '../common/constants/api.ts';
-import { AppRootStateType } from '../store/types.ts';
-import { setLoading } from '../store/loading/loading.slice.ts';
-import { setCredentials } from '../store/auth/auth.slice.ts';
+import { AppRootStateType } from './types.ts';
+import { setLoading } from './loading/loading.slice.ts';
+import { setCredentials } from './auth/auth.slice.ts';
 import { AuthResponse } from '../common/types/auth.ts';
 import { ErrorResponse } from 'react-router-dom';
 
@@ -49,7 +49,7 @@ export const query: BaseQueryFn<FetchArgs, unknown, ErrorResponse> = async (
 export const apiSlice = createApi({
   reducerPath: 'splitApi',
   baseQuery: query,
-  tagTypes: ['User'],
+  tagTypes: ['Profile'],
   refetchOnMountOrArgChange: true,
   endpoints: () => ({}),
 });

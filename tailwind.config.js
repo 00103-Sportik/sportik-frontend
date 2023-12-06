@@ -22,7 +22,7 @@ export default {
     plugin(({ addComponents, addVariant, e }) => {
       addComponents({
         '.layout': {
-          '@apply flex flex-col items-center justify-center min-h-full': {},
+          '@apply flex flex-col items-center justify-center min-h-full text-orange-500': {},
         },
         '.auth-container': {
           '@apply bg-radial-gradient-layout flex flex-col gap-6 justify-center items-center self-center flex-nowrap w-[min(80%,60rem)]':
@@ -41,13 +41,13 @@ export default {
           '@apply flex justify-between items-center w-full p-5': {},
         },
         '.span': {
-          '@apply absolute w-full bg-white h-0.5 transition duration-300 ease-in-out left-0': {},
+          '@apply absolute w-full bg-white h-0.5 transition duration-500 ease-in-out left-0': {},
         },
         '.menu-btn': {
           '@apply inline-block w-3.5 h-5 bg-transparent order-1 cursor-pointer relative z-20 border-none mx-2': {},
         },
         '.menu': {
-          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-300 ease-in-out':
+          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-500 ease-in-out':
             {},
         },
         '.menu-btn-open': {
@@ -60,6 +60,9 @@ export default {
         '.dialog': {
           '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
             {},
+        },
+        '.combobox': {
+          '@apply cursor-pointer': {},
         },
       });
     }),

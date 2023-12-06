@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, InputHTMLAttributes, MouseEventHandler, useC
 import { AiFillEyeInvisible, AiOutlineClose, AiOutlineEye } from 'react-icons/ai';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  type?: 'email' | 'password' | 'text';
+  type?: 'email' | 'password' | 'text' | 'file' | 'number';
   value?: string;
   placeholder?: string;
   error?: boolean;
@@ -13,41 +13,40 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 export function Input(props: InputProps) {
+  const { children, disabled, placeholder, errorText, error, type, required, onClear, ...otherProps } = props;
   const [isVisible, setIsVisible] = useState(false);
   const onClickChangeVisible = useCallback(() => {
     setIsVisible(!isVisible);
   }, [isVisible]);
 
-  const isPassword = props.type === 'password' && !isVisible ? 'password' : 'text';
-  const inpClassName = `$props.inputClassName || ''} ${'input'} ${props.disabled ? 'input-disabled' : 'input'} ${
-    props.error ? 'input-error' : 'input'
-  }`;
+  const isPassword = type === 'password' && !isVisible ? 'password' : 'text';
+  const inpClassName = `${'input'} ${disabled ? 'input-disabled' : 'input'} ${error ? 'input-error' : 'input'}`;
   return (
     <div>
       <div>
         <input
-          type={props.type !== 'password' ? props.type : isPassword}
+          type={type !== 'password' ? type : isPassword}
           className={inpClassName}
-          disabled={props.disabled}
-          placeholder={props.placeholder}
-          required={props.required}
-          {...props}
+          disabled={disabled}
+          placeholder={placeholder}
+          required={required}
+          {...otherProps}
         />
-        {props.children}
+        {children}
 
-        {(props.type === 'text' || props.type === 'email') && (
-          <button type="button" onClick={props.onClear} className="">
+        {(type === 'text' || type === 'email' || type === 'number') && (
+          <button type="button" onClick={onClear} className="">
             <AiOutlineClose />
           </button>
         )}
 
-        {props.type === 'password' && (
+        {type === 'password' && (
           <button type="button" onClick={onClickChangeVisible}>
             {isVisible ? <AiOutlineEye /> : <AiFillEyeInvisible />}
           </button>
         )}
       </div>
-      <p className="text-error">{props.error && props.errorText}</p>
+      <p className="text-error">{error && errorText}</p>
     </div>
   );
 }
