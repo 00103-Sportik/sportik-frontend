@@ -1,9 +1,6 @@
 import { AuthRequest, SuccessAuthResponse } from '../../common/types/auth.ts';
-import {
-  AUTHENTICATION_URL,
-  REGISTRATION_URL,
-} from '../../common/constants/api.ts';
-import { apiSlice } from '../../services/authService.ts';
+import { AUTHENTICATION_URL, REGISTRATION_URL } from '../../common/constants/api.ts';
+import { apiSlice } from '../api.slice.ts';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

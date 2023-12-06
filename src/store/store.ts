@@ -4,17 +4,19 @@ import { authReducer } from './auth/auth.slice.ts';
 import { loadingReducer } from './loading/loading.slice.ts';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
-import { apiSlice } from '../services/authService.ts';
+import { apiSlice } from './api.slice.ts';
+import { profileReducer } from './profile/profile.slice.ts';
 
 const persistConfig = {
   key: 'redux',
   storage,
-  whitelist: ['auth'],
+  whitelist: ['auth', 'profile'],
 };
 
 export const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authReducer,
+  profile: profileReducer,
   loading: loadingReducer,
 });
 
