@@ -61,10 +61,10 @@ export default {
             {},
         },
         '.btn-black': {
-          '@apply bg-[#15171D] border-[#15171D]': {},
+          '@apply btn bg-[#15171D] border-[#15171D]': {},
         },
         '.btn-red': {
-          '@apply bg-[#AE3838] border-[#AE3838]': {},
+          '@apply btn bg-[#AE3838] border-[#AE3838]': {},
         },
         '.btn:active': {
           '@apply transition-[0.2s] border-2 scale-110': {},
@@ -93,9 +93,14 @@ export default {
         '.text-error': {
           '@apply text-btnRed': {},
         },
-        //--Combobox--
-        '.combobox': {
-          '@apply cursor-pointer': {},
+        //Combobox
+        '.select-container': {
+          '@apply flex justify-center relative min-w-[360px] h-[33px] overflow-hidden':
+            {},
+        },
+        '.select-box': {
+          '@apply w-full bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid;':
+            {},
         },
       });
     }),
