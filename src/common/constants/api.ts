@@ -6,6 +6,8 @@ export const RESEND_EMAIL_URL = '/auth/resend-email';
 export const GET_PROFILE_URL = '/profile';
 export const UPDATE_PROFILE_URL = GET_PROFILE_URL;
 
+export const EXERCISES_URL = '/exercises';
+
 export enum ResponseCodes {
   OK = 200,
   INVALID_REQUEST = 400,
