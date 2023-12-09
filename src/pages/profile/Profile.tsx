@@ -99,7 +99,7 @@ function Profile() {
                 <Field name="age">
                   {({ field, form, meta }: FieldProps) => (
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
                       placeholder="Age"
                       error={meta.touched && !!meta.error}
@@ -111,7 +111,7 @@ function Profile() {
                 <Field name="height">
                   {({ field, form, meta }: FieldProps) => (
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
                       placeholder="Height"
                       error={meta.touched && !!meta.error}
@@ -123,7 +123,7 @@ function Profile() {
                 <Field name="weight">
                   {({ field, form, meta }: FieldProps) => (
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
                       placeholder="Weight"
                       error={meta.touched && !!meta.error}
@@ -132,11 +132,11 @@ function Profile() {
                     />
                   )}
                 </Field>
-                <div className="@apply w-full">
-                  <select className="combobox @apply w-full">
+                <div className="select-container">
+                  <select className="select-box">
                     <option value="" disabled selected hidden>
                       Sex
-                    </option>{' '}
+                    </option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
@@ -148,8 +148,8 @@ function Profile() {
         <div>
           <img
             className="img"
-            width={50}
-            height={50}
+            width={150}
+            height={150}
             src={!avatar ? logo : `data:image/*;base64,${avatar}`}
             alt="avatar"
           />

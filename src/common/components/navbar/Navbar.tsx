@@ -14,7 +14,7 @@ export function Navbar() {
 
   return (
     <nav className="nav">
-      <a href="/">
+      <a href="/" className="@apply z-[3]">
         <p>Sportik+</p>
       </a>
       <button className="menu-btn" onClick={menu}>

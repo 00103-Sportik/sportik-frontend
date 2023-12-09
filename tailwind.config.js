@@ -38,7 +38,7 @@ export default {
           '@apply inline-block w-3.5 h-5 bg-transparent order-1 cursor-pointer relative z-20 border-none mx-2': {},
         },
         '.menu': {
-          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-500 ease-in-out':
+          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-500 ease-in-out z-[2]':
             {},
         },
         '.menu-btn-open': {
@@ -61,10 +61,13 @@ export default {
             {},
         },
         '.btn-black': {
-          '@apply bg-[#15171D] border-[#15171D]': {},
+          '@apply btn bg-[#15171D] border-[#15171D]': {},
         },
         '.btn-red': {
-          '@apply bg-[#AE3838] border-[#AE3838]': {},
+          '@apply btn bg-[#AE3838] border-[#AE3838]': {},
+        },
+        '.btn-white': {
+          '@apply btn bg-[white] border-[white]': {},
         },
         '.btn:active': {
           '@apply transition-[0.2s] border-2 scale-110': {},
@@ -94,8 +97,12 @@ export default {
           '@apply text-btnRed': {},
         },
         //--Combobox--
-        '.combobox': {
-          '@apply cursor-pointer': {},
+        '.select-container': {
+          '@apply flex justify-center relative w-full h-[33px] overflow-hidden cursor-pointer mt-8': {},
+        },
+        '.select-box': {
+          '@apply w-full bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid':
+            {},
         },
       });
     }),

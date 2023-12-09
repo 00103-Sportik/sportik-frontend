@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler, InputHTMLAttributes, MouseEventHandler, useCallback, useState } from 'react';
-import { AiFillEyeInvisible, AiOutlineClose, AiOutlineEye } from 'react-icons/ai';
+import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  type?: 'email' | 'password' | 'text' | 'file' | 'number';
+  type?: 'email' | 'password' | 'text' | 'file' | 'date';
   value?: string;
   placeholder?: string;
   error?: boolean;
@@ -25,7 +25,7 @@ export function Input(props: InputProps) {
   }`;
   const labelClassName = `${'form-label'} ${disabled ? 'form-label-disabled' : 'form-label'} ${
     error ? 'text-error' : 'form-label'
-  }`;
+  } ${type === 'text' || type === 'email' ? 'items-start' : 'form-label'}`;
   return (
     <div>
       <div className="form-group">
@@ -39,12 +39,6 @@ export function Input(props: InputProps) {
         />
         {children}
         <label className={labelClassName}>{placeholder}</label>
-
-        {(type === 'text' || type === 'email' || type === 'number') && (
-          <button type="button" onClick={onClear} className="">
-            <AiOutlineClose />
-          </button>
-        )}
 
         {type === 'password' && (
           <button type="button" onClick={onClickChangeVisible}>
