@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 #root {
-  @apply min-h-screen bg-layout text-white;
-  font-family: 'Inter', serif;
+  @apply flex items-center justify-center min-h-screen bg-[rgb(17_20_30_/_var(--tw-bg-opacity))] text-[rgb(255_255_255_/_var(--tw-text-opacity))];
+  --tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
+  font-family: "Inter", serif;
 }
 
 .form-input:focus ~ .form-label,

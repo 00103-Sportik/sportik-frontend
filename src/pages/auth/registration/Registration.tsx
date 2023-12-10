@@ -4,6 +4,7 @@ import {
   signUpInitialValues,
   signUpValidationSchema,
 } from '../../../common/validations/authValidationSchema.ts';
+import styles from './Registration.module.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useRegistrationMutation, useResendEmailMutation } from '../../../store/auth/auth.api.ts';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
@@ -42,7 +43,9 @@ function Registration() {
       <Formik initialValues={signUpInitialValues} onSubmit={onSubmit} validationSchema={signUpValidationSchema}>
         {({ isValid, submitCount }) => (
           <Form className="layout">
-            <h1>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+            <div className="title-layout">
+              <h1 className={styles.titleLayout}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+            </div>
             {!isValid && !!submitCount && <div>Введите корректный email или пароль.</div>}
             <Field name="email">
               {({ field, form, meta }: FieldProps) => (
@@ -57,18 +60,20 @@ function Registration() {
                 />
               )}
             </Field>
-            <Field name="password">
-              {({ field, meta }: FieldProps) => (
-                <Input
-                  autoComplete="new-password"
-                  type="password"
-                  {...field}
-                  placeholder="Password"
-                  error={meta.touched && !!meta.error}
-                  errorText={meta.error}
-                />
-              )}
-            </Field>
+            <div className="field-password">
+              <Field name="password">
+                {({ field, meta }: FieldProps) => (
+                  <Input
+                    autoComplete="new-password"
+                    type="password"
+                    {...field}
+                    placeholder="Password"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                  />
+                )}
+              </Field>
+            </div>
             <button
               className="btn-black"
               type="submit"
