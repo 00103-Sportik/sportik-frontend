@@ -92,13 +92,10 @@ function Profile() {
                     {({ field, meta }: FieldProps) => (
                       <Input
                         autoComplete="email"
+                        disabled={true}
                         type="text"
                         {...field}
                         value={fields.email}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('email', event.target.value);
-                        }}
                         placeholder="Email"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
@@ -138,7 +135,7 @@ function Profile() {
                     )}
                   </Field>
                   <Field name="age">
-                    {({ field, form, meta }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                       <Input
                         type="text"
                         {...field}
@@ -150,12 +147,11 @@ function Profile() {
                         placeholder="Age"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
-                        onClear={() => form.setFieldValue('age', '')}
                       />
                     )}
                   </Field>
                   <Field name="height">
-                    {({ field, form, meta }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                       <Input
                         type="text"
                         {...field}
@@ -167,12 +163,11 @@ function Profile() {
                         placeholder="Height"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
-                        onClear={() => form.setFieldValue('height', '')}
                       />
                     )}
                   </Field>
                   <Field name="weight">
-                    {({ field, form, meta }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                       <Input
                         type="text"
                         {...field}
@@ -184,7 +179,6 @@ function Profile() {
                         placeholder="Weight"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
-                        onClear={() => form.setFieldValue('weight', '')}
                       />
                     )}
                   </Field>

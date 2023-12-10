@@ -49,7 +49,7 @@ export const query: BaseQueryFn<FetchArgs, unknown, ErrorResponse> = async (
 export const apiSlice = createApi({
   reducerPath: 'splitApi',
   baseQuery: query,
-  tagTypes: ['Profile', 'Workouts', 'Exercises'],
+  tagTypes: ['Profile', 'Workouts', 'Exercises', 'Subtypes'],
   refetchOnMountOrArgChange: true,
   endpoints: () => ({}),
 });
