@@ -98,7 +98,7 @@ export default {
           outline: 'none',
         },
         '.form-input-err': {
-          '@apply border-[#FF2525]': {},
+          '@apply border-[#AE3838]': {},
         },
         '.form-label-disabled': {
           '@apply text-[gray]': {},
