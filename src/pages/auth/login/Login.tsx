@@ -4,6 +4,7 @@ import {
   signInInitialValues,
   signInValidationSchema,
 } from '../../../common/validations/authValidationSchema.ts';
+import styles from './Login.module.css';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';
@@ -22,7 +23,9 @@ function Login() {
         {({ isValid, submitCount, values }) => {
           return (
             <Form className="layout">
-              <h1>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+              <div className="title-layout">
+                <h1 className={styles.titleLayout}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+              </div>
               <Field name="email">
                 {({ field, form }: FieldProps) => (
                   <Input
@@ -34,11 +37,13 @@ function Login() {
                   />
                 )}
               </Field>
-              <Field name="password">
-                {({ field }: FieldProps) => (
-                  <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
-                )}
-              </Field>
+              <div className="field-password">
+                <Field name="password">
+                  {({ field }: FieldProps) => (
+                    <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
+                  )}
+                </Field>
+              </div>
               {!isValid && !!submitCount && <div>Incorrect email or password!</div>}
               <button
                 disabled={values.email.length === 0 || values.password.length === 0}
