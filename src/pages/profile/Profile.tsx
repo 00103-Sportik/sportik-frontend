@@ -8,13 +8,15 @@ import {
 import { useUpdateProfileMutation } from '../../store/profile/profile.api.ts';
 import { Navbar } from '../../common/components/navbar/Navbar.tsx';
 import logo from '../../assets/avatar.jpg';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { updateAvatar } from '../../store/profile/profile.slice.ts';
 import { AvatarUpdate } from '../../common/types/profile.ts';
 import { selectAvatar } from '../../store/profile/profile.selectors.ts';
+import { Dialog, DialogDismiss } from '@ariakit/react';
 
 function Profile() {
+  const [open, setOpen] = useState(false);
   const [updateProfile] = useUpdateProfileMutation();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
@@ -58,88 +60,90 @@ function Profile() {
           {({}) => {
             return (
               <Form className="layout">
-                <Field name="email">
-                  {({ field, form, meta }: FieldProps) => (
-                    <Input
-                      autoComplete="email"
-                      disabled={true}
-                      type="text"
-                      {...field}
-                      placeholder="Email"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      onClear={() => form.setFieldValue('email', '')}
-                    />
-                  )}
-                </Field>
-                <Field name="name">
-                  {({ field, form, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Name"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      onClear={() => form.setFieldValue('name', '')}
-                    />
-                  )}
-                </Field>
-                <Field name="surname">
-                  {({ field, form, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Surname"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      onClear={() => form.setFieldValue('surname', '')}
-                    />
-                  )}
-                </Field>
-                <Field name="age">
-                  {({ field, form, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Age"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      onClear={() => form.setFieldValue('age', '')}
-                    />
-                  )}
-                </Field>
-                <Field name="height">
-                  {({ field, form, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Height"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      onClear={() => form.setFieldValue('height', '')}
-                    />
-                  )}
-                </Field>
-                <Field name="weight">
-                  {({ field, form, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      placeholder="Weight"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      onClear={() => form.setFieldValue('weight', '')}
-                    />
-                  )}
-                </Field>
-                <div className="select-container">
-                  <select className="select-box">
-                    <option value="" disabled selected hidden>
-                      Sex
-                    </option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
+                <div>
+                  <Field name="email">
+                    {({ field, form, meta }: FieldProps) => (
+                      <Input
+                        autoComplete="email"
+                        disabled={true}
+                        type="text"
+                        {...field}
+                        placeholder="Email"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('email', '')}
+                      />
+                    )}
+                  </Field>
+                  <Field name="name">
+                    {({ field, form, meta }: FieldProps) => (
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Name"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('name', '')}
+                      />
+                    )}
+                  </Field>
+                  <Field name="surname">
+                    {({ field, form, meta }: FieldProps) => (
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Surname"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('surname', '')}
+                      />
+                    )}
+                  </Field>
+                  <Field name="age">
+                    {({ field, form, meta }: FieldProps) => (
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Age"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('age', '')}
+                      />
+                    )}
+                  </Field>
+                  <Field name="height">
+                    {({ field, form, meta }: FieldProps) => (
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Height"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('height', '')}
+                      />
+                    )}
+                  </Field>
+                  <Field name="weight">
+                    {({ field, form, meta }: FieldProps) => (
+                      <Input
+                        type="text"
+                        {...field}
+                        placeholder="Weight"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('weight', '')}
+                      />
+                    )}
+                  </Field>
+                  <div className="select-container">
+                    <select className="select-box">
+                      <option value="" disabled selected hidden>
+                        Sex
+                      </option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
                 </div>
               </Form>
             );

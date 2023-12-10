@@ -9,6 +9,7 @@ export default {
         layout: '#11141E',
         btnBlack: '#15171D',
         btnRed: '#AE3838',
+        gray: '#3F4249',
       },
       backgroundImage: {
         'radial-gradient-layout':

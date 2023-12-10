@@ -27,13 +27,15 @@ export interface WorkoutResponse {
 
 export interface WorkoutsResponse {
   message: string;
-  data: WorkoutsRequest;
+  data: {
+    workouts: WorkoutRequest[];
+  };
 }
 
 export interface WorkoutsRequest {
   limit: number;
   offset: number;
   sort: string;
-  from?: number;
-  to?: number;
+  from?: string;
+  to?: string;
 }
