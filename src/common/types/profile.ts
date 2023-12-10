@@ -1,4 +1,4 @@
-export interface ProfileResponse {
+export interface ProfileRequest {
   email: string;
   name?: string;
   surname?: string;
@@ -7,6 +7,11 @@ export interface ProfileResponse {
   height?: string;
   weight?: string;
   avatar?: string;
+}
+
+export interface ProfileResponse {
+  message: string;
+  data: ProfileRequest;
 }
 
 export interface AvatarUpdate {

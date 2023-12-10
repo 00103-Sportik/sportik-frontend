@@ -10,7 +10,7 @@ import { profileReducer } from './profile/profile.slice.ts';
 const persistConfig = {
   key: 'redux',
   storage,
-  whitelist: ['auth', 'profile'],
+  whitelist: ['auth', 'profile', 'workouts'],
 };
 
 export const rootReducer = combineReducers({

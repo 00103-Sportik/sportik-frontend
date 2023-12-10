@@ -8,6 +8,7 @@ export type ProfileFields = {
   age: string;
   height: string;
   weight: string;
+  avatar: string;
 };
 
 export const profileInitialValues: ProfileFields = {
@@ -18,6 +19,7 @@ export const profileInitialValues: ProfileFields = {
   age: '',
   height: '',
   weight: '',
+  avatar: '',
 };
 
 const MIN_NAME_LENGTH = 2;

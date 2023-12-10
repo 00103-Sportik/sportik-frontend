@@ -1,7 +1,6 @@
 import { useAppSelector } from '../../../store/hooks.ts';
 import { selectIsAuthenticated } from '../../../store/auth/auth.selectors.ts';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Navbar } from '../navbar/Navbar.tsx';
 
 export function ProtectedRoute() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -13,7 +12,6 @@ export function ProtectedRoute() {
 
   return (
     <>
-      <Navbar />
       <Outlet />
     </>
   );

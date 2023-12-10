@@ -1,17 +1,17 @@
 import { apiSlice } from '../api.slice.ts';
 import { GET_PROFILE_URL, UPDATE_PROFILE_URL } from '../../common/constants/api.ts';
-import { ProfileResponse } from '../../common/types/profile.ts';
+import { ProfileRequest, ProfileResponse } from '../../common/types/profile.ts';
 
 export const profileApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query<ProfileResponse, void>({
       query: () => ({
-        url: `${GET_PROFILE_URL}`,
+        url: GET_PROFILE_URL,
         method: 'GET',
       }),
       providesTags: ['Profile'],
     }),
-    updateProfile: builder.mutation<ProfileResponse, ProfileResponse>({
+    updateProfile: builder.mutation<ProfileResponse, ProfileRequest>({
       query: (body) => ({
         url: UPDATE_PROFILE_URL,
         method: 'PUT',

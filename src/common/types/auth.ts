@@ -18,4 +18,9 @@ export const mapPathToTitle = {
   '/signup': 'Registration',
 };
 
+export const hPathToTitle = {
+  '/signin': 'Just take a step!',
+  '/signup': 'Start your journey!',
+};
+
 export type { AuthRequest, AuthResponse, SuccessAuthResponse };
