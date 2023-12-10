@@ -5,25 +5,53 @@ import {
   profileInitialValues,
   profileValidationSchema,
 } from '../../common/validations/profileValidationSchema.ts';
-import { useUpdateProfileMutation } from '../../store/profile/profile.api.ts';
-import { Navbar } from '../../common/components/navbar/Navbar.tsx';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../store/profile/profile.api.ts';
 import logo from '../../assets/avatar.jpg';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { updateAvatar } from '../../store/profile/profile.slice.ts';
 import { AvatarUpdate } from '../../common/types/profile.ts';
 import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
+import { produce } from 'immer';
 
 function Profile() {
   const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const [updateProfile] = useUpdateProfileMutation();
+  const { data, refetch } = useGetProfileQuery();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
+  const [fields, setFields] = useState<ProfileFields>({
+    email: data?.data.email || '',
+    name: data?.data.name || '',
+    surname: data?.data.surname || '',
+    sex: data?.data.sex || '',
+    age: data?.data.age || '',
+    height: data?.data.height || '',
+    weight: data?.data.weight || '',
+    avatar: data?.data.avatar || '',
+  });
 
   const onSubmit = (values: ProfileFields) => {
     updateProfile(values);
   };
+
+  const saveProfile = () => {
+    updateProfile(fields);
+  };
+
+  const discard = () => {
+    refetch();
+  };
+
+  const changeField = useCallback((field: keyof ProfileFields, value: string) => {
+    setFields(
+      produce((draft) => {
+        draft[field] = value;
+      }),
+    );
+  }, []);
 
   const convertBase64 = ({ file }: { file: any }) => {
     return new Promise((resolve, reject) => {
@@ -53,49 +81,59 @@ function Profile() {
 
   return (
     <>
-      <Navbar></Navbar>
       <h1>Profile</h1>
       <div className="@apply flex flex-row">
         <Formik initialValues={profileInitialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema}>
-          {({}) => {
+          {(props) => {
             return (
               <Form className="layout">
                 <div>
                   <Field name="email">
-                    {({ field, form, meta }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                       <Input
                         autoComplete="email"
-                        disabled={true}
                         type="text"
                         {...field}
+                        value={fields.email}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('email', event.target.value);
+                        }}
                         placeholder="Email"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
-                        onClear={() => form.setFieldValue('email', '')}
                       />
                     )}
                   </Field>
                   <Field name="name">
-                    {({ field, form, meta }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                       <Input
                         type="text"
                         {...field}
+                        value={fields.name}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('name', event.target.value);
+                        }}
                         placeholder="Name"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
-                        onClear={() => form.setFieldValue('name', '')}
                       />
                     )}
                   </Field>
                   <Field name="surname">
-                    {({ field, form, meta }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                       <Input
                         type="text"
                         {...field}
+                        value={fields.surname}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('surname', event.target.value);
+                        }}
                         placeholder="Surname"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
-                        onClear={() => form.setFieldValue('surname', '')}
                       />
                     )}
                   </Field>
@@ -104,6 +142,11 @@ function Profile() {
                       <Input
                         type="text"
                         {...field}
+                        value={fields.age}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('age', event.target.value);
+                        }}
                         placeholder="Age"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
@@ -116,6 +159,11 @@ function Profile() {
                       <Input
                         type="text"
                         {...field}
+                        value={fields.height}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('height', event.target.value);
+                        }}
                         placeholder="Height"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
@@ -128,6 +176,11 @@ function Profile() {
                       <Input
                         type="text"
                         {...field}
+                        value={fields.weight}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('weight', event.target.value);
+                        }}
                         placeholder="Weight"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
@@ -136,15 +189,51 @@ function Profile() {
                     )}
                   </Field>
                   <div className="select-container">
-                    <select className="select-box">
+                    <select
+                      className="select-box"
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('sex', event.target.value);
+                      }}
+                    >
                       <option value="" disabled selected hidden>
-                        Sex
+                        {!fields.sex ? 'Sex' : fields.sex}
                       </option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
                   </div>
                 </div>
+                <Dialog
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                  backdrop={<div className="backdrop" />}
+                  className="dialog"
+                >
+                  <p className="description">Save changes?</p>
+                  <div className="buttons">
+                    <button className="btn-red" onClick={saveProfile}>
+                      Yes
+                    </button>
+                    <DialogDismiss className="btn-black">No</DialogDismiss>
+                  </div>
+                </Dialog>
+                <Dialog
+                  open={open2}
+                  onClose={() => setOpen2(false)}
+                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                  backdrop={<div className="backdrop" />}
+                  className="dialog"
+                >
+                  <p className="description">Discard changes?</p>
+                  <div className="buttons">
+                    <button className="btn-red" onClick={discard}>
+                      Yes
+                    </button>
+                    <DialogDismiss className="btn-black">No</DialogDismiss>
+                  </div>
+                </Dialog>
               </Form>
             );
           }}
@@ -163,9 +252,14 @@ function Profile() {
           </label>
         </div>
       </div>
-      <button className="btn-black" type="submit">
-        Save
-      </button>
+      <div className="flex mt-2">
+        <button className="btn-black" onClick={() => setOpen(true)}>
+          Save
+        </button>
+        <button className="btn-red" onClick={() => setOpen2(true)}>
+          Discard
+        </button>
+      </div>
     </>
   );
 }

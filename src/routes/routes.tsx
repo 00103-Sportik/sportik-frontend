@@ -6,6 +6,7 @@ import Login from '../pages/auth/login/Login.tsx';
 // import { ProtectedRoute } from '../common/components/protectedRoute/ProtectedRoute.tsx';
 import Profile from '../pages/profile/Profile.tsx';
 import Workouts from '../pages/workouts/Workouts.tsx';
+import { ProtectedRoute } from '../common/components/protectedRoute/ProtectedRoute.tsx';
 
 function AppRoutes() {
   return (
@@ -16,11 +17,10 @@ function AppRoutes() {
             <Route path="signin" element={<Login />} />
             <Route path="signup" element={<Registration />} />
           </Route>
-          <Route path="profile" element={<Profile />} />
-          <Route index element={<Workouts />} />
-          {/* <Route element={<ProtectedRoute />}> */}
-          {/*   Сюда потом сложить все роуты кроме реги и логина */}
-          {/* </Route> */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="profile" element={<Profile />} />
+            <Route index element={<Workouts />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

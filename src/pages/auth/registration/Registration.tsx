@@ -81,7 +81,6 @@ function Registration() {
             </button>
             <Dialog
               open={open}
-              onClose={() => setOpen(false)}
               getPersistentElements={() => document.querySelectorAll('.Toastify')}
               backdrop={<div className="backdrop" />}
               className="dialog"

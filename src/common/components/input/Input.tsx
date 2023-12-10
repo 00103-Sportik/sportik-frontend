@@ -46,7 +46,7 @@ export function Input(props: InputProps) {
           </button>
         )}
       </div>
-      <p className="text-error">{error && errorText}</p>
+      <p className="text-error break-word max-w-[200px]">{error && errorText}</p>
     </div>
   );
 }

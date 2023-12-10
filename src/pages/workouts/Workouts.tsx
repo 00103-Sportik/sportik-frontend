@@ -1,4 +1,3 @@
-import { Navbar } from '../../common/components/navbar/Navbar.tsx';
 import { AiFillFilter } from 'react-icons/ai';
 import styles from './Workouts.module.css';
 import React, { useEffect, useState } from 'react';
@@ -28,6 +27,9 @@ function Workouts() {
         (e.target as HTMLInputElement).clientHeight <
         100
     ) {
+      console.log((e.target as HTMLInputElement).scrollHeight);
+      console.log((e.target as HTMLInputElement).scrollTop);
+      console.log((e.target as HTMLInputElement).clientHeight);
       setFetching(true);
     }
   };
@@ -75,7 +77,6 @@ function Workouts() {
 
   return (
     <>
-      <Navbar></Navbar>
       <div className="layout">
         <div className={styles.sortFilter}>
           <button className="btn-black" onClick={() => setOpen(true)}>
@@ -138,47 +139,19 @@ function Workouts() {
           </div>
         </div>
         <div className={styles.workouts} id="box">
-          {/* {workouts.length !== 0 ? ( */}
-          {/*   workouts.map((workout) => ( */}
-          {/*     <div className={styles.box}> */}
-          {/*       <div className={styles.boxInfo}> */}
-          {/*         <span>{workout.name}</span> */}
-          {/*         <span>{workout.date}</span> */}
-          {/*         <span>{workout.type}</span> */}
-          {/*       </div> */}
-          {/*     </div> */}
-          {/*   )) */}
-          {/* ) : ( */}
-          {/*   <h1 className={styles.noWorkouts}>There are no workouts yet</h1> */}
-          {/* )} */}
-          <div className={styles.box}>
-            <div className={styles.boxInfo}>
-              <span>{1}</span>
-              <span>{2}</span>
-              <span>{3}</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo}>
-              <span>{1}</span>
-              <span>{2}</span>
-              <span>{3}</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo}>
-              <span>{1}</span>
-              <span>{2}</span>
-              <span>{3}</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo}>
-              <span>{1}</span>
-              <span>{2}</span>
-              <span>{3}</span>
-            </div>
-          </div>
+          {workouts.length !== 0 ? (
+            workouts.map((workout) => (
+              <div className={styles.box}>
+                <div className={styles.boxInfo}>
+                  <span>{workout.name}</span>
+                  <span>{workout.date}</span>
+                  <span>{workout.type}</span>
+                </div>
+              </div>
+            ))
+          ) : (
+            <h1 className={styles.noWorkouts}>There are no workouts yet</h1>
+          )}
         </div>
         <button className="btn-black">Save</button>
       </div>
