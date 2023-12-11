@@ -1,17 +1,17 @@
-export interface SubtypeRequest {
-    id: string;
-    name: string;
-    typeId: string;
+export interface SubtypesRequest {
+  id: string;
+  name: string;
+  typeId: string;
 }
 
-export interface SubtypeResponse {
-    message: string;
-    data: {
-        subtypes: SubtypeShort[];
-    }
+export interface SubtypesResponse {
+  message: string;
+  data: {
+    subtypes: SubtypesShort[];
+  };
 }
 
-interface SubtypeShort {
-    id: string;
-    name: string;
+interface SubtypesShort {
+  id: string;
+  name: string;
 }

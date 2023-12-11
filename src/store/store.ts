@@ -6,6 +6,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { apiSlice } from './api.slice.ts';
 import { profileReducer } from './profile/profile.slice.ts';
+import { workoutsReducer } from './workouts/workouts.slice.ts';
 
 const persistConfig = {
   key: 'redux',
@@ -17,6 +18,7 @@ export const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
   auth: authReducer,
   profile: profileReducer,
+  workouts: workoutsReducer,
   loading: loadingReducer,
 });
 

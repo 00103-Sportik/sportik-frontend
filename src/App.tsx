@@ -11,7 +11,18 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <AppRoutes />
-          <ToastContainer position="top-center" autoClose={3000} />
+          <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
         </PersistGate>
       </Provider>
     </BrowserRouter>

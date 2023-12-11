@@ -5,21 +5,21 @@ import {
   signUpValidationSchema,
 } from '../../../common/validations/authValidationSchema.ts';
 import styles from './Registration.module.css';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useRegistrationMutation, useResendEmailMutation } from '../../../store/auth/auth.api.ts';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';
 import { useEffect, useState } from 'react';
 import { Dialog } from '@ariakit/react';
+import { toast } from 'react-toastify';
 
 function Registration() {
   const [open, setOpen] = useState(false);
   const [seconds, setSeconds] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [email, setEmail] = useState('');
-  const [registration, { isSuccess }] = useRegistrationMutation();
+  const [registration] = useRegistrationMutation();
   const [resendEmail, {}] = useResendEmailMutation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (seconds > 0 && timerActive) {
@@ -30,13 +30,19 @@ function Registration() {
   }, [seconds, timerActive]);
 
   const onSubmit = (values: SignUpFields) => {
+    toast('Activation link sent to your email!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
     setEmail(values.email);
     registration(values);
   };
-
-  if (isSuccess) {
-    navigate('/signin');
-  }
 
   return (
     <>
@@ -108,6 +114,16 @@ function Registration() {
                       resendEmail({ email });
                       setSeconds(60);
                       setTimerActive(true);
+                      toast('Activation link sent to your email!', {
+                        position: 'top-center',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'dark',
+                      });
                     }}
                   >
                     Send again

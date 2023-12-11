@@ -8,14 +8,41 @@ import styles from './Login.module.css';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Login() {
-  const [authentication] = useAuthenticationMutation();
+  const [authentication, { error, isSuccess }] = useAuthenticationMutation();
+  const navigate = useNavigate();
 
   const onSubmit = (values: SignInFields) => {
     authentication(values);
   };
+  if (isSuccess) {
+    toast('Login successful!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+    navigate('/signin');
+  }
+  if (error) {
+    toast('message' in error ? error && error.message : 'Authentication failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
 
   return (
     <>
@@ -24,7 +51,9 @@ function Login() {
           return (
             <Form className="layout">
               <div className="title-layout">
-                <h1 className={styles.titleLayout}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+                <h1 className={styles.titleLayout}>
+                  {mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}
+                </h1>
               </div>
               <Field name="email">
                 {({ field, form }: FieldProps) => (

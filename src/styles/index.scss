@@ -1,12 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'react-toastify/dist/ReactToastify.minimal.css';
+@import 'react-toastify/dist/ReactToastify.css';
 
 #root {
   @apply flex items-center justify-center min-h-screen bg-[rgb(17_20_30_/_var(--tw-bg-opacity))] text-[rgb(255_255_255_/_var(--tw-text-opacity))];
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
   font-family: "Inter", serif;
+}
+
+.Toastify__toast-container {
+  z-index: 999 !important;
 }
 
 .form-input:focus ~ .form-label,

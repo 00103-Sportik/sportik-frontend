@@ -1,18 +1,18 @@
 export interface Approach {
-  id: string;
+  id?: string;
   param1: number;
   param2?: number;
 }
 
 export interface ExerciseRequest {
-  id: string;
+  id?: string;
   name: string;
   combinationParams: string;
-  approaches: Approach[];
+  approaches?: Approach[];
 }
 
 export interface WorkoutRequest {
-  id: string;
+  id?: string;
   name: string;
   date: number;
   type: string;
@@ -36,6 +36,6 @@ export interface WorkoutsRequest {
   limit: number;
   offset: number;
   sort: string;
-  from?: string;
-  to?: string;
+  from?: number;
+  to?: number;
 }
