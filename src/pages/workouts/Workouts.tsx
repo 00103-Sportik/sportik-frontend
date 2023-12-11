@@ -5,10 +5,11 @@ import { useGetWorkoutsQuery } from '../../store/workouts/workouts.api.ts';
 import { Dialog } from '@ariakit/react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { Input } from '../../common/components/input/Input.tsx';
-import { DateFields, dateInitialValues } from '../../common/validations/dateValidationSchema.ts';
+import { DateFields, dateInitialValues, dateValidationSchema } from '../../common/validations/dateValidationSchema.ts';
 import { WorkoutRequest } from '../../common/types/workouts.ts';
 import { useNavigate } from 'react-router-dom';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
+import { toast } from 'react-toastify';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
@@ -19,8 +20,9 @@ function Workouts() {
   const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
   const [fetching, setFetching] = useState(true);
   const limit = 10;
-  const { data, refetch } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+  const { data, refetch, error } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
   const navigate = useNavigate();
+
   const scrollHandler = (e: Event) => {
     if (
       e.target &&
@@ -61,8 +63,8 @@ function Workouts() {
     const target = e.target as HTMLInputElement;
     setSort(target.value);
     setOffset(0);
-    const data = useGetWorkoutsQuery({ limit, offset, sort, from, to }).data;
-    if (data !== undefined) {
+    refetch();
+    if (data?.data !== undefined) {
       setWorkouts(data.data.workouts);
     }
   };
@@ -71,16 +73,23 @@ function Workouts() {
     setOffset(0);
     setFrom(new Date(values.from).getTime());
     setTo(new Date(values.to).getTime());
-    console.log(values);
-    const data = useGetWorkoutsQuery({
-      limit,
-      offset,
-      sort,
-      from,
-      to,
-    })!.data;
-    if (data !== undefined) {
+    refetch();
+    if (data?.data !== undefined) {
       setWorkouts(data.data.workouts);
+    }
+    if (error) {
+      toast('Failed to get workouts!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    } else {
+      setOpen(false);
     }
   };
 
@@ -91,50 +100,54 @@ function Workouts() {
           <button className="btn-black" onClick={() => setOpen(true)}>
             <AiFillFilter />
           </button>
-          <Dialog
-            open={open}
-            onClose={() => setOpen(false)}
-            getPersistentElements={() => document.querySelectorAll('.Toastify')}
-            backdrop={<div className="backdrop" />}
-            className="dialog"
-          >
-            <p className="description">Enter the dates filter range:</p>
-            <Formik initialValues={dateInitialValues} onSubmit={onSubmit}>
-              {({}) => {
-                return (
+          <Formik initialValues={dateInitialValues} onSubmit={onSubmit} validationSchema={dateValidationSchema}>
+            {({}) => {
+              return (
+                <Dialog
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                  backdrop={<div className="backdrop" />}
+                  className="dialog"
+                >
+                  <p className="description">Enter the dates filter range:</p>
                   <Form className={styles.dateRange}>
-                    <Field name="from">
-                      {({ field, meta }: FieldProps) => (
-                        <Input
-                          type="date"
-                          {...field}
-                          placeholder="From"
-                          min="0000-01-01"
-                          max="9999-12-31"
-                          error={meta.touched && !!meta.error}
-                          errorText={meta.error}
-                        />
-                      )}
-                    </Field>
-                    <Field name="to">
-                      {({ field, meta }: FieldProps) => (
-                        <Input
-                          type="date"
-                          {...field}
-                          placeholder="To"
-                          min="0000-01-01"
-                          max="9999-12-31"
-                          error={meta.touched && !!meta.error}
-                          errorText={meta.error}
-                        />
-                      )}
-                    </Field>
+                    <div>
+                      <Field name="from">
+                        {({ field, meta }: FieldProps) => (
+                          <Input
+                            type="date"
+                            {...field}
+                            placeholder="From"
+                            min="0000-01-01"
+                            max="9999-12-31"
+                            error={meta.touched && !!meta.error}
+                            errorText={meta.error}
+                          />
+                        )}
+                      </Field>
+                      <Field name="to">
+                        {({ field, meta }: FieldProps) => (
+                          <Input
+                            type="date"
+                            {...field}
+                            placeholder="To"
+                            min="0000-01-01"
+                            max="9999-12-31"
+                            error={meta.touched && !!meta.error}
+                            errorText={meta.error}
+                          />
+                        )}
+                      </Field>
+                    </div>
+                    <button className="btn-black" type="submit">
+                      Apply
+                    </button>
                   </Form>
-                );
-              }}
-            </Formik>
-            <button className="btn-black">Apply</button>
-          </Dialog>
+                </Dialog>
+              );
+            }}
+          </Formik>
           <div className="select-container">
             <select className="select-box" onChange={changeWorkouts}>
               <option value="newest" selected>
@@ -146,19 +159,47 @@ function Workouts() {
           </div>
         </div>
         <div className={styles.workouts} id="box">
-          {workouts.length !== 0 ? (
-            workouts.map((workout) => (
-              <div className={styles.box}>
-                <div className={styles.boxInfo} onClick={() => navigate(WORKOUTS_URL + '/' + workout.id)}>
-                  <span>{workout.name}</span>
-                  <span>{workout.date}</span>
-                  <span>{workout.type}</span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <h1 className={styles.noWorkouts}>There are no workouts yet</h1>
-          )}
+          {/* {workouts.length !== 0 ? ( */}
+          {/*   workouts.map((workout) => ( */}
+          {/*     <div className={styles.box}> */}
+          {/*       <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${workout.id}`)}> */}
+          {/*         <span>{workout.name}</span> */}
+          {/*         <span>{workout.date}</span> */}
+          {/*         <span>{workout.type}</span> */}
+          {/*       </div> */}
+          {/*     </div> */}
+          {/*   )) */}
+          {/* ) : ( */}
+          {/*   <h1 className={styles.noWorkouts}>There are no workouts yet</h1> */}
+          {/* )} */}
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
+              <span>name</span>
+              <span>date</span>
+              <span>type</span>
+            </div>
+          </div>
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${2}`)}>
+              <span>name</span>
+              <span>date</span>
+              <span>type</span>
+            </div>
+          </div>
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${3}`)}>
+              <span>name</span>
+              <span>date</span>
+              <span>type</span>
+            </div>
+          </div>
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
+              <span>name</span>
+              <span>date</span>
+              <span>type</span>
+            </div>
+          </div>
         </div>
         <button className="btn-black" onClick={() => navigate(WORKOUTS_URL)}>
           Add

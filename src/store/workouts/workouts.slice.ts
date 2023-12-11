@@ -1,17 +1,21 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
-import { WorkoutCount, workoutsInitialValues } from '../../common/validations/workoutValidationSchema.ts';
+import { workoutStateInitialValues, WorkoutState } from '../../common/validations/workoutValidationSchema.ts';
 
 export const workoutsSlice = createSlice({
   name: 'workout',
-  initialState: workoutsInitialValues,
+  initialState: workoutStateInitialValues,
   reducers: {
-    setCountWorkouts: (state: Draft<WorkoutCount>, action: PayloadAction<WorkoutCount>) => {
+    setCountWorkouts: (state: Draft<WorkoutState>, action: PayloadAction<Pick<WorkoutState, 'count'>>) => {
       const { count } = action.payload;
       state.count = count;
+    },
+    setCurrentWorkouts: (state: Draft<WorkoutState>, action: PayloadAction<Pick<WorkoutState, 'id'>>) => {
+      const { id } = action.payload;
+      state.id = id;
     },
   },
 });
 
-export const { setCountWorkouts } = workoutsSlice.actions;
+export const { setCountWorkouts, setCurrentWorkouts } = workoutsSlice.actions;
 
 export const workoutsReducer = workoutsSlice.reducer;

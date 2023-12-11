@@ -14,7 +14,7 @@ export const workoutsApi = apiSlice.injectEndpoints({
       providesTags: ['Workouts'],
     }),
     getWorkout: builder.query<WorkoutResponse, Pick<WorkoutRequest, 'id'>>({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `${WORKOUTS_URL}?id=${id}`,
         method: 'GET',
       }),
@@ -37,7 +37,7 @@ export const workoutsApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Workouts'],
     }),
     deleteWorkout: builder.mutation<void, Pick<WorkoutRequest, 'id'>>({
-      query: (id) => ({
+      query: ({ id }) => ({
         url: `${WORKOUTS_URL}?id=${id}`,
         method: 'DELETE',
       }),

@@ -1,17 +1,17 @@
 import { apiSlice } from '../api.slice';
 import { SUBTYPES_URL } from '../../common/constants/api';
-import { SubtypeResponse, SubtypeRequest } from '../../common/types/subtypes';
+import { SubtypesResponse, SubtypesRequest } from '../../common/types/subtypes';
 
 export const subtypeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getSubtypes: builder.query<SubtypeResponse, Pick<SubtypeRequest, 'typeId'>>({
-      query: (typeId) => ({
-        url: `${SUBTYPES_URL}?type=${typeId}`,
+    getSubtypes: builder.query<SubtypesResponse, Pick<SubtypesRequest, 'type'>>({
+      query: ({ type }) => ({
+        url: `${SUBTYPES_URL}?type=${type}`,
         method: 'GET',
       }),
       providesTags: ['Subtypes'],
     }),
-    postSubtypes: builder.mutation<void, SubtypeRequest>({
+    createSubtype: builder.mutation<void, SubtypesRequest>({
       query: (body) => ({
         url: SUBTYPES_URL,
         method: 'POST',
@@ -19,7 +19,7 @@ export const subtypeApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Subtypes'],
     }),
-    updateSubtypes: builder.mutation<void, SubtypeRequest>({
+    updateSubtype: builder.mutation<void, SubtypesRequest>({
       query: (body) => ({
         url: SUBTYPES_URL,
         method: 'PUT',
@@ -27,8 +27,8 @@ export const subtypeApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Subtypes'],
     }),
-    deleteSubtypes: builder.mutation<void, Pick<SubtypeRequest, 'id'>>({
-      query: (id) => ({
+    deleteSubtype: builder.mutation<void, Pick<SubtypesRequest, 'id'>>({
+      query: ({ id }) => ({
         url: `${SUBTYPES_URL}?id=${id}`,
         method: 'DELETE',
       }),
@@ -36,3 +36,6 @@ export const subtypeApi = apiSlice.injectEndpoints({
     }),
   }),
 });
+
+export const { useGetSubtypesQuery, useCreateSubtypeMutation, useUpdateSubtypeMutation, useDeleteSubtypeMutation } =
+  subtypeApi;

@@ -16,11 +16,13 @@ export const workoutInitialValues: WorkoutFields = {
   comment: '',
 };
 
-export interface WorkoutCount {
+export interface WorkoutState {
+  id: string;
   count: number;
 }
 
-export const workoutsInitialValues: WorkoutCount = {
+export const workoutStateInitialValues: WorkoutState = {
+  id: '',
   count: 0,
 };
 

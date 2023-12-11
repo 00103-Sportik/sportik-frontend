@@ -49,7 +49,7 @@ function Login() {
       <Formik initialValues={signInInitialValues} onSubmit={onSubmit} validationSchema={signInValidationSchema}>
         {({ isValid, submitCount, values }) => {
           return (
-            <Form className="layout">
+            <Form>
               <div className="title-layout">
                 <h1 className={styles.titleLayout}>
                   {mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}
@@ -73,7 +73,7 @@ function Login() {
                   )}
                 </Field>
               </div>
-              {!isValid && !!submitCount && <div>Incorrect email or password!</div>}
+              {!isValid && !!submitCount && <p className="text-error">Incorrect email or password!</p>}
               <button
                 disabled={values.email.length === 0 || values.password.length === 0}
                 className="btn-black"
