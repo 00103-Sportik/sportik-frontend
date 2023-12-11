@@ -1,7 +1,7 @@
-import styles from '../workouts/Workouts.module.css';
+import styles from './Subtypes.module.css';
 import { EXERCISES_URL } from '../../common/constants/api.ts';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubtypesRequest } from '../../common/types/subtypes.ts';
 import { useGetSubtypesQuery, useCreateSubtypeMutation } from '../../store/subtype/subtype.api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
@@ -19,27 +19,21 @@ function Subtypes() {
   const { type } = useParams();
   const [subtype, setSubtype] = useState('');
   const [open, setOpen] = useState(false);
-  const { data, refetch } = useGetSubtypesQuery({ type: type || '' });
-  // @ts-ignore
-  const [subtypes, setSubtypes] = useState<SubtypesRequest[]>(data?.data.subtypes || []);
-  const [createSubtype, { error }] = useCreateSubtypeMutation();
+  const { data, isSuccess, isLoading } = useGetSubtypesQuery({ type: type || '' });
+  const [createSubtype] = useCreateSubtypeMutation();
+  const [subtypes, setSubtypes] = useState<SubtypesRequest[]>([]);
 
-  const onSubmit = (values: SubtypeField) => {
-    createSubtype(values);
-    if (error) {
-      toast('message' in error ? error && error.message : 'Create failed!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    } else {
-      refetch();
-      setOpen(false);
+  // if (isLoading) {
+  //   return <h1>Loading...</h1>;
+  // }
+
+  if (isSuccess) {
+    setSubtypes(data?.data.subtypes);
+  }
+
+  const onSubmit = async (values: SubtypeField) => {
+    try {
+      await createSubtype(values);
       toast('Create successful!', {
         position: 'top-center',
         autoClose: 3000,
@@ -50,20 +44,30 @@ function Subtypes() {
         progress: undefined,
         theme: 'dark',
       });
-    }
+    } catch (e) {}
+    toast('Create failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
   };
 
   return (
     <>
       <p>{type}</p>
-      <div className={styles.workouts} id="box">
-        {/* {subtypes.map((subtype) => ( */}
-        {/*   <div className={styles.box}> */}
-        {/*     <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${subtype.id}`)}> */}
-        {/*       <span>{subtype.name}</span> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* ))} */}
+      <div className={styles.subtypes}>
+        {subtypes.map((subtype) => (
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${subtype.id}`)}>
+              <span>{subtype.name}</span>
+            </div>
+          </div>
+        ))}
         <div className={styles.box}>
           <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
             <span>name</span>

@@ -11,6 +11,8 @@ export const EXERCISES_URL = '/exercises';
 
 export const SUBTYPES_URL = '/subtypes';
 
+export const APPROACHES_URL = '/approaches';
+
 export enum ResponseCodes {
   OK = 200,
   INVALID_REQUEST = 400,

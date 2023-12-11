@@ -9,6 +9,9 @@ import { ProtectedRoute } from '../common/components/protectedRoute/ProtectedRou
 import HRCalc from '../pages/hrCalc/HRCalc.tsx';
 import Workout from '../pages/workout/Workout.tsx';
 import Subtypes from '../pages/subtypes/Subtypes.tsx';
+import Exercises from '../pages/exercises/Exercises.tsx';
+import Exercise from '../pages/exercise/Exercise.tsx';
+import Approaches from '../pages/approaches/Approaches.tsx';
 
 function AppRoutes() {
   return (
@@ -25,6 +28,9 @@ function AppRoutes() {
             <Route path="workouts" element={<Workout />} />
             <Route path="workouts/:id" element={<Workout />} />
             <Route path="subtypes/:type" element={<Subtypes />} />
+            <Route path="exercises/:type" element={<Exercises />} />
+            <Route path="exercises" element={<Exercise />} />
+            <Route path="approaches" element={<Approaches />} />
             <Route path="hr-calc" element={<HRCalc />} />
           </Route>
         </Route>
