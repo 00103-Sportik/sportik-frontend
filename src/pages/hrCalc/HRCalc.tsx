@@ -96,7 +96,7 @@ function HRCalc() {
         <button className="btn-black-calc" onClick={calcByAge}>
           Calculate by age
         </button>
-        <button className="btn-black" onClick={calcByHR}>
+        <button className="btn-black-calc" onClick={calcByHR}>
           Calculate
         </button>
       </div>
