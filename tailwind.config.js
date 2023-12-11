@@ -42,7 +42,7 @@ export default {
             {},
         },
         '.nav': {
-          '@apply flex justify-between items-center w-full p-5': {},
+          '@apply flex justify-between items-center w-[350px] p-5': {},
         },
         '.span': {
           '@apply absolute w-full bg-white h-0.5 transition duration-500 ease-in-out left-0': {},
@@ -85,6 +85,9 @@ export default {
         '.btn:active': {
           '@apply transition-[0.2s] border-2 scale-110': {},
         },
+        '.btn-black-calc': {
+          '@apply btn w-[180px] h-[43px] bg-[#2B2E38] border-[#2B2E38]': {},
+        },
         //--Input--
         '.form-group': {
           '@apply relative mt-8': {},
@@ -95,6 +98,11 @@ export default {
         '.form-input': {
           '@apply w-[200px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
             {},
+          outline: 'none',
+        },
+        '.form-input-wider': {
+          '@apply form-input w-[300px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
+              {},
           outline: 'none',
         },
         '.form-input-err': {
@@ -114,7 +122,7 @@ export default {
           '@apply flex justify-center relative w-full h-[33px] overflow-hidden cursor-pointer mt-8': {},
         },
         '.select-box': {
-          '@apply w-full bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 rounded-[1px] border-b-[white] border-[none] border-b border-solid':
+          '@apply w-full bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
             {},
         },
       });

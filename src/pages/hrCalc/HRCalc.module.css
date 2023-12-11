@@ -1,8 +1,37 @@
 .tableLayout {
-  @apply bg-[radial-gradient(165.81%_165.81%_at_-13.5%_-44.62%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_100%)]
-  rounded-[20px] p-5 text-center;
+  @apply w-[300px] h-[446px] bg-[radial-gradient(165.81%_165.81%_at_-13.5%_-44.62%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_100%)]
+  rounded-[20px] p-7 text-center;
 }
 
 .secondCol {
-  @apply pl-3;
+  @apply pl-14;
 }
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tableConfig {
+  width: 230px;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.tableConfig th {
+  font-weight: bold;
+  padding: 5px;
+}
+
+.tableConfig td {
+  padding: 15px;
+}
+
