@@ -15,6 +15,7 @@ import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { produce } from 'immer';
 import { toast } from 'react-toastify';
+import styles from './Profile.module.css';
 
 function Profile() {
   const [open, setOpen] = useState(false);
@@ -267,7 +268,7 @@ function Profile() {
           </label>
         </div>
       </div>
-      <div className="flex mt-2">
+      <div className={styles.buttonsContainer}>
         <button className="btn-black" onClick={() => setOpen(true)}>
           Save
         </button>

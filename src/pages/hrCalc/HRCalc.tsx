@@ -71,7 +71,7 @@ function HRCalc() {
         {(props) => {
           return (
             <Form className="layout">
-              <Field name="hr">
+              <Field name="hr" className={styles.formInput}>
                 {({ field, meta }: FieldProps) => (
                   <Input
                     type="text"
@@ -84,6 +84,7 @@ function HRCalc() {
                     placeholder="HRmax"
                     error={meta.touched && !!meta.error}
                     errorText={meta.error}
+                    className="form-input-wider"
                   ></Input>
                 )}
               </Field>
@@ -91,16 +92,16 @@ function HRCalc() {
           );
         }}
       </Formik>
-      <div className="flex">
+      <div className={styles.buttonsContainer}>
+        <button className="btn-black-calc" onClick={calcByAge}>
+          Calculate by age
+        </button>
         <button className="btn-black" onClick={calcByHR}>
           Calculate
         </button>
-        <button className="btn-black" onClick={calcByAge}>
-          Calculate by age
-        </button>
       </div>
       <div className={styles.tableLayout}>
-        <table>
+        <table className={styles.tableConfig}>
           <caption>Heart rate zones</caption>
           <thead>
             <tr>
