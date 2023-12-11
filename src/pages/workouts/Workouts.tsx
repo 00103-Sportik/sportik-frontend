@@ -10,6 +10,9 @@ import { WorkoutRequest } from '../../common/types/workouts.ts';
 import { useNavigate } from 'react-router-dom';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
 import { toast } from 'react-toastify';
+import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
+import { setCountWorkouts } from '../../store/workouts/workouts.slice.ts';
+import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
@@ -20,27 +23,54 @@ function Workouts() {
   const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
   const [fetching, setFetching] = useState(true);
   const limit = 10;
-  const { data, refetch, error } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+  let { data, error, isLoading, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const count = useAppSelector(selectWorkoutsCount);
+
+  // if (isLoading) {
+  //   return <h1>Loading...</h1>;
+  // }
+
+  if (isSuccess) {
+    dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
+  }
+
+  const changeWorkouts = (e: React.ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    setSort(target.value);
+    setOffset(0);
+    let { data } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+    if (data?.data !== undefined) {
+      setWorkouts(data.data.workouts);
+    }
+  };
+
+  const onSubmit = (values: DateFields) => {
+    setOffset(0);
+    setFrom(new Date(values.from).getTime());
+    setTo(new Date(values.to).getTime());
+    let { data, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+    if (isSuccess && data?.data !== undefined) {
+      setWorkouts(data.data.workouts);
+    }
+    setOpen(false);
+  };
 
   const scrollHandler = (e: Event) => {
     if (
       e.target &&
       (e.target as HTMLInputElement).scrollHeight -
-        (e.target as HTMLInputElement).scrollTop +
+        (e.target as HTMLInputElement).scrollTop -
         (e.target as HTMLInputElement).clientHeight <
-        100
+        10
     ) {
-      console.log((e.target as HTMLInputElement).scrollHeight);
-      console.log((e.target as HTMLInputElement).scrollTop);
-      console.log((e.target as HTMLInputElement).clientHeight);
       setFetching(true);
     }
   };
 
   useEffect(() => {
     if (fetching) {
-      refetch();
       if (data !== undefined) {
         setWorkouts([...workouts, ...data.data.workouts]);
         setOffset((prevState) => prevState + 1);
@@ -58,40 +88,6 @@ function Workouts() {
       };
     }
   }, []);
-
-  const changeWorkouts = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement;
-    setSort(target.value);
-    setOffset(0);
-    refetch();
-    if (data?.data !== undefined) {
-      setWorkouts(data.data.workouts);
-    }
-  };
-
-  const onSubmit = (values: DateFields) => {
-    setOffset(0);
-    setFrom(new Date(values.from).getTime());
-    setTo(new Date(values.to).getTime());
-    refetch();
-    if (data?.data !== undefined) {
-      setWorkouts(data.data.workouts);
-    }
-    if (error) {
-      toast('Failed to get workouts!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    } else {
-      setOpen(false);
-    }
-  };
 
   return (
     <>

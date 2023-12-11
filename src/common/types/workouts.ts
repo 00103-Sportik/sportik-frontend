@@ -1,4 +1,4 @@
-export interface Approach {
+export interface ApproachRequest {
   id?: string;
   param1: number;
   param2?: number;
@@ -6,9 +6,18 @@ export interface Approach {
 
 export interface ExerciseRequest {
   id?: string;
+  type: string;
   name: string;
   combinationParams: string;
-  approaches?: Approach[];
+  description: string;
+  approaches?: ApproachRequest[];
+}
+
+export interface ExerciseResponse {
+  message: string;
+  data: {
+    exercises: ExerciseRequest[];
+  };
 }
 
 export interface WorkoutRequest {
@@ -20,6 +29,36 @@ export interface WorkoutRequest {
   exercises?: ExerciseRequest[];
 }
 
+export interface MainWorkoutState {
+  id?: string;
+  date: string;
+  name: string;
+  type: string;
+  comment: string;
+}
+
+export interface WorkoutState {
+  id: string;
+  count: number;
+  subtype: string;
+  name: string;
+  date: string;
+  type: string;
+  comment: string;
+  exercises: ExerciseRequest[];
+}
+
+export const workoutStateInitialValues: WorkoutState = {
+  id: '',
+  count: 0,
+  date: '',
+  subtype: '',
+  name: '',
+  type: '',
+  comment: '',
+  exercises: [],
+};
+
 export interface WorkoutResponse {
   message: string;
   data: WorkoutRequest;
@@ -28,6 +67,7 @@ export interface WorkoutResponse {
 export interface WorkoutsResponse {
   message: string;
   data: {
+    workouts_count: number;
     workouts: WorkoutRequest[];
   };
 }

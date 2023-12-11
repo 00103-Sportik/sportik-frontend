@@ -21,9 +21,14 @@ function Profile() {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [updateProfile] = useUpdateProfileMutation();
-  const { data, refetch } = useGetProfileQuery();
+  const { data, isLoading, refetch } = useGetProfileQuery();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
+
+  // if (isLoading) {
+  //   return <h1>Loading...</h1>;
+  // }
+
   const [fields, setFields] = useState<ProfileFields>({
     email: data?.data.email || '',
     name: data?.data.name || '',
@@ -35,8 +40,9 @@ function Profile() {
     avatar: data?.data.avatar || '',
   });
 
-  const onSubmit = (values: ProfileFields) => {
-    updateProfile(values);
+  const onSubmit = async (values: ProfileFields) => {
+    await updateProfile(values);
+    setOpen(false);
     toast('Data updated successfully!', {
       position: 'top-center',
       autoClose: 3000,
@@ -49,8 +55,9 @@ function Profile() {
     });
   };
 
-  const discard = () => {
-    refetch();
+  const discard = async () => {
+    await refetch();
+    setOpen2(false);
     toast('Updates have been canceled!', {
       position: 'top-center',
       autoClose: 3000,
@@ -90,7 +97,6 @@ function Profile() {
     const target = e.target as HTMLInputElement;
     const file = (target.files as FileList)[0];
     const base64 = (await convertBase64({ file: file })) as string;
-    console.log(base64);
     const data: AvatarUpdate = {
       avatar: base64,
     };

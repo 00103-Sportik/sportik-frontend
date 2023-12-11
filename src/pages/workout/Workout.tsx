@@ -15,34 +15,43 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { produce } from 'immer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
-import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
+import {
+  selectExercises,
+  selectFullWorkoutInfo,
+  selectWorkoutsCount,
+} from '../../store/workouts/workouts.selectors.ts';
 import styles from './Workout.module.css';
-import { ExerciseRequest } from '../../common/types/workouts.ts';
 import { toast } from 'react-toastify';
-import { SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
+import { APPROACHES_URL, SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
-import { setCurrentWorkouts } from '../../store/workouts/workouts.slice.ts';
+import { discardWorkoutInfo, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
+import { ExerciseRequest } from '../../common/types/workouts.ts';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [exercises, setExercises] = useState<ExerciseRequest[]>([]);
+  const exercisesFromStore = useAppSelector(selectExercises);
+  const [exercises, setExercises] = useState<ExerciseRequest[]>(exercisesFromStore);
   const [updateWorkout, { error: updateError }] = useUpdateWorkoutMutation();
   const [createWorkout, { error: createError, data }] = useCreateWorkoutMutation();
   const [delWorkout, { error: deleteError }] = useDeleteWorkoutMutation();
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const workoutInfo = useAppSelector(selectFullWorkoutInfo);
   let [fields, setFields] = useState<WorkoutFields>({
-    name: `Новая тренировка ${count}`,
-    date: new Date().toISOString().split('T')[0],
-    type: 'strength',
-    comment: '',
+    name: workoutInfo.name || `Новая тренировка ${count}`,
+    date: workoutInfo.date || new Date().toISOString().split('T')[0],
+    type: workoutInfo.type || 'strength',
+    comment: workoutInfo.comment || '',
   });
 
   if (id) {
     dispatch(setCurrentWorkouts({ id }));
-    const { data } = useGetWorkoutQuery({ id });
+    const { data, isLoading } = useGetWorkoutQuery({ id });
+    // if (isLoading) {
+    //   return <h1>Loading...</h1>;
+    // }
     [fields, setFields] = useState<WorkoutFields>({
       id: data?.data.id || '',
       name: data?.data.name || `Новая тренировка ${count}`,
@@ -57,9 +66,9 @@ function Workout() {
     }
   }
 
-  const onSubmit = (values: WorkoutFields) => {
+  const onSubmit = async (values: WorkoutFields) => {
     if (id) {
-      updateWorkout({
+      await updateWorkout({
         id: values.id,
         date: new Date(values.date).getTime(),
         name: values.name,
@@ -90,7 +99,7 @@ function Workout() {
         });
       }
     } else {
-      createWorkout({
+      await createWorkout({
         date: new Date(values.date).getTime(),
         name: values.name,
         type: values.type,
@@ -108,6 +117,7 @@ function Workout() {
           theme: 'dark',
         });
       } else {
+        dispatch(discardWorkoutInfo());
         navigate(`${WORKOUTS_URL}/${data?.data.id}`);
         toast('Create successful!', {
           position: 'top-center',
@@ -157,6 +167,15 @@ function Workout() {
         theme: 'dark',
       });
     }
+  };
+
+  const goToSubtypes = () => {
+    dispatch(setMainInfo({ id: id, date: fields.date, name: fields.name, type: fields.type, comment: fields.comment }));
+    navigate(SUBTYPES_URL + '/' + fields.type);
+  };
+
+  const goToApproaches = (id: string) => {
+    navigate(`${APPROACHES_URL}/${id}`);
   };
 
   return (
@@ -215,21 +234,21 @@ function Workout() {
                     </option>
                   </select>
                 </div>
-                <div className={styles.exercises} id="boxx">
-                  {/* {exercises.length !== 0 ? ( */}
-                  {/*   exercises.map((exercise) => ( */}
-                  {/*     <div className={styles.box}> */}
-                  {/*       <div className={styles.boxInfo}> */}
-                  {/*         <span>{exercise.name}</span> */}
-                  {/*         <span>Approaches: {exercise?.approaches?.length}</span> */}
-                  {/*       </div> */}
-                  {/*     </div> */}
-                  {/*   )) */}
-                  {/* ) : ( */}
-                  {/*   <h1 className={styles.noExercises}>There are no exercises yet</h1> */}
-                  {/* )} */}
+                <div className={styles.exercises}>
+                  {exercises.length !== 0 ? (
+                    exercises.map((exercise) => (
+                      <div className={styles.box}>
+                        <div className={styles.boxInfo} onClick={() => goToApproaches(exercise.id || '')}>
+                          <span>{exercise.name}</span>
+                          <span>approaches: {exercise?.approaches?.length}</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <h1 className={styles.noExercises}>There are no exercises yet</h1>
+                  )}
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${1}`)}>
+                    <div className={styles.boxInfo} onClick={() => goToApproaches('fsdfsd')}>
                       <span>{1}</span>
                       <span>Approaches: {2}</span>
                     </div>
@@ -265,7 +284,7 @@ function Workout() {
                     </div>
                   </div>
                 </div>
-                <button className="btn-black" onClick={() => navigate(SUBTYPES_URL + '/' + fields.type)}>
+                <button className="btn-black" onClick={() => goToSubtypes()}>
                   Add
                 </button>
                 <Field name="comment">

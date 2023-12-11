@@ -1,17 +1,17 @@
 import { apiSlice } from '../api.slice';
 import { EXERCISES_URL } from '../../common/constants/api';
-import { ExercisesRequest, ExercisesResponse } from '../../common/types/exercises';
+import { ExerciseRequest, ExerciseResponse } from '../../common/types/workouts.ts';
 
 export const exercisesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getExercises: builder.query<ExercisesResponse, Pick<ExercisesRequest, 'subtype'>>({
-      query: ({ subtype }) => ({
-        url: `${EXERCISES_URL}?subtype=${subtype}`,
+    getExercises: builder.query<ExerciseResponse, Pick<ExerciseRequest, 'type'>>({
+      query: ({ type }) => ({
+        url: `${EXERCISES_URL}?subtype=${type}`,
         method: 'GET',
       }),
       providesTags: ['Exercises'],
     }),
-    postExercises: builder.mutation<void, ExercisesRequest>({
+    createExercise: builder.mutation<void, ExerciseRequest>({
       query: (body) => ({
         url: EXERCISES_URL,
         method: 'POST',
@@ -19,7 +19,7 @@ export const exercisesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Exercises'],
     }),
-    updateExercises: builder.mutation<void, ExercisesRequest>({
+    updateExercise: builder.mutation<void, ExerciseRequest>({
       query: (body) => ({
         url: EXERCISES_URL,
         method: 'PUT',
@@ -27,7 +27,7 @@ export const exercisesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Exercises'],
     }),
-    deleteExercises: builder.mutation<void, Pick<ExercisesRequest, 'id'>>({
+    deleteExercise: builder.mutation<void, Pick<ExerciseRequest, 'id'>>({
       query: ({ id }) => ({
         url: `${EXERCISES_URL}?id=${id}`,
         method: 'DELETE',
@@ -36,3 +36,6 @@ export const exercisesApi = apiSlice.injectEndpoints({
     }),
   }),
 });
+
+export const { useGetExercisesQuery, useCreateExerciseMutation, useUpdateExerciseMutation, useDeleteExerciseMutation } =
+  exercisesApi;
