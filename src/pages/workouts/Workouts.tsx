@@ -160,7 +160,9 @@ function Workouts() {
             <h1 className={styles.noWorkouts}>There are no workouts yet</h1>
           )}
         </div>
-        <button className="btn-black">Save</button>
+        <button className="btn-black" onClick={() => navigate(WORKOUTS_URL)}>
+          Add
+        </button>
       </div>
     </>
   );
