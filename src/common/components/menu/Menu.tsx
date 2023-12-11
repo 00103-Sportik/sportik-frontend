@@ -3,6 +3,7 @@ import { logout } from '../../../store/auth/auth.slice.ts';
 import { useState } from 'react';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
+import styles from './Menu.module.css'
 
 export function Menu() {
   const [open, setOpen] = useState(false);
@@ -40,8 +41,8 @@ export function Menu() {
         backdrop={<div className="backdrop" />}
         className="dialog"
       >
-        <p className="description">Are you sure?</p>
-        <div className="buttons">
+        <p className={styles.p}>Are you sure?</p>
+        <div className="flex gap-[10px]">
           <DialogDismiss className="btn-red" onClick={exit}>
             Sign out
           </DialogDismiss>
