@@ -1,7 +1,22 @@
-.buttons-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 1000px;
-    margin-top: 1000px;
+.button-container {
+    display: inline-flex;
+    gap: 70px;
+    flex-direction: row;
+}
+
+.img {
+    border-radius: 10%;
+}
+
+.profileH1 {
+    font-size: 26px;
+    text-align: center;
+}
+
+.p {
+    font-size: 20px;
+    text-align:center;
+    vertical-align: middle;
+    display: table-cell;
+    margin-top: 10px;
 }
