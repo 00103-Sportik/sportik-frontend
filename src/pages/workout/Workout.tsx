@@ -8,41 +8,48 @@ import {
 import { useCallback, useState } from 'react';
 import {
   useCreateWorkoutMutation,
+  useDeleteWorkoutMutation,
   useGetWorkoutQuery,
   useUpdateWorkoutMutation,
 } from '../../store/workouts/workouts.api.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { produce } from 'immer';
-import { useAppSelector } from '../../store/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
 import styles from './Workout.module.css';
 import { ExerciseRequest } from '../../common/types/workouts.ts';
 import { toast } from 'react-toastify';
-import { WORKOUTS_URL } from '../../common/constants/api.ts';
+import { SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
+import { Dialog, DialogDismiss } from '@ariakit/react';
+import { setCurrentWorkouts } from '../../store/workouts/workouts.slice.ts';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [exercises, setExercises] = useState<ExerciseRequest[]>([]);
   const [updateWorkout, { error: updateError }] = useUpdateWorkoutMutation();
   const [createWorkout, { error: createError, data }] = useCreateWorkoutMutation();
+  const [delWorkout, { error: deleteError }] = useDeleteWorkoutMutation();
   const { id } = useParams();
+  const dispatch = useAppDispatch();
   let [fields, setFields] = useState<WorkoutFields>({
     name: `Новая тренировка ${count}`,
     date: new Date().toISOString().split('T')[0],
-    type: '',
+    type: 'strength',
     comment: '',
   });
 
   if (id) {
+    dispatch(setCurrentWorkouts({ id }));
     const { data } = useGetWorkoutQuery({ id });
     [fields, setFields] = useState<WorkoutFields>({
       id: data?.data.id || '',
-      name: data?.data.name || '',
+      name: data?.data.name || `Новая тренировка ${count}`,
       date: data?.data.date
         ? new Date(data?.data.date * 1000).toISOString().split('T')[0]
         : new Date().toISOString().split('T')[0],
-      type: data?.data.type || '',
+      type: data?.data.type || 'strength',
       comment: data?.data.comment || '',
     });
     if (data?.data?.exercises) {
@@ -51,7 +58,6 @@ function Workout() {
   }
 
   const onSubmit = (values: WorkoutFields) => {
-    console.log(id);
     if (id) {
       updateWorkout({
         id: values.id,
@@ -102,7 +108,7 @@ function Workout() {
           theme: 'dark',
         });
       } else {
-        navigate(WORKOUTS_URL + '/' + data?.data.id);
+        navigate(`${WORKOUTS_URL}/${data?.data.id}`);
         toast('Create successful!', {
           position: 'top-center',
           autoClose: 3000,
@@ -125,13 +131,41 @@ function Workout() {
     );
   }, []);
 
+  const deleteWorkout = () => {
+    delWorkout({ id });
+    if (deleteError) {
+      toast('message' in deleteError ? deleteError && deleteError.message : 'Delete successful!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    } else {
+      navigate('/');
+      toast('Delete successful!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  };
+
   return (
     <>
-      <div className="layout">
+      <div>
         <Formik initialValues={workoutInitialValues} onSubmit={onSubmit} validationSchema={workoutValidationSchema}>
           {(props) => {
             return (
-              <Form className="layout">
+              <Form>
                 <Field name="name">
                   {({ field, meta }: FieldProps) => (
                     <Input
@@ -173,31 +207,67 @@ function Workout() {
                       changeField('type', event.target.value);
                     }}
                   >
-                    <option value="" selected={fields.type === ''} disabled hidden>
-                      Type
-                    </option>
-                    <option value="Strength" selected={fields.type === 'Strength'}>
+                    <option value="strength" selected={fields.type === 'strength'}>
                       Strength
                     </option>
-                    <option value="Cardio" selected={fields.type === 'Cardio'}>
+                    <option value="cardio" selected={fields.type === 'cardio'}>
                       Cardio
                     </option>
                   </select>
                 </div>
-                <div className={styles.exercices} id="box">
-                  {exercises.length !== 0 ? (
-                    exercises.map((exercise) => (
-                      <div className={styles.box}>
-                        <div className={styles.boxInfo}>
-                          <span>{exercise.name}</span>
-                          <span>Approaches: {exercise?.approaches?.length}</span>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <h1 className={styles.noExercises}>There are no exercises yet</h1>
-                  )}
+                <div className={styles.exercises} id="boxx">
+                  {/* {exercises.length !== 0 ? ( */}
+                  {/*   exercises.map((exercise) => ( */}
+                  {/*     <div className={styles.box}> */}
+                  {/*       <div className={styles.boxInfo}> */}
+                  {/*         <span>{exercise.name}</span> */}
+                  {/*         <span>Approaches: {exercise?.approaches?.length}</span> */}
+                  {/*       </div> */}
+                  {/*     </div> */}
+                  {/*   )) */}
+                  {/* ) : ( */}
+                  {/*   <h1 className={styles.noExercises}>There are no exercises yet</h1> */}
+                  {/* )} */}
+                  <div className={styles.box}>
+                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${1}`)}>
+                      <span>{1}</span>
+                      <span>Approaches: {2}</span>
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${2}`)}>
+                      <span>{1}</span>
+                      <span>Approaches: {2}</span>
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${3}`)}>
+                      <span>{1}</span>
+                      <span>Approaches: {2}</span>
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${4}`)}>
+                      <span>{1}</span>
+                      <span>Approaches: {2}</span>
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${5}`)}>
+                      <span>{1}</span>
+                      <span>Approaches: {2}</span>
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <span>{1}</span>
+                      <span>Approaches: {2}</span>
+                    </div>
+                  </div>
                 </div>
+                <button className="btn-black" onClick={() => navigate(SUBTYPES_URL + '/' + fields.type)}>
+                  Add
+                </button>
                 <Field name="comment">
                   {({ field, meta }: FieldProps) => (
                     <Input
@@ -214,9 +284,31 @@ function Workout() {
                     ></Input>
                   )}
                 </Field>
-                <button className="btn-black" type="submit">
-                  Save
-                </button>
+                <div>
+                  <button className="btn-black" type="submit">
+                    Save
+                  </button>
+                  {!id && (
+                    <button className="btn-red" onClick={() => setOpen(true)}>
+                      Delete
+                    </button>
+                  )}
+                  <Dialog
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                    backdrop={<div className="backdrop" />}
+                    className="dialog"
+                  >
+                    <p className="description">Delete workout?</p>
+                    <div className="buttons">
+                      <DialogDismiss className="btn-black" onClick={deleteWorkout}>
+                        Yes
+                      </DialogDismiss>
+                      <DialogDismiss className="btn-red">No</DialogDismiss>
+                    </div>
+                  </Dialog>
+                </div>
               </Form>
             );
           }}

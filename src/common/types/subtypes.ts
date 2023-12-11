@@ -1,17 +1,12 @@
 export interface SubtypesRequest {
-  id: string;
+  id?: string;
   name: string;
-  typeId: string;
+  type?: string;
 }
 
 export interface SubtypesResponse {
   message: string;
   data: {
-    subtypes: SubtypesShort[];
+    subtypes: SubtypesRequest[];
   };
-}
-
-interface SubtypesShort {
-  id: string;
-  name: string;
 }

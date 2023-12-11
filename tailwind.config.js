@@ -23,23 +23,20 @@ export default {
     plugin(({ addComponents, addVariant, e }) => {
       addComponents({
         '.layout': {
-          '@apply flex flex-col items-center justify-center min-h-full': {},
+          '@apply flex flex-col items-center min-h-screen': {},
         },
         '.auth-container': {
-          '@apply min-h-[446px] min-w-[300px] flex w-[min(80%,60rem)] flex-col flex-nowrap items-center justify-center gap-6 self-center bg-[radial-gradient(165.81%_165.81%_at_-13.5%_-44.62%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_100%)] rounded-[20px]':
+          '@apply min-h-max min-w-[300px] flex w-[min(80%,60rem)] flex-col flex-nowrap items-center justify-center gap-6 self-center bg-[radial-gradient(165.81%_165.81%_at_-13.5%_-44.62%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_100%)] rounded-[20px]':
             {},
         },
         '.title-container': {
-          '@apply block justify-center items-center mb-5':
-            {},
+          '@apply block justify-center items-center mb-5': {},
         },
         '.title-layout': {
-          '@apply flex justify-center items-center mb-6':
-            {},
+          '@apply flex justify-center items-center mb-6': {},
         },
         '.field-password': {
-          '@apply flex justify-center items-center pl-4':
-            {},
+          '@apply flex items-center': {},
         },
         '.nav': {
           '@apply flex justify-between items-center w-[350px] p-5': {},
@@ -51,7 +48,7 @@ export default {
           '@apply inline-block w-3.5 h-5 bg-transparent order-1 cursor-pointer relative z-20 border-none mx-2': {},
         },
         '.menu': {
-          '@apply absolute bottom-0 left-0 right-0 top-0 bg-btnBlack flex justify-center items-center flex-col -translate-y-full transition duration-500 ease-in-out z-[2]':
+          '@apply absolute justify-center bottom-0 left-0 right-0 top-0 bg-btnBlack flex items-center flex-col -translate-y-full transition duration-500 ease-in-out z-[2] pt-10':
             {},
         },
         '.menu-btn-open': {
@@ -102,12 +99,12 @@ export default {
         },
         '.form-input-wider': {
           '@apply form-input w-[300px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
-              {},
+            {},
           outline: 'none',
         },
         '.form-input-narrow': {
           '@apply form-input w-[100px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
-              {},
+            {},
           outline: 'none',
         },
         '.form-input-err': {
@@ -132,7 +129,7 @@ export default {
         },
         '.select-box-narrow': {
           '@apply select-box w-[200px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
-              {},
+            {},
         },
       });
     }),

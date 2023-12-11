@@ -70,7 +70,7 @@ function HRCalc() {
       <Formik initialValues={hrInitialValue} onSubmit={onSubmit} validationSchema={hrValidationSchema}>
         {(props) => {
           return (
-            <Form className="layout">
+            <Form>
               <Field name="hr" className={styles.formInput}>
                 {({ field, meta }: FieldProps) => (
                   <Input

@@ -7,7 +7,8 @@ import Profile from '../pages/profile/Profile.tsx';
 import Workouts from '../pages/workouts/Workouts.tsx';
 import { ProtectedRoute } from '../common/components/protectedRoute/ProtectedRoute.tsx';
 import HRCalc from '../pages/hrCalc/HRCalc.tsx';
-import Workout from '../pages/Workout/Workout.tsx';
+import Workout from '../pages/workout/Workout.tsx';
+import Subtypes from '../pages/subtypes/Subtypes.tsx';
 
 function AppRoutes() {
   return (
@@ -22,6 +23,8 @@ function AppRoutes() {
             <Route path="profile" element={<Profile />} />
             <Route index element={<Workouts />} />
             <Route path="workouts" element={<Workout />} />
+            <Route path="workouts/:id" element={<Workout />} />
+            <Route path="subtypes/:type" element={<Subtypes />} />
             <Route path="hr-calc" element={<HRCalc />} />
           </Route>
         </Route>

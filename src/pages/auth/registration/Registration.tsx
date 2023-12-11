@@ -30,6 +30,8 @@ function Registration() {
   }, [seconds, timerActive]);
 
   const onSubmit = (values: SignUpFields) => {
+    setEmail(values.email);
+    registration(values);
     toast('Activation link sent to your email!', {
       position: 'top-center',
       autoClose: 3000,
@@ -40,15 +42,15 @@ function Registration() {
       progress: undefined,
       theme: 'dark',
     });
-    setEmail(values.email);
-    registration(values);
+    setOpen(true);
+    setTimerActive(!timerActive);
   };
 
   return (
     <>
       <Formik initialValues={signUpInitialValues} onSubmit={onSubmit} validationSchema={signUpValidationSchema}>
         {({ isValid, submitCount }) => (
-          <Form className="layout">
+          <Form>
             <div className="title-layout">
               <h1 className={styles.titleLayout}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
             </div>
@@ -80,14 +82,7 @@ function Registration() {
                 )}
               </Field>
             </div>
-            <button
-              className="btn-black"
-              type="submit"
-              onClick={() => {
-                setOpen(true);
-                setTimerActive(!timerActive);
-              }}
-            >
+            <button className="btn-black" type="submit">
               Sign Up
             </button>
             <Dialog
