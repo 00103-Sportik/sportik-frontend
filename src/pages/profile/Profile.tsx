@@ -14,6 +14,7 @@ import { AvatarUpdate } from '../../common/types/profile.ts';
 import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { produce } from 'immer';
+import { toast } from 'react-toastify';
 
 function Profile() {
   const [open, setOpen] = useState(false);
@@ -35,14 +36,30 @@ function Profile() {
 
   const onSubmit = (values: ProfileFields) => {
     updateProfile(values);
-  };
-
-  const saveProfile = () => {
-    updateProfile(fields);
+    toast('Data updated successfully!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
   };
 
   const discard = () => {
     refetch();
+    toast('Updates have been canceled!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
   };
 
   const changeField = useCallback((field: keyof ProfileFields, value: string) => {
@@ -190,11 +207,15 @@ function Profile() {
                         changeField('sex', event.target.value);
                       }}
                     >
-                      <option value="" disabled selected hidden>
-                        {!fields.sex ? 'Sex' : fields.sex}
+                      <option value="" selected={fields.sex === ''} disabled hidden>
+                        Sex
                       </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
+                      <option value="Male" selected={fields.sex === 'Male'}>
+                        Male
+                      </option>
+                      <option value="Female" selected={fields.sex === 'Female'}>
+                        Female
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -207,7 +228,7 @@ function Profile() {
                 >
                   <p className="description">Save changes?</p>
                   <div className="buttons">
-                    <button className="btn-red" onClick={saveProfile}>
+                    <button className="btn-red" type="submit">
                       Yes
                     </button>
                     <DialogDismiss className="btn-black">No</DialogDismiss>

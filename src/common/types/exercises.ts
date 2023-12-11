@@ -1,17 +1,17 @@
-export interface ExerciseRequest {
-    id: string;
-    name: string;
-    subtypeId: string;
+export interface ExercisesRequest {
+  id: string;
+  name: string;
+  subtypeId: string;
 }
 
-export interface ExerciseResponse {
-    message: string;
-    data: {
-        exercises: ShortExercise[]
-    }
+export interface ExercisesResponse {
+  message: string;
+  data: {
+    exercises: ShortExercises[];
+  };
 }
 
-interface ShortExercise {
-    id: string;
-    name: string;
+interface ShortExercises {
+  id: string;
+  name: string;
 }

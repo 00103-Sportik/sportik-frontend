@@ -26,6 +26,17 @@ function HRCalc() {
       const zone2 = `${Math.round(Number(hr) * 0.6)}-${Math.round(Number(hr) * 0.7)}`;
       const zone1 = `${Math.round(Number(hr) * 0.5)}-${Math.round(Number(hr) * 0.6)}`;
       setFields({ zone5, zone4, zone3, zone2, zone1 });
+    } else {
+      toast('Please enter a valid HRmax!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
     }
   };
 
@@ -39,7 +50,16 @@ function HRCalc() {
       const zone1 = `${Math.round(Number(hrMaxByAge) * 0.5)}-${Math.round(Number(hrMaxByAge) * 0.6)}`;
       setFields({ zone5, zone4, zone3, zone2, zone1 });
     } else {
-      toast.info("You didn't indicate your age in your profile");
+      toast("You didn't indicate your age in your profile", {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
     }
   };
 
@@ -71,7 +91,7 @@ function HRCalc() {
           );
         }}
       </Formik>
-      <div className="flex mt-2">
+      <div className="flex">
         <button className="btn-black" onClick={calcByHR}>
           Calculate
         </button>
@@ -85,29 +105,29 @@ function HRCalc() {
           <thead>
             <tr>
               <th>% of HRmax</th>
-              <th className="px-2">Range</th>
+              <th className={styles.secondCol}>Range</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>90% - 100%</td>
-              <td>{fields.zone5}</td>
+              <td className={styles.secontCol}>{fields.zone5}</td>
             </tr>
             <tr>
               <td>80% - 90%</td>
-              <td>{fields.zone4}</td>
+              <td className={styles.secontCol}>{fields.zone4}</td>
             </tr>
             <tr>
               <td>70% - 80%</td>
-              <td>{fields.zone3}</td>
+              <td className={styles.secontCol}>{fields.zone3}</td>
             </tr>
             <tr>
               <td>60% - 70%</td>
-              <td>{fields.zone2}</td>
+              <td className={styles.secontCol}>{fields.zone2}</td>
             </tr>
             <tr>
               <td>50% - 60%</td>
-              <td className="table-cell">{fields.zone1}</td>
+              <td className={styles.secontCol}>{fields.zone1}</td>
             </tr>
           </tbody>
         </table>

@@ -7,18 +7,20 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import { Input } from '../../common/components/input/Input.tsx';
 import { DateFields, dateInitialValues } from '../../common/validations/dateValidationSchema.ts';
 import { WorkoutRequest } from '../../common/types/workouts.ts';
+import { useNavigate } from 'react-router-dom';
+import { WORKOUTS_URL } from '../../common/constants/api.ts';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
   const [offset, setOffset] = useState(1);
   const [sort, setSort] = useState('newest');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [from, setFrom] = useState(0);
+  const [to, setTo] = useState(0);
   const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
   const [fetching, setFetching] = useState(true);
   const limit = 10;
   const { data, refetch } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
-
+  const navigate = useNavigate();
   const scrollHandler = (e: Event) => {
     if (
       e.target &&
@@ -59,7 +61,7 @@ function Workouts() {
     const target = e.target as HTMLInputElement;
     setSort(target.value);
     setOffset(0);
-    const data = useGetWorkoutsQuery({ limit, offset, sort, from, to })!.data;
+    const data = useGetWorkoutsQuery({ limit, offset, sort, from, to }).data;
     if (data !== undefined) {
       setWorkouts(data.data.workouts);
     }
@@ -67,9 +69,16 @@ function Workouts() {
 
   const onSubmit = (values: DateFields) => {
     setOffset(0);
-    setFrom(values.from);
-    setTo(values.to);
-    const data = useGetWorkoutsQuery({ limit, offset, sort, from, to })!.data;
+    setFrom(new Date(values.from).getTime());
+    setTo(new Date(values.to).getTime());
+    console.log(values);
+    const data = useGetWorkoutsQuery({
+      limit,
+      offset,
+      sort,
+      from,
+      to,
+    })!.data;
     if (data !== undefined) {
       setWorkouts(data.data.workouts);
     }
@@ -95,7 +104,7 @@ function Workouts() {
                 return (
                   <Form className={styles.dateRange}>
                     <Field name="from">
-                      {({ field, form, meta }: FieldProps) => (
+                      {({ field, meta }: FieldProps) => (
                         <Input
                           type="date"
                           {...field}
@@ -104,12 +113,11 @@ function Workouts() {
                           max="9999-12-31"
                           error={meta.touched && !!meta.error}
                           errorText={meta.error}
-                          onClear={() => form.setFieldValue('from', '')}
                         />
                       )}
                     </Field>
                     <Field name="to">
-                      {({ field, form, meta }: FieldProps) => (
+                      {({ field, meta }: FieldProps) => (
                         <Input
                           type="date"
                           {...field}
@@ -118,7 +126,6 @@ function Workouts() {
                           max="9999-12-31"
                           error={meta.touched && !!meta.error}
                           errorText={meta.error}
-                          onClear={() => form.setFieldValue('to', '')}
                         />
                       )}
                     </Field>
@@ -142,7 +149,7 @@ function Workouts() {
           {workouts.length !== 0 ? (
             workouts.map((workout) => (
               <div className={styles.box}>
-                <div className={styles.boxInfo}>
+                <div className={styles.boxInfo} onClick={() => navigate(WORKOUTS_URL + '/' + workout.id)}>
                   <span>{workout.name}</span>
                   <span>{workout.date}</span>
                   <span>{workout.type}</span>
