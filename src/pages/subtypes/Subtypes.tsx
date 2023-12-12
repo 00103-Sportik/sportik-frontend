@@ -60,53 +60,53 @@ function Subtypes() {
   return (
     <>
       <p className={styles.p1}>{type}</p>
+      <p className={styles.p2}>Subtypes</p>
       <div className={styles.subtypes}>
-        <p className={styles.p2}>Subtypes</p>
         {subtypes.map((subtype) => (
           <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${subtype.id}`)}>
-              <span>{subtype.name}</span>
+            <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${subtype.id}`)}>
+              <span className={styles.boxInfoSize}>{subtype.name}</span>
             </div>
           </div>
         ))}
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${2}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${2}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${5}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${5}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${6}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${6}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${7}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${7}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${8}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${8}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${9}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${9}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
         <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${10}`)}>
-            <span>name</span>
+          <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${10}`)}>
+            <span className={styles.boxInfoSize}>name</span>
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@ function Subtypes() {
               backdrop={<div className="backdrop" />}
               className="dialog"
             >
-              <p className="description">Input subtype name:</p>
+              <p className={styles.p}>Input subtype name:</p>
               <Form>
                 <Field name="name" className={styles.formInput}>
                   {({ field, meta }: FieldProps) => (
@@ -135,11 +135,12 @@ function Subtypes() {
                       placeholder="Name"
                       error={meta.touched && !!meta.error}
                       errorText={meta.error}
+                      className="form-input-modal"
                     ></Input>
                   )}
                 </Field>
               </Form>
-              <div className="buttons">
+              <div className={styles.buttonsBox}>
                 <DialogDismiss className="btn-black" type="submit">
                   Add
                 </DialogDismiss>
