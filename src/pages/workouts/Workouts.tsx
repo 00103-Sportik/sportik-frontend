@@ -93,7 +93,7 @@ function Workouts() {
     <>
       <div className="layout">
         <div className={styles.sortFilter}>
-          <button className="btn-black" onClick={() => setOpen(true)}>
+          <button className="btn-black-filter" onClick={() => setOpen(true)}>
             <AiFillFilter />
           </button>
           <Formik initialValues={dateInitialValues} onSubmit={onSubmit} validationSchema={dateValidationSchema}>
@@ -145,7 +145,7 @@ function Workouts() {
             }}
           </Formik>
           <div className="select-container">
-            <select className="select-box" onChange={changeWorkouts}>
+            <select className="select-box-narrow" onChange={changeWorkouts}>
               <option value="newest" selected>
                 Newest
               </option>
@@ -170,30 +170,30 @@ function Workouts() {
           {/* )} */}
           <div className={styles.box}>
             <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <span>name</span>
-              <span>date</span>
-              <span>type</span>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
             </div>
           </div>
           <div className={styles.box}>
             <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${2}`)}>
-              <span>name</span>
-              <span>date</span>
-              <span>type</span>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
             </div>
           </div>
           <div className={styles.box}>
             <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${3}`)}>
-              <span>name</span>
-              <span>date</span>
-              <span>type</span>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
             </div>
           </div>
           <div className={styles.box}>
             <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
-              <span>name</span>
-              <span>date</span>
-              <span>type</span>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
             </div>
           </div>
         </div>
