@@ -185,62 +185,66 @@ function Workout() {
           {(props) => {
             return (
               <Form>
-                <Field name="name">
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      value={fields.name}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        changeField('name', event.target.value);
-                      }}
-                      placeholder="Name"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                    ></Input>
-                  )}
-                </Field>
-                <Field name="date">
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      type="date"
-                      {...field}
-                      value={fields.date}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        changeField('date', event.target.value);
-                      }}
-                      placeholder="Date"
-                      min="0000-01-01"
-                      max="9999-12-31"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                    />
-                  )}
-                </Field>
-                <div className="select-container">
-                  <select
-                    className="select-box"
-                    onChange={(event) => {
-                      changeField('type', event.target.value);
-                    }}
-                  >
-                    <option value="strength" selected={fields.type === 'strength'}>
-                      Strength
-                    </option>
-                    <option value="cardio" selected={fields.type === 'cardio'}>
-                      Cardio
-                    </option>
-                  </select>
+                <div className={styles.parametersBox}>
+                  <Field name="name">
+                    {({ field, meta }: FieldProps) => (
+                        <Input
+                            type="text"
+                            {...field}
+                            value={fields.name}
+                            onChange={(event) => {
+                              props.handleChange(event);
+                              changeField('name', event.target.value);
+                            }}
+                            placeholder="Name"
+                            error={meta.touched && !!meta.error}
+                            errorText={meta.error}
+                            className="form-input-wider"
+                        ></Input>
+                    )}
+                  </Field>
+                  <Field name="date">
+                    {({ field, meta }: FieldProps) => (
+                        <Input
+                            type="date"
+                            {...field}
+                            value={fields.date}
+                            onChange={(event) => {
+                              props.handleChange(event);
+                              changeField('date', event.target.value);
+                            }}
+                            placeholder="Date"
+                            min="0000-01-01"
+                            max="9999-12-31"
+                            error={meta.touched && !!meta.error}
+                            errorText={meta.error}
+                            className="form-input-wider"
+                        />
+                    )}
+                  </Field>
+                  <div className="select-container-wider">
+                    <select
+                        className="select-box-wider"
+                        onChange={(event) => {
+                          changeField('type', event.target.value);
+                        }}
+                    >
+                      <option value="strength" selected={fields.type === 'strength'}>
+                        Strength
+                      </option>
+                      <option value="cardio" selected={fields.type === 'cardio'}>
+                        Cardio
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div className={styles.exercises}>
                   {exercises.length !== 0 ? (
                     exercises.map((exercise) => (
                       <div className={styles.box}>
-                        <div className={styles.boxInfo} onClick={() => goToApproaches(exercise.id || '')}>
-                          <span>{exercise.name}</span>
-                          <span>approaches: {exercise?.approaches?.length}</span>
+                        <div className={styles.boxItems} onClick={() => goToApproaches(exercise.id || '')}>
+                          <span className={styles.boxInfoSize}>{exercise.name}</span>
+                          <span className={styles.boxInfoSize}>approaches: {exercise?.approaches?.length}</span>
                         </div>
                       </div>
                     ))
@@ -248,70 +252,95 @@ function Workout() {
                     <h1 className={styles.noExercises}>There are no exercises yet</h1>
                   )}
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => goToApproaches('fsdfsd')}>
-                      <span>{1}</span>
-                      <span>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${2}`)}>
-                      <span>{1}</span>
-                      <span>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${3}`)}>
-                      <span>{1}</span>
-                      <span>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${4}`)}>
-                      <span>{1}</span>
-                      <span>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${5}`)}>
-                      <span>{1}</span>
-                      <span>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxInfo} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
-                      <span>{1}</span>
-                      <span>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{1}</span>
+                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <button className="btn-black" onClick={() => goToSubtypes()}>
+                <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
                   Add
                 </button>
-                <Field name="comment">
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      value={fields.comment}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        changeField('comment', event.target.value);
-                      }}
-                      placeholder="Comment"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                    ></Input>
-                  )}
-                </Field>
+                <div className={styles.parametersBox}>
+                  <Field name="comment">
+                    {({ field, meta }: FieldProps) => (
+                        <Input
+                            type="text"
+                            {...field}
+                            value={fields.comment}
+                            onChange={(event) => {
+                              props.handleChange(event);
+                              changeField('comment', event.target.value);
+                            }}
+                            placeholder="Comment"
+                            error={meta.touched && !!meta.error}
+                            errorText={meta.error}
+                            className="form-input-wider"
+                        ></Input>
+                    )}
+                  </Field>
+                </div>
                 <div>
-                  <button className="btn-black" type="submit">
-                    Save
-                  </button>
-                  {!id && (
-                    <button className="btn-red" onClick={() => setOpen(true)}>
-                      Delete
+                  <div className={styles.buttonsBox}>
+                    <button className="btn-black-less-margin" type="submit">
+                      Save
                     </button>
-                  )}
+                    {!id && (
+                        <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
+                          Delete
+                        </button>
+                    )}
+                  </div>
                   <Dialog
                     open={open}
                     onClose={() => setOpen(false)}
@@ -319,8 +348,8 @@ function Workout() {
                     backdrop={<div className="backdrop" />}
                     className="dialog"
                   >
-                    <p className="description">Delete workout?</p>
-                    <div className="buttons">
+                    <p className={styles.p}>Delete workout?</p>
+                    <div className={styles.buttonsBox}>
                       <DialogDismiss className="btn-black" onClick={deleteWorkout}>
                         Yes
                       </DialogDismiss>
