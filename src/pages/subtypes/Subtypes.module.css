@@ -1,5 +1,5 @@
 .subtypes {
-  @apply w-[370px] h-[539px] flex flex-col overflow-y-auto mt-10;
+  @apply w-[370px] h-[539px] flex flex-col overflow-y-auto;
 }
 
 .box {

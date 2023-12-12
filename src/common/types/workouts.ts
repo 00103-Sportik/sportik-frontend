@@ -79,3 +79,9 @@ export interface WorkoutsRequest {
   from?: number;
   to?: number;
 }
+
+export const combinationParams = [
+  { params: 'distant_time', name: 'Distant/Time' },
+  { params: 'count_weight', name: 'Count/Weight' },
+  { params: 'count_time', name: 'Count/Time' },
+];

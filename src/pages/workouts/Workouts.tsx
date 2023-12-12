@@ -9,7 +9,6 @@ import { DateFields, dateInitialValues, dateValidationSchema } from '../../commo
 import { WorkoutRequest } from '../../common/types/workouts.ts';
 import { useNavigate } from 'react-router-dom';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
-import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { setCountWorkouts } from '../../store/workouts/workouts.slice.ts';
 import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
@@ -23,7 +22,7 @@ function Workouts() {
   const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
   const [fetching, setFetching] = useState(true);
   const limit = 10;
-  let { data, error, isLoading, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+  let { data, isLoading, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const count = useAppSelector(selectWorkoutsCount);
