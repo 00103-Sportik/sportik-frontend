@@ -88,6 +88,12 @@ export default {
         '.btn-black-filter': {
           '@apply btn w-[110px] bg-[#2B2E38] border-[#2B2E38] mb-0': {},
         },
+        '.btn-black-less-margin': {
+          '@apply btn bg-[#2B2E38] border-[#2B2E38] mt-5': {},
+        },
+        '.btn-red-less-margin': {
+          '@apply btn bg-[#AE3838] border-[#AE3838] mt-5': {},
+        },
         //--Input--
         '.form-group': {
           '@apply relative mt-8': {},
@@ -101,7 +107,7 @@ export default {
           outline: 'none',
         },
         '.form-input-wider': {
-          '@apply form-input w-[300px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
+          '@apply form-input w-[340px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
             {},
           outline: 'none',
         },
@@ -127,12 +133,19 @@ export default {
           '@apply flex justify-center relative w-[200px] h-[33px] overflow-hidden cursor-pointer mt-8': {},
         },
         '.select-box': {
-          '@apply w-[200px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
+          '@apply w-[300px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
             {},
         },
         '.select-box-narrow': {
           '@apply select-box w-[200px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 mb-[0px] border-b-[white] border-[none] border-b border-solid':
             {},
+        },
+        '.select-container-wider': {
+          '@apply flex justify-center relative w-[340px] h-[33px] overflow-hidden cursor-pointer mt-8': {},
+        },
+        '.select-box-wider': {
+          '@apply w-[340px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 mb-[0px] border-b-[white] border-[none] border-b border-solid':
+              {},
         },
       });
     }),
