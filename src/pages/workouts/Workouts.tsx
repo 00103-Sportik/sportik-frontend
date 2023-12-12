@@ -195,6 +195,27 @@ function Workouts() {
               <span className={styles.item}>type</span>
             </div>
           </div>
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
+            </div>
+          </div>
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
+            </div>
+          </div>
+          <div className={styles.box}>
+            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
+              <span className={styles.item}>name</span>
+              <span className={styles.item}>date</span>
+              <span className={styles.item}>type</span>
+            </div>
+          </div>
         </div>
         <button className="btn-black" onClick={() => navigate(WORKOUTS_URL)}>
           Add
