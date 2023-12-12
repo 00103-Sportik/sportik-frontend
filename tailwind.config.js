@@ -85,6 +85,9 @@ export default {
         '.btn-black-calc': {
           '@apply btn w-[140px] h-[43px] bg-[#2B2E38] border-[#2B2E38] mt-3': {},
         },
+        '.btn-black-filter': {
+          '@apply btn w-[110px] bg-[#2B2E38] border-[#2B2E38] mb-0': {},
+        },
         //--Input--
         '.form-group': {
           '@apply relative mt-8': {},
@@ -128,7 +131,7 @@ export default {
             {},
         },
         '.select-box-narrow': {
-          '@apply select-box w-[200px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
+          '@apply select-box w-[200px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 mb-[0px] border-b-[white] border-[none] border-b border-solid':
             {},
         },
       });
