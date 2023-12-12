@@ -59,8 +59,9 @@ function Subtypes() {
 
   return (
     <>
-      <p>{type}</p>
+      <p className={styles.p1}>{type}</p>
       <div className={styles.subtypes}>
+        <p className={styles.p2}>Subtypes</p>
         {subtypes.map((subtype) => (
           <div className={styles.box}>
             <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${subtype.id}`)}>
@@ -75,16 +76,6 @@ function Subtypes() {
         </div>
         <div className={styles.box}>
           <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${2}`)}>
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${3}`)}>
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div className={styles.boxInfo} onClick={() => navigate(`${EXERCISES_URL}/${4}`)}>
             <span>name</span>
           </div>
         </div>
