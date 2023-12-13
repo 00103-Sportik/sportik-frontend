@@ -23,7 +23,7 @@ function Registration() {
 
   useEffect(() => {
     if (seconds > 0 && timerActive) {
-      setTimeout(setSeconds, 1000, seconds - 1);
+      setTimeout(setSeconds, 10, seconds - 1);
     } else {
       setTimerActive(false);
     }

@@ -11,9 +11,9 @@ const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
   credentials: 'include',
   prepareHeaders(headers, api) {
-    const { accessToken } = (api.getState() as AppRootStateType).auth;
-    if (accessToken) {
-      headers.set('authorization', `Bearer ${accessToken}`);
+    const { access_token } = (api.getState() as AppRootStateType).auth;
+    if (access_token) {
+      headers.set('authorization', `Bearer ${access_token}`);
     }
     return headers;
   },
