@@ -165,116 +165,24 @@ function Workouts() {
               </div>
             </div>
           </div>
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <div className={styles.boxContent}>
-                <div className={styles.boxInfo}>
-                  <span className={styles.infoItem}>name</span>
-                  <span className={styles.infoItem}>date</span>
-                  <span className={styles.infoItem}>type</span>
-                </div>
-                <div className={styles.deleteButton}>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <div className={styles.boxContent}>
-                <div className={styles.boxInfo}>
-                  <span className={styles.infoItem}>name</span>
-                  <span className={styles.infoItem}>date</span>
-                  <span className={styles.infoItem}>type</span>
-                </div>
-                <div className={styles.deleteButton}>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <div className={styles.boxContent}>
-                <div className={styles.boxInfo}>
-                  <span className={styles.infoItem}>name</span>
-                  <span className={styles.infoItem}>date</span>
-                  <span className={styles.infoItem}>type</span>
-                </div>
-                <div className={styles.deleteButton}>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <div className={styles.boxContent}>
-                <div className={styles.boxInfo}>
-                  <span className={styles.infoItem}>name</span>
-                  <span className={styles.infoItem}>date</span>
-                  <span className={styles.infoItem}>type</span>
-                </div>
-                <div className={styles.deleteButton}>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <div className={styles.boxContent}>
-                <div className={styles.boxInfo}>
-                  <span className={styles.infoItem}>name</span>
-                  <span className={styles.infoItem}>date</span>
-                  <span className={styles.infoItem}>type</span>
-                </div>
-                <div className={styles.deleteButton}>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <div className={styles.boxContent}>
-                <div className={styles.boxInfo}>
-                  <span className={styles.infoItem}>name</span>
-                  <span className={styles.infoItem}>date</span>
-                  <span className={styles.infoItem}>type</span>
-                </div>
-                <div className={styles.deleteButton}>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
           {workouts.length !== 0 ? (
             workouts.map((workout) => (
-              <div className={styles.box}>
-                <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${workout.id}`)}>
-                  <div className={styles.boxInfo}>
-                    <span>{workout.name}</span>
-                    <span>{workout.date}</span>
-                    <span>{workout.type}</span>
+                <div className={styles.box}>
+                  <div className={styles.boxItems} onClick={() => navigate(`${WORKOUTS_URL}/${workout.id}`)}>
+                    <div className={styles.boxContent}>
+                      <div className={styles.boxInfo}>
+                        <span className={styles.infoItem}>{workout.name}</span>
+                        <span className={styles.infoItem}>{workout.date}</span>
+                        <span className={styles.infoItem}>{workout.type}</span>
+                      </div>
+                      <div className={styles.deleteButton}>
+                        <button type="button">
+                          <AiOutlineClose />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <button type="button">
-                    <AiOutlineClose />
-                  </button>
                 </div>
-              </div>
             ))
           ) : (
             <h1 className={styles.noWorkouts}>There are no workouts yet</h1>

@@ -27,18 +27,15 @@
 }
 
 .parameterInfoSize {
-  font-size: 18px;
+  @apply text-[18px];
 }
 
 .noExercises {
-  @apply flex items-center justify-center h-full;
-  /*Like a parameterInfoSize*/
-  font-size: 18px;
+  @apply flex items-center justify-center text-[18px] h-full;
 }
 
 .parametersBox {
-  margin-left: 10px;
-  font-size: 16px;
+  @apply text-[16px] ml-[10px]
 }
 
 /*------Out------*/
