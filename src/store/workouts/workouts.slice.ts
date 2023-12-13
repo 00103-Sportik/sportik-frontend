@@ -1,5 +1,6 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import {
+  ApproachRequest,
   ExerciseRequest,
   MainWorkoutState,
   WorkoutState,
@@ -21,6 +22,13 @@ export const workoutsSlice = createSlice({
     setExercise: (state: Draft<WorkoutState>, action: PayloadAction<ExerciseRequest>) => {
       const exercise = action.payload;
       state.exercises = [...state.exercises, exercise];
+    },
+    setApproaches: (
+      state: Draft<WorkoutState>,
+      action: PayloadAction<{ exerciseId: string; approaches: ApproachRequest[] }>,
+    ) => {
+      const { exerciseId, approaches } = action.payload;
+      state.exercises.filter((exercise) => exercise.id === exerciseId)[0].approaches = approaches;
     },
     setSubtype: (state: Draft<WorkoutState>, action: PayloadAction<Pick<WorkoutState, 'subtype'>>) => {
       const { subtype } = action.payload;
@@ -48,7 +56,14 @@ export const workoutsSlice = createSlice({
   },
 });
 
-export const { discardWorkoutInfo, setCountWorkouts, setCurrentWorkouts, setMainInfo, setExercise, setSubtype } =
-  workoutsSlice.actions;
+export const {
+  discardWorkoutInfo,
+  setApproaches,
+  setCountWorkouts,
+  setCurrentWorkouts,
+  setMainInfo,
+  setExercise,
+  setSubtype,
+} = workoutsSlice.actions;
 
 export const workoutsReducer = workoutsSlice.reducer;

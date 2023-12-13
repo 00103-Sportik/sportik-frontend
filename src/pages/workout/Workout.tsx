@@ -48,21 +48,21 @@ function Workout() {
 
   if (id) {
     dispatch(setCurrentWorkouts({ id }));
-    const { data, isLoading } = useGetWorkoutQuery({ id });
+    const { data, isLoading, isSuccess } = useGetWorkoutQuery({ id });
     // if (isLoading) {
     //   return <h1>Loading...</h1>;
     // }
-    [fields, setFields] = useState<WorkoutFields>({
-      id: data?.data.id || '',
-      name: data?.data.name || `Новая тренировка ${count}`,
-      date: data?.data.date
-        ? new Date(data?.data.date * 1000).toISOString().split('T')[0]
-        : new Date().toISOString().split('T')[0],
-      type: data?.data.type || 'strength',
-      comment: data?.data.comment || '',
-    });
-    if (data?.data?.exercises) {
-      setExercises(data?.data?.exercises);
+    if (isSuccess) {
+      [fields, setFields] = useState<WorkoutFields>({
+        id: data?.data.id || '',
+        name: data?.data.name || `Новая тренировка ${count}`,
+        date: data?.data.date
+          ? new Date(data?.data.date * 1000).toISOString().split('T')[0]
+          : new Date().toISOString().split('T')[0],
+        type: data?.data.type || 'strength',
+        comment: data?.data.comment || '',
+      });
+      setExercises(data?.data?.exercises || []);
     }
   }
 
@@ -74,6 +74,7 @@ function Workout() {
         name: values.name,
         type: values.type,
         comment: values.comment,
+        exercises: exercises,
       });
       if (updateError) {
         toast('message' in updateError ? updateError && updateError.message : 'Update failed!', {
@@ -104,6 +105,7 @@ function Workout() {
         name: values.name,
         type: values.type,
         comment: values.comment,
+        exercises: exercises,
       });
       if (createError) {
         toast('message' in createError ? createError && createError.message : 'Create failed!', {
@@ -141,8 +143,8 @@ function Workout() {
     );
   }, []);
 
-  const deleteWorkout = () => {
-    delWorkout({ id });
+  const deleteWorkout = async () => {
+    await delWorkout({ id });
     if (deleteError) {
       toast('message' in deleteError ? deleteError && deleteError.message : 'Delete successful!', {
         position: 'top-center',
@@ -188,46 +190,46 @@ function Workout() {
                 <div className={styles.parametersBox}>
                   <Field name="name">
                     {({ field, meta }: FieldProps) => (
-                        <Input
-                            type="text"
-                            {...field}
-                            value={fields.name}
-                            onChange={(event) => {
-                              props.handleChange(event);
-                              changeField('name', event.target.value);
-                            }}
-                            placeholder="Name"
-                            error={meta.touched && !!meta.error}
-                            errorText={meta.error}
-                            className="form-input-wider"
-                        ></Input>
+                      <Input
+                        type="text"
+                        {...field}
+                        value={fields.name}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('name', event.target.value);
+                        }}
+                        placeholder="Name"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        className="form-input-wider"
+                      ></Input>
                     )}
                   </Field>
                   <Field name="date">
                     {({ field, meta }: FieldProps) => (
-                        <Input
-                            type="date"
-                            {...field}
-                            value={fields.date}
-                            onChange={(event) => {
-                              props.handleChange(event);
-                              changeField('date', event.target.value);
-                            }}
-                            placeholder="Date"
-                            min="0000-01-01"
-                            max="9999-12-31"
-                            error={meta.touched && !!meta.error}
-                            errorText={meta.error}
-                            className="form-input-wider"
-                        />
+                      <Input
+                        type="date"
+                        {...field}
+                        value={fields.date}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('date', event.target.value);
+                        }}
+                        placeholder="Date"
+                        min="0000-01-01"
+                        max="9999-12-31"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        className="form-input-wider"
+                      />
                     )}
                   </Field>
                   <div className="select-container-wider">
                     <select
-                        className="select-box-wider"
-                        onChange={(event) => {
-                          changeField('type', event.target.value);
-                        }}
+                      className="select-box-wider"
+                      onChange={(event) => {
+                        changeField('type', event.target.value);
+                      }}
                     >
                       <option value="strength" selected={fields.type === 'strength'}>
                         Strength
@@ -252,7 +254,7 @@ function Workout() {
                     <h1 className={styles.noExercises}>There are no exercises yet</h1>
                   )}
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => () => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -260,7 +262,7 @@ function Workout() {
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -268,7 +270,7 @@ function Workout() {
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -276,7 +278,7 @@ function Workout() {
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -284,7 +286,7 @@ function Workout() {
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -292,7 +294,7 @@ function Workout() {
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -300,7 +302,7 @@ function Workout() {
                     </div>
                   </div>
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => navigate(`${SUBTYPES_URL}/${6}`)}>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
                       <div className={styles.boxInfo}>
                         <span className={styles.boxInfoSize}>{1}</span>
                         <span className={styles.boxInfoSize}>Approaches: {2}</span>
@@ -314,19 +316,19 @@ function Workout() {
                 <div className={styles.parametersBox}>
                   <Field name="comment">
                     {({ field, meta }: FieldProps) => (
-                        <Input
-                            type="text"
-                            {...field}
-                            value={fields.comment}
-                            onChange={(event) => {
-                              props.handleChange(event);
-                              changeField('comment', event.target.value);
-                            }}
-                            placeholder="Comment"
-                            error={meta.touched && !!meta.error}
-                            errorText={meta.error}
-                            className="form-input-wider"
-                        ></Input>
+                      <Input
+                        type="text"
+                        {...field}
+                        value={fields.comment}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('comment', event.target.value);
+                        }}
+                        placeholder="Comment"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        className="form-input-wider"
+                      ></Input>
                     )}
                   </Field>
                 </div>
@@ -335,10 +337,10 @@ function Workout() {
                     <button className="btn-black-less-margin" type="submit">
                       Save
                     </button>
-                    {!id && (
-                        <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
-                          Delete
-                        </button>
+                    {id && (
+                      <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
+                        Delete
+                      </button>
                     )}
                   </div>
                   <Dialog

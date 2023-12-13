@@ -1,6 +1,6 @@
 interface AuthResponse {
-  accessToken: string | null;
-  refreshToken: string | null;
+  access_token: string | null;
+  refresh_token: string | null;
 }
 
 interface AuthRequest {

@@ -1,7 +1,7 @@
 export interface ApproachRequest {
-  id?: string;
-  param1: number;
-  param2?: number;
+  id?: number;
+  param1: string;
+  param2: string;
 }
 
 export interface ExerciseRequest {
@@ -25,8 +25,8 @@ export interface WorkoutRequest {
   name: string;
   date: number;
   type: string;
-  comment?: string;
-  exercises?: ExerciseRequest[];
+  comment: string;
+  exercises: ExerciseRequest[];
 }
 
 export interface MainWorkoutState {
@@ -81,7 +81,7 @@ export interface WorkoutsRequest {
 }
 
 export const combinationParams = [
-  { params: 'distant_time', name: 'Distant/Time' },
-  { params: 'count_weight', name: 'Count/Weight' },
-  { params: 'count_time', name: 'Count/Time' },
+  { params: 'distant_time', name: 'Distant/Time', param1: 'Distant', param2: 'Time' },
+  { params: 'count_weight', name: 'Count/Weight', param1: 'Count', param2: 'Weight' },
+  { params: 'count_time', name: 'Count/Time', param1: 'Count', param2: 'Time' },
 ];

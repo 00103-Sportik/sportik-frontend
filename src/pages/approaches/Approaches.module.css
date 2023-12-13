@@ -1,0 +1,25 @@
+.approaches {
+  @apply w-[370px] h-[370px] flex flex-col items-center gap-[1px] overflow-y-auto mt-5;
+}
+
+.box {
+  @apply flex flex-col w-[350px] flex pr-2;
+}
+
+.boxItems {
+  @apply h-[80px] flex flex-row mb-1 pl-1 bg-gray w-full rounded-[20px] justify-evenly;
+}
+
+.boxInfo {
+  @apply w-[350px] flex flex-col gap-[8px] pl-[12px] pt-[10px];
+}
+
+.noApproaches {
+  @apply flex items-center justify-center h-full;
+  font-size: 18px;
+}
+
+.buttonsBox {
+  display: flex;
+  flex-direction: row;
+}

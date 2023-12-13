@@ -59,6 +59,6 @@ export const profileValidationSchema = Yup.object().shape({
     .integer()
     .typeError('Incorrect height: height must be an integer'),
   weight: Yup.string().matches(containOneCharacterAfterComma, {
-    message: `Incorrect weight: - weight must be an integer or fractional with one decimal place (min - ${MIN_WEIGHT}, max - ${MAX_WEIGHT})`,
+    message: `Incorrect weight: weight must be an integer or fractional with one decimal place (min - ${MIN_WEIGHT}, max - ${MAX_WEIGHT})`,
   }),
 });

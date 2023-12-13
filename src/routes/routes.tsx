@@ -30,7 +30,7 @@ function AppRoutes() {
             <Route path="subtypes/:type" element={<Subtypes />} />
             <Route path="exercises/:type" element={<Exercises />} />
             <Route path="exercises" element={<Exercise />} />
-            <Route path="approaches" element={<Approaches />} />
+            <Route path="approaches/:id" element={<Approaches />} />
             <Route path="hr-calc" element={<HRCalc />} />
           </Route>
         </Route>

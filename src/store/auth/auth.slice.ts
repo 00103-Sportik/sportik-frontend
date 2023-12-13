@@ -2,8 +2,8 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import { AuthResponse } from '../../common/types/auth.ts';
 
 const initialState: AuthResponse = {
-  accessToken: null,
-  refreshToken: null,
+  access_token: null,
+  refresh_token: null,
 };
 
 export const authSlice = createSlice({
@@ -11,15 +11,15 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state: Draft<AuthResponse>, action: PayloadAction<AuthResponse>) => {
-      const { accessToken, refreshToken } = action.payload;
-      if (accessToken !== null) {
-        state.accessToken = accessToken;
-        state.refreshToken = refreshToken;
+      const { access_token, refresh_token } = action.payload;
+      if (access_token !== null) {
+        state.access_token = access_token;
+        state.refresh_token = refresh_token;
       }
     },
     logout: (state: Draft<AuthResponse>) => {
-      state.accessToken = null;
-      state.refreshToken = null;
+      state.access_token = null;
+      state.refresh_token = null;
     },
   },
 });

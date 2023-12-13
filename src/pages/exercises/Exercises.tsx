@@ -43,10 +43,10 @@ function Exercises() {
             className={styles.boxInfo}
             onClick={() =>
               addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
+                id: 'fs2343fs',
+                name: 'sfs4234df',
                 type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
+                combinationParams: 'distant_time',
                 description: 'ffsdfs',
                 approaches: [],
               })
