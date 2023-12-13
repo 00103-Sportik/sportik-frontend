@@ -4,182 +4,184 @@ import { useGetExercisesQuery } from '../../store/exercise/exercise.api.ts';
 import { useAppDispatch } from '../../store/hooks.ts';
 import { setExercise, setSubtype } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequest } from '../../common/types/workouts.ts';
+import React from "react";
 
 function Exercises() {
-  const navigate = useNavigate();
-  const { type } = useParams();
-  const { data, isLoading } = useGetExercisesQuery({ type: type || '' });
-  const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const { type } = useParams();
+    const { data, isLoading } = useGetExercisesQuery({ type: type || '' });
+    const dispatch = useAppDispatch();
 
-  // if (isLoading) {
-  //   return <h1>Loading...</h1>;
-  // }
+    // if (isLoading) {
+    //   return <h1>Loading...</h1>;
+    // }
 
-  const exercises = data?.data.exercises;
+    const exercises = data?.data.exercises;
 
-  const addToWorkout = (exercise: ExerciseRequest) => {
-    dispatch(setExercise(exercise));
-    navigate('/workouts');
-  };
+    const addToWorkout = (exercise: ExerciseRequest) => {
+        dispatch(setExercise(exercise));
+        navigate('/workouts');
+    };
 
-  const goToCreateExercises = () => {
-    dispatch(setSubtype({ subtype: type || '' }));
-    navigate('/exercises');
-  };
+    const goToCreateExercises = () => {
+        dispatch(setSubtype({ subtype: type || '' }));
+        navigate('/exercises');
+    };
 
-  return (
-    <>
-      <p>{type}</p>
-      <div className={styles.exercises}>
-        {exercises?.map((exercise) => (
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => addToWorkout(exercise)}>
-              <span>{exercise.name}</span>
+    return (
+        <>
+            <p className={styles.p1}>{type}</p>
+            <p className={styles.p2}>Exercises</p>
+            <div className={styles.exercises}>
+                {exercises?.map((exercise) => (
+                    <div className={styles.box}>
+                        <div className={styles.boxItems} onClick={() => addToWorkout(exercise)}>
+                            <span className={styles.boxInfoSize}>{exercise.name}</span>
+                        </div>
+                    </div>
+                ))}
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
+                <div className={styles.box}>
+                    <div
+                        className={styles.boxItems}
+                        onClick={() =>
+                            addToWorkout({
+                                id: 'fs2343fs',
+                                name: 'sfs4234df',
+                                type: 'fsdfsd',
+                                combinationParams: 'distant_time',
+                                description: 'ffsdfs',
+                                approaches: [],
+                            })
+                        }
+                    >
+                        <span className={styles.boxInfoSize}>name</span>
+                    </div>
+                </div>
             </div>
-          </div>
-        ))}
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fs2343fs',
-                name: 'sfs4234df',
-                type: 'fsdfsd',
-                combinationParams: 'distant_time',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxInfo}
-            onClick={() =>
-              addToWorkout({
-                id: 'fsfs',
-                name: 'sfsdf',
-                type: 'fsdfsd',
-                combinationParams: 'fsdfsdf',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span>name</span>
-          </div>
-        </div>
-      </div>
-      <button className="btn-black" onClick={() => goToCreateExercises()}>
-        Add
-      </button>
-    </>
-  );
+            <button className="btn-black" onClick={() => goToCreateExercises()}>
+                Add
+            </button>
+        </>
+    );
 }
 
 export default Exercises;
