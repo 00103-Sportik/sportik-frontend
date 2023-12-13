@@ -22,7 +22,7 @@ function Exercise() {
   const type = useAppSelector(selectType);
   const subtype = useAppSelector(selectSubtype);
   const { data, isSuccess } = useGetSubtypesQuery({ type });
-  const [addExercise] = useCreateExerciseMutation();
+  const [addExercise, { isSuccess: isCreated }] = useCreateExerciseMutation();
 
   const [fields, setFields] = useState<ExerciseFields>({
     name: '',
@@ -33,17 +33,30 @@ function Exercise() {
   });
   const onSubmit = async (values: ExerciseFields) => {
     await addExercise(values);
-    navigate(`${EXERCISES_URL}/${subtype}`);
-    toast('Create successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
+    if (isCreated) {
+      navigate(`${EXERCISES_URL}/${subtype}`);
+      toast('Create successful!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    } else {
+      toast('Create failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
   };
 
   const changeField = useCallback((field: keyof ExerciseFields, value: string) => {
@@ -62,28 +75,28 @@ function Exercise() {
             <Form>
               <Field name="name">
                 {({ field, meta }: FieldProps) => (
-                    <Input
-                        type="text"
-                        {...field}
-                        value={fields.name}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('name', event.target.value);
-                        }}
-                        placeholder="Name"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                        className="form-input-wider"
-                    />
+                  <Input
+                    type="text"
+                    {...field}
+                    value={fields.name}
+                    onChange={(event) => {
+                      props.handleChange(event);
+                      changeField('name', event.target.value);
+                    }}
+                    placeholder="Name"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                    className="form-input-wider"
+                  />
                 )}
               </Field>
               <div className="select-container-wider">
                 <select
-                    className="select-box-wider"
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('type', event.target.value);
-                    }}
+                  className="select-box-wider"
+                  onChange={(event) => {
+                    props.handleChange(event);
+                    changeField('type', event.target.value);
+                  }}
                 >
                   <option value="strength" selected={fields.type === 'strength'}>
                     Strength
@@ -95,55 +108,55 @@ function Exercise() {
               </div>
               <div className="select-container-wider">
                 <select
-                    className="select-box-wider"
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('subtype', event.target.value);
-                    }}
+                  className="select-box-wider"
+                  onChange={(event) => {
+                    props.handleChange(event);
+                    changeField('subtype', event.target.value);
+                  }}
                 >
                   {isSuccess ? (
-                      data?.data.subtypes.map((subtype) => (
-                          <option value={subtype.name} selected={fields.subtype === subtype.name}>
-                            {subtype.name}
-                          </option>
-                      ))
-                  ) : (
-                      <option value="" selected disabled hidden>
-                        Subtype
+                    data?.data.subtypes.map((subtype) => (
+                      <option value={subtype.name} selected={fields.subtype === subtype.name}>
+                        {subtype.name}
                       </option>
+                    ))
+                  ) : (
+                    <option value="" selected disabled hidden>
+                      Subtype
+                    </option>
                   )}
                 </select>
               </div>
               <div className="select-container-wider">
                 <select
-                    className="select-box-wider"
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('combinationParams', event.target.value);
-                    }}
+                  className="select-box-wider"
+                  onChange={(event) => {
+                    props.handleChange(event);
+                    changeField('combinationParams', event.target.value);
+                  }}
                 >
                   {combinationParams.map((combination) => (
-                      <option value={combination.params} selected={fields.combinationParams === combination.params}>
-                        {combination.name}
-                      </option>
+                    <option value={combination.params} selected={fields.combinationParams === combination.params}>
+                      {combination.name}
+                    </option>
                   ))}
                 </select>
               </div>
               <Field name="description">
                 {({ field, meta }: FieldProps) => (
-                    <Input
-                        type="text"
-                        {...field}
-                        value={fields.description}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('description', event.target.value);
-                        }}
-                        placeholder="Description"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                        className="form-input-wider"
-                    />
+                  <Input
+                    type="text"
+                    {...field}
+                    value={fields.description}
+                    onChange={(event) => {
+                      props.handleChange(event);
+                      changeField('description', event.target.value);
+                    }}
+                    placeholder="Description"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                    className="form-input-wider"
+                  />
                 )}
               </Field>
               <div className={styles.buttonsBox}>

@@ -1,4 +1,4 @@
-import { AiFillFilter } from 'react-icons/ai';
+import { AiFillFilter, AiOutlineClose } from 'react-icons/ai';
 import styles from './Workouts.module.css';
 import React, { useEffect, useState } from 'react';
 import { useGetWorkoutsQuery } from '../../store/workouts/workouts.api.ts';
@@ -22,14 +22,10 @@ function Workouts() {
   const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
   const [fetching, setFetching] = useState(true);
   const limit = 10;
-  let { data, isLoading, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+  let { data, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const count = useAppSelector(selectWorkoutsCount);
-
-  // if (isLoading) {
-  //   return <h1>Loading...</h1>;
-  // }
 
   if (isSuccess) {
     dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
@@ -154,68 +150,36 @@ function Workouts() {
           </div>
         </div>
         <div className={styles.workouts} id="box">
-          {/* {workouts.length !== 0 ? ( */}
-          {/*   workouts.map((workout) => ( */}
-          {/*     <div className={styles.box}> */}
-          {/*       <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${workout.id}`)}> */}
-          {/*         <span>{workout.name}</span> */}
-          {/*         <span>{workout.date}</span> */}
-          {/*         <span>{workout.type}</span> */}
-          {/*       </div> */}
-          {/*     </div> */}
-          {/*   )) */}
-          {/* ) : ( */}
-          {/*   <h1 className={styles.noWorkouts}>There are no workouts yet</h1> */}
-          {/* )} */}
           <div className={styles.box}>
             <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${1}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
+              <div className={styles.boxInfo}>
+                <span className={styles.item}>name</span>
+                <span className={styles.item}>date</span>
+                <span className={styles.item}>type</span>
+              </div>
+              <button type="button">
+                <AiOutlineClose />
+              </button>
             </div>
           </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${2}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${3}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
-            </div>
-          </div>
-          <div className={styles.box}>
-            <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${4}`)}>
-              <span className={styles.item}>name</span>
-              <span className={styles.item}>date</span>
-              <span className={styles.item}>type</span>
-            </div>
-          </div>
+          {workouts.length !== 0 ? (
+            workouts.map((workout) => (
+              <div className={styles.box}>
+                <div className={styles.boxInfo} onClick={() => navigate(`${WORKOUTS_URL}/${workout.id}`)}>
+                  <div className={styles.boxInfo}>
+                    <span>{workout.name}</span>
+                    <span>{workout.date}</span>
+                    <span>{workout.type}</span>
+                  </div>
+                  <button type="button">
+                    <AiOutlineClose />
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <h1 className={styles.noWorkouts}>There are no workouts yet</h1>
+          )}
         </div>
         <button className="btn-black" onClick={() => navigate(WORKOUTS_URL)}>
           Add

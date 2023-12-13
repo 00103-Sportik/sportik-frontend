@@ -18,32 +18,45 @@ function Registration() {
   const [seconds, setSeconds] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [email, setEmail] = useState('');
-  const [registration] = useRegistrationMutation();
+  const [registration, { isSuccess }] = useRegistrationMutation();
   const [resendEmail, {}] = useResendEmailMutation();
 
   useEffect(() => {
     if (seconds > 0 && timerActive) {
-      setTimeout(setSeconds, 10, seconds - 1);
+      setTimeout(setSeconds, 1000, seconds - 1);
     } else {
       setTimerActive(false);
     }
   }, [seconds, timerActive]);
 
-  const onSubmit = (values: SignUpFields) => {
+  const onSubmit = async (values: SignUpFields) => {
     setEmail(values.email);
-    registration(values);
-    toast('Activation link sent to your email!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setOpen(true);
-    setTimerActive(!timerActive);
+    await registration(values);
+    if (isSuccess) {
+      toast('Activation link sent to your email!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      setOpen(true);
+      setTimerActive(!timerActive);
+    } else {
+      toast('Registration failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
   };
 
   return (
@@ -96,8 +109,8 @@ function Registration() {
               </p>
               <div className="buttons">
                 {seconds ? (
-                  <div className="@apply flex flex-row">
-                    <p className="@apply px-3">Time to resend: {seconds}</p>
+                  <div className="@apply flex flex-col">
+                    <p className="@apply">Time to resend: {seconds} sec.</p>
                     <button disabled className="btn-black">
                       Send again
                     </button>

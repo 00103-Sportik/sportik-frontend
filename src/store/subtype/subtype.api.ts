@@ -1,6 +1,6 @@
 import { apiSlice } from '../api.slice';
 import { SUBTYPES_URL } from '../../common/constants/api';
-import { SubtypesResponse, SubtypesRequest } from '../../common/types/subtypes';
+import { SubtypesResponse, SubtypesRequest, SubtypeResponse } from '../../common/types/subtypes';
 
 export const subtypeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -27,9 +27,9 @@ export const subtypeApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Subtypes'],
     }),
-    deleteSubtype: builder.mutation<void, Pick<SubtypesRequest, 'id'>>({
-      query: ({ id }) => ({
-        url: `${SUBTYPES_URL}?id=${id}`,
+    deleteSubtype: builder.mutation<void, Pick<SubtypeResponse, 'uuid'>>({
+      query: ({ uuid }) => ({
+        url: `${SUBTYPES_URL}?uuid=${uuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Subtypes'],
