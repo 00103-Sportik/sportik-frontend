@@ -26,6 +26,7 @@ import { APPROACHES_URL, SUBTYPES_URL, WORKOUTS_URL } from '../../common/constan
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { discardWorkoutInfo, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequest } from '../../common/types/workouts.ts';
+import { AiOutlineClose } from 'react-icons/ai';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
@@ -48,10 +49,8 @@ function Workout() {
 
   if (id) {
     dispatch(setCurrentWorkouts({ id }));
-    const { data, isLoading, isSuccess } = useGetWorkoutQuery({ id });
-    // if (isLoading) {
-    //   return <h1>Loading...</h1>;
-    // }
+    const { data, isSuccess } = useGetWorkoutQuery({ id });
+
     if (isSuccess) {
       [fields, setFields] = useState<WorkoutFields>({
         id: data?.data.id || '',
@@ -245,8 +244,13 @@ function Workout() {
                     exercises.map((exercise) => (
                       <div className={styles.box}>
                         <div className={styles.boxItems} onClick={() => goToApproaches(exercise.id || '')}>
-                          <span className={styles.boxInfoSize}>{exercise.name}</span>
-                          <span className={styles.boxInfoSize}>approaches: {exercise?.approaches?.length}</span>
+                          <div className={styles.boxItems}>
+                            <span className={styles.boxInfoSize}>{exercise.name}</span>
+                            <span className={styles.boxInfoSize}>approaches: {exercise?.approaches?.length}</span>
+                          </div>
+                          <button type="button">
+                            <AiOutlineClose />
+                          </button>
                         </div>
                       </div>
                     ))
@@ -254,59 +258,14 @@ function Workout() {
                     <h1 className={styles.noExercises}>There are no exercises yet</h1>
                   )}
                   <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => () => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
+                    <div className={styles.boxItems} onClick={() => goToApproaches('fsddgdfg')}>
+                      <div className={styles.boxItems}>
+                        <span className={styles.boxInfoSize}>fsddgdfg</span>
+                        <span className={styles.boxInfoSize}>approaches: {2}</span>
                       </div>
-                    </div>
-                  </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('1')}>
-                      <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{1}</span>
-                        <span className={styles.boxInfoSize}>Approaches: {2}</span>
-                      </div>
+                      <button type="button">
+                        <AiOutlineClose />
+                      </button>
                     </div>
                   </div>
                 </div>

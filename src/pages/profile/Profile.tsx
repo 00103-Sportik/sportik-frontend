@@ -20,14 +20,10 @@ import styles from './Profile.module.css';
 function Profile() {
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [updateProfile] = useUpdateProfileMutation();
-  const { data, isLoading, refetch } = useGetProfileQuery();
+  const [updateProfile, { isSuccess }] = useUpdateProfileMutation();
+  const { data, refetch } = useGetProfileQuery();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
-
-  // if (isLoading) {
-  //   return <h1>Loading...</h1>;
-  // }
 
   const [fields, setFields] = useState<ProfileFields>({
     email: data?.data.email || '',
@@ -42,17 +38,30 @@ function Profile() {
 
   const onSubmit = async (values: ProfileFields) => {
     await updateProfile(values);
-    setOpen(false);
-    toast('Data updated successfully!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
+    if (isSuccess) {
+      setOpen(false);
+      toast('Profile updated successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    } else {
+      toast('Profile update failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
   };
 
   const discard = async () => {
