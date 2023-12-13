@@ -62,27 +62,28 @@ function Exercise() {
             <Form>
               <Field name="name">
                 {({ field, meta }: FieldProps) => (
-                  <Input
-                    type="text"
-                    {...field}
-                    value={fields.name}
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('name', event.target.value);
-                    }}
-                    placeholder="Name"
-                    error={meta.touched && !!meta.error}
-                    errorText={meta.error}
-                  />
+                    <Input
+                        type="text"
+                        {...field}
+                        value={fields.name}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('name', event.target.value);
+                        }}
+                        placeholder="Name"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        className="form-input-wider"
+                    />
                 )}
               </Field>
-              <div className="select-container">
+              <div className="select-container-wider">
                 <select
-                  className="select-box"
-                  onChange={(event) => {
-                    props.handleChange(event);
-                    changeField('type', event.target.value);
-                  }}
+                    className="select-box-wider"
+                    onChange={(event) => {
+                      props.handleChange(event);
+                      changeField('type', event.target.value);
+                    }}
                 >
                   <option value="strength" selected={fields.type === 'strength'}>
                     Strength
@@ -92,61 +93,64 @@ function Exercise() {
                   </option>
                 </select>
               </div>
-              <div className="select-container">
+              <div className="select-container-wider">
                 <select
-                  className="select-box"
-                  onChange={(event) => {
-                    props.handleChange(event);
-                    changeField('subtype', event.target.value);
-                  }}
+                    className="select-box-wider"
+                    onChange={(event) => {
+                      props.handleChange(event);
+                      changeField('subtype', event.target.value);
+                    }}
                 >
                   {isSuccess ? (
-                    data?.data.subtypes.map((subtype) => (
-                      <option value={subtype.name} selected={fields.subtype === subtype.name}>
-                        {subtype.name}
-                      </option>
-                    ))
+                      data?.data.subtypes.map((subtype) => (
+                          <option value={subtype.name} selected={fields.subtype === subtype.name}>
+                            {subtype.name}
+                          </option>
+                      ))
                   ) : (
-                    <option value="" selected disabled hidden>
-                      Subtype
-                    </option>
+                      <option value="" selected disabled hidden>
+                        Subtype
+                      </option>
                   )}
                 </select>
               </div>
-              <div className="select-container">
+              <div className="select-container-wider">
                 <select
-                  className="select-box"
-                  onChange={(event) => {
-                    props.handleChange(event);
-                    changeField('combinationParams', event.target.value);
-                  }}
+                    className="select-box-wider"
+                    onChange={(event) => {
+                      props.handleChange(event);
+                      changeField('combinationParams', event.target.value);
+                    }}
                 >
                   {combinationParams.map((combination) => (
-                    <option value={combination.params} selected={fields.combinationParams === combination.params}>
-                      {combination.name}
-                    </option>
+                      <option value={combination.params} selected={fields.combinationParams === combination.params}>
+                        {combination.name}
+                      </option>
                   ))}
                 </select>
               </div>
               <Field name="description">
                 {({ field, meta }: FieldProps) => (
-                  <Input
-                    type="text"
-                    {...field}
-                    value={fields.description}
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('description', event.target.value);
-                    }}
-                    placeholder="Description"
-                    error={meta.touched && !!meta.error}
-                    errorText={meta.error}
-                  />
+                    <Input
+                        type="text"
+                        {...field}
+                        value={fields.description}
+                        onChange={(event) => {
+                          props.handleChange(event);
+                          changeField('description', event.target.value);
+                        }}
+                        placeholder="Description"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        className="form-input-wider"
+                    />
                 )}
               </Field>
-              <button className="btn-black" type="submit">
-                Add
-              </button>
+              <div className={styles.buttonsBox}>
+                <button className="btn-black" type="submit">
+                  Add
+                </button>
+              </div>
             </Form>
           );
         }}

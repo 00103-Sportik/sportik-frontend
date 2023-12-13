@@ -152,7 +152,7 @@ export default {
           '@apply flex justify-center relative w-[340px] h-[33px] overflow-hidden cursor-pointer mt-8': {},
         },
         '.select-box-wider': {
-          '@apply w-[340px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 mb-[0px] border-b-[white] border-[none] border-b border-solid':
+          '@apply w-[340px] bg-transparent text-[white] text-[16px] transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 mb-[0px] border-b-[white] border-[none] border-b border-solid':
               {},
         },
       });
