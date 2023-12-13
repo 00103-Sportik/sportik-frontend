@@ -48,7 +48,7 @@ export default {
           '@apply inline-block w-3.5 h-5 bg-transparent order-1 cursor-pointer relative z-20 border-none mx-2': {},
         },
         '.menu': {
-          '@apply absolute justify-center bottom-0 left-0 right-0 top-0 bg-btnBlack flex items-center flex-col -translate-y-full transition duration-500 ease-in-out z-[2] pt-10':
+          '@apply absolute justify-center bottom-0 left-0 right-0 top-0 bg-btnBlack flex items-center flex-col text-[26px] -translate-y-full transition gap-[20px] duration-500 ease-in-out z-[2] pb-14':
             {},
         },
         '.menu-btn-open': {

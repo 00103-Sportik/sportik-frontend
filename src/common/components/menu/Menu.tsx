@@ -25,7 +25,7 @@ export function Menu() {
         </li>
         <li>
           <a href="/hr-calc" className="menu-link">
-            Heart Rate Calculator
+            HR Calculator
           </a>
         </li>
         <li>
