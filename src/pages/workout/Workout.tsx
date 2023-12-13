@@ -20,13 +20,13 @@ import {
   selectFullWorkoutInfo,
   selectWorkoutsCount,
 } from '../../store/workouts/workouts.selectors.ts';
-import styles from './Workout.module.css';
 import { toast } from 'react-toastify';
 import { APPROACHES_URL, SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { discardWorkoutInfo, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequest } from '../../common/types/workouts.ts';
 import { AiOutlineClose } from 'react-icons/ai';
+import styles from './Workout.module.css';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
@@ -181,7 +181,6 @@ function Workout() {
 
   return (
     <>
-      <div>
         <Formik initialValues={workoutInitialValues} onSubmit={onSubmit} validationSchema={workoutValidationSchema}>
           {(props) => {
             return (
@@ -244,30 +243,23 @@ function Workout() {
                     exercises.map((exercise) => (
                       <div className={styles.box}>
                         <div className={styles.boxItems} onClick={() => goToApproaches(exercise.id || '')}>
-                          <div className={styles.boxItems}>
-                            <span className={styles.boxInfoSize}>{exercise.name}</span>
-                            <span className={styles.boxInfoSize}>approaches: {exercise?.approaches?.length}</span>
+                          <div className={styles.boxContent}>
+                            <div className={styles.boxInfo}>
+                              <span className={styles.infoItem}>{exercise.name}</span>
+                              <span className={styles.infoItem}>approaches: {exercise?.approaches?.length}</span>
+                            </div>
+                            <div className={styles.deleteButton}>
+                              <button type="button">
+                                <AiOutlineClose />
+                              </button>
+                            </div>
                           </div>
-                          <button type="button">
-                            <AiOutlineClose />
-                          </button>
                         </div>
                       </div>
                     ))
                   ) : (
                     <h1 className={styles.noExercises}>There are no exercises yet</h1>
                   )}
-                  <div className={styles.box}>
-                    <div className={styles.boxItems} onClick={() => goToApproaches('fsddgdfg')}>
-                      <div className={styles.boxItems}>
-                        <span className={styles.boxInfoSize}>fsddgdfg</span>
-                        <span className={styles.boxInfoSize}>approaches: {2}</span>
-                      </div>
-                      <button type="button">
-                        <AiOutlineClose />
-                      </button>
-                    </div>
-                  </div>
                 </div>
                 <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
                   Add
@@ -322,7 +314,6 @@ function Workout() {
             );
           }}
         </Formik>
-      </div>
     </>
   );
 }

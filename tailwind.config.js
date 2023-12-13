@@ -23,7 +23,7 @@ export default {
     plugin(({ addComponents, addVariant, e }) => {
       addComponents({
         '.layout': {
-          '@apply flex flex-col items-center justify-center min-h-screen': {},
+          '@apply flex flex-col items-center justify-start min-h-screen': {},
         },
         '.nav': {
           '@apply flex justify-between items-center w-[350px] p-5': {},
