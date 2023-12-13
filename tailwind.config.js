@@ -116,6 +116,14 @@ export default {
             {},
           outline: 'none',
         },
+        '.form-label-modal': {
+          '@apply absolute text-[white] transition-[0.2s] left-[0.2em] top-0 z-[1]': {},
+        },
+        '.form-input-modal': {
+          '@apply form-input w-[334px] bg-transparent transition-[0.2s] text-[gray] pt-0 pb-2.5 px-0 border-b-[gray] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray] items-center justify-center':
+            {},
+          outline: 'none',
+        },
         '.form-input-err': {
           '@apply border-[#AE3838]': {},
         },
