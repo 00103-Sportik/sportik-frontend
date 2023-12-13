@@ -23,20 +23,7 @@ export default {
     plugin(({ addComponents, addVariant, e }) => {
       addComponents({
         '.layout': {
-          '@apply flex flex-col items-center min-h-screen': {},
-        },
-        '.auth-container': {
-          '@apply min-h-max min-w-[300px] flex w-[min(80%,60rem)] flex-col flex-nowrap items-center justify-center gap-6 self-center bg-[radial-gradient(165.81%_165.81%_at_-13.5%_-44.62%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_100%)] rounded-[20px]':
-            {},
-        },
-        '.title-container': {
-          '@apply block justify-center items-center mb-5': {},
-        },
-        '.title-layout': {
-          '@apply flex justify-center items-center mb-6': {},
-        },
-        '.field-password': {
-          '@apply flex items-center': {},
+          '@apply flex flex-col items-center justify-center min-h-screen': {},
         },
         '.nav': {
           '@apply flex justify-between items-center w-[350px] p-5': {},
@@ -102,7 +89,7 @@ export default {
           '@apply absolute text-[white] transition-[0.2s] left-[0.2em] top-0 z-[1]': {},
         },
         '.form-input': {
-          '@apply w-[200px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
+          '@apply w-[220px] bg-transparent transition-[0.2s] text-[white] pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid focus:border-b-[gray] focus:border-b focus:border-solid disabled:text-[gray] disabled:border-[gray]':
             {},
           outline: 'none',
         },

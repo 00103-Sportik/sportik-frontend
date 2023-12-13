@@ -14,11 +14,11 @@ function AuthLayout() {
 
   return (
     <>
-      <div className="title-container">
-        <h1 className={location.pathname === '/signin' ? styles.loginStyleH1 : styles.regStyleH1}>Sportik+</h1>
-        <h2 className={styles.loginStyleH2}>{hPathToTitle[location.pathname as keyof typeof hPathToTitle]}</h2>
+      <div className={styles.mainTitleContainer}>
+        <h1 className={styles.styleH1}>Sportik+</h1>
+        <h2 className={styles.styleH2}>{hPathToTitle[location.pathname as keyof typeof hPathToTitle]}</h2>
       </div>
-      <div className="auth-container">
+      <div className={styles.authContainer}>
         <Outlet />
       </div>
     </>

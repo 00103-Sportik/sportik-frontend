@@ -4,7 +4,6 @@ import {
   signUpInitialValues,
   signUpValidationSchema,
 } from '../../../common/validations/authValidationSchema.ts';
-import styles from './Registration.module.css';
 import { NavLink } from 'react-router-dom';
 import { useRegistrationMutation, useResendEmailMutation } from '../../../store/auth/auth.api.ts';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
@@ -12,6 +11,7 @@ import { Input } from '../../../common/components/input/Input.tsx';
 import { useEffect, useState } from 'react';
 import { Dialog } from '@ariakit/react';
 import { toast } from 'react-toastify';
+import styles from '../../../pages/auth/authLayout/AuthLayout.module.css';
 
 function Registration() {
   const [open, setOpen] = useState(false);
@@ -51,37 +51,37 @@ function Registration() {
       <Formik initialValues={signUpInitialValues} onSubmit={onSubmit} validationSchema={signUpValidationSchema}>
         {({ isValid, submitCount }) => (
           <Form>
-            <div className="title-layout">
-              <h1 className={styles.titleLayout}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+            <div className={styles.titleLayout}>
+              <h1 className={styles.titleSize}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
             </div>
-            {!isValid && !!submitCount && <div>Введите корректный email или пароль.</div>}
-            <Field name="email">
-              {({ field, form, meta }: FieldProps) => (
-                <Input
-                  autoComplete="email"
-                  type="text"
-                  {...field}
-                  placeholder="Email"
-                  error={meta.touched && !!meta.error}
-                  errorText={meta.error}
-                  onClear={() => form.setFieldValue('email', '')}
-                />
-              )}
-            </Field>
-            <div className="field-password">
+            <div className={styles.inputsBox}>
+              <Field name="email">
+                {({ field, form, meta }: FieldProps) => (
+                    <Input
+                        autoComplete="email"
+                        type="text"
+                        {...field}
+                        placeholder="Email"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                        onClear={() => form.setFieldValue('email', '')}
+                    />
+                )}
+              </Field>
               <Field name="password">
                 {({ field, meta }: FieldProps) => (
-                  <Input
-                    autoComplete="new-password"
-                    type="password"
-                    {...field}
-                    placeholder="Password"
-                    error={meta.touched && !!meta.error}
-                    errorText={meta.error}
-                  />
+                    <Input
+                        autoComplete="new-password"
+                        type="password"
+                        {...field}
+                        placeholder="Password"
+                        error={meta.touched && !!meta.error}
+                        errorText={meta.error}
+                    />
                 )}
               </Field>
             </div>
+            {/*{!isValid && !!submitCount && <div className={styles.textError}>Введите корректный email или пароль.</div>}*/}
             <button className="btn-black" type="submit">
               Sign Up
             </button>
@@ -126,7 +126,7 @@ function Registration() {
                 )}
               </div>
             </Dialog>
-            <NavLink to="/signin">Already have an account? Sign In</NavLink>
+            <NavLink to="/signin" className={styles.referenceBack}>Already have an account? Sign In</NavLink>
           </Form>
         )}
       </Formik>
