@@ -4,7 +4,7 @@ import {
   signInInitialValues,
   signInValidationSchema,
 } from '../../../common/validations/authValidationSchema.ts';
-import styles from './Login.module.css';
+import styles from '../../../pages/auth/authLayout/AuthLayout.module.css';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';
@@ -50,26 +50,26 @@ function Login() {
         {({ isValid, submitCount, values }) => {
           return (
             <Form>
-              <div className="title-layout">
-                <h1 className={styles.titleLayout}>
+              <div className={styles.titleLayout}>
+                <h1 className={styles.titleSize}>
                   {mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}
                 </h1>
               </div>
-              <Field name="email">
-                {({ field, form }: FieldProps) => (
-                  <Input
-                    autoComplete="email"
-                    type="text"
-                    {...field}
-                    placeholder="Email"
-                    onClear={() => form.setFieldValue('email', '')}
-                  />
-                )}
-              </Field>
-              <div className="field-password">
+              <div className={styles.inputsBox}>
+                <Field name="email">
+                  {({ field, form }: FieldProps) => (
+                      <Input
+                          autoComplete="email"
+                          type="text"
+                          {...field}
+                          placeholder="Email"
+                          onClear={() => form.setFieldValue('email', '')}
+                      />
+                  )}
+                </Field>
                 <Field name="password">
                   {({ field }: FieldProps) => (
-                    <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
+                      <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
                   )}
                 </Field>
               </div>
@@ -81,7 +81,7 @@ function Login() {
               >
                 Sign In
               </button>
-              <NavLink to="/signup">You do not have an account? Sign Up</NavLink>
+              <NavLink to="/signup" className={styles.referenceBack}>You do not have an account? Sign Up</NavLink>
             </Form>
           );
         }}
