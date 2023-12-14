@@ -1,5 +1,6 @@
-import { AuthRequest, SuccessAuthResponse, UpdateRequest } from '../../common/types/auth.ts';
+import { ActivateRequest, AuthRequest, SuccessAuthResponse, UpdateRequest } from '../../common/types/auth.ts';
 import {
+  ACTIVATION_URL,
   AUTHENTICATION_URL,
   REGISTRATION_URL,
   RESEND_EMAIL_URL,
@@ -37,8 +38,20 @@ export const authApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    activation: builder.mutation<SuccessAuthResponse, ActivateRequest>({
+      query: (body) => ({
+        url: ACTIVATION_URL,
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useAuthenticationMutation, useUpdateTokenMutation, useRegistrationMutation, useResendEmailMutation } =
-  authApi;
+export const {
+  useAuthenticationMutation,
+  useActivationMutation,
+  useUpdateTokenMutation,
+  useRegistrationMutation,
+  useResendEmailMutation,
+} = authApi;

@@ -12,12 +12,14 @@ import Subtypes from '../pages/subtypes/Subtypes.tsx';
 import Exercises from '../pages/exercises/Exercises.tsx';
 import Exercise from '../pages/exercise/Exercise.tsx';
 import Approaches from '../pages/approaches/Approaches.tsx';
+import Activation from '../pages/auth/activation/Activation.tsx';
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/">
         <Route element={<Layout />}>
+          <Route path="activate" element={<Activation />} />
           <Route element={<AuthLayout />}>
             <Route path="signin" element={<Login />} />
             <Route path="signup" element={<Registration />} />
