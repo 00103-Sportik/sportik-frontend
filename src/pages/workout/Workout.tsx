@@ -5,7 +5,7 @@ import {
   workoutInitialValues,
   workoutValidationSchema,
 } from '../../common/validations/workoutValidationSchema.ts';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   useCreateWorkoutMutation,
   useDeleteWorkoutMutation,
@@ -53,7 +53,7 @@ function Workout() {
 
   if (uuid && check) {
     dispatch(setCurrentWorkouts({ uuid }));
-    const { data, isSuccess } = useMemo(() => useGetWorkoutQuery({ uuid }));
+    const { data, isSuccess } = useGetWorkoutQuery({ uuid });
 
     if (isSuccess) {
       [fields, setFields] = useState<WorkoutFields>({
@@ -194,137 +194,137 @@ function Workout() {
 
   return (
     <>
-        <Formik initialValues={workoutInitialValues} onSubmit={onSubmit} validationSchema={workoutValidationSchema}>
-          {(props) => {
-            return (
-              <Form>
-                <div className={styles.parametersBox}>
-                  <Field name="name">
-                    {({ field, meta }: FieldProps) => (
-                      <Input
-                        type="text"
-                        {...field}
-                        value={fields.name}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('name', event.target.value);
-                        }}
-                        placeholder="Name"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                        className="form-input-wider"
-                      ></Input>
-                    )}
-                  </Field>
-                  <Field name="date">
-                    {({ field, meta }: FieldProps) => (
-                      <Input
-                        type="date"
-                        {...field}
-                        value={fields.date}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('date', event.target.value);
-                        }}
-                        placeholder="Date"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                        className="form-input-wider"
-                      />
-                    )}
-                  </Field>
-                  <div className="select-container-wider">
-                    <select
-                      className="select-box-wider"
+      <Formik initialValues={workoutInitialValues} onSubmit={onSubmit} validationSchema={workoutValidationSchema}>
+        {(props) => {
+          return (
+            <Form>
+              <div className={styles.parametersBox}>
+                <Field name="name">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.name}
                       onChange={(event) => {
-                        changeField('type', event.target.value);
+                        props.handleChange(event);
+                        changeField('name', event.target.value);
                       }}
-                    >
-                      <option value="strength" selected={fields.type === 'strength'}>
-                        Strength
-                      </option>
-                      <option value="cardio" selected={fields.type === 'cardio'}>
-                        Cardio
-                      </option>
-                    </select>
-                  </div>
+                      placeholder="Name"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                      className="form-input-wider"
+                    ></Input>
+                  )}
+                </Field>
+                <Field name="date">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="date"
+                      {...field}
+                      value={fields.date}
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('date', event.target.value);
+                      }}
+                      placeholder="Date"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                      className="form-input-wider"
+                    />
+                  )}
+                </Field>
+                <div className="select-container-wider">
+                  <select
+                    className="select-box-wider"
+                    onChange={(event) => {
+                      changeField('type', event.target.value);
+                    }}
+                  >
+                    <option value="strength" selected={fields.type === 'strength'}>
+                      Strength
+                    </option>
+                    <option value="cardio" selected={fields.type === 'cardio'}>
+                      Cardio
+                    </option>
+                  </select>
                 </div>
-                <div className={styles.exercises}>
-                  {exercises.length !== 0 ? (
-                    exercises.map((exercise) => (
-                      <div className={styles.box}>
-                        <div className={styles.boxItems} onClick={() => goToApproaches(exercise.uuid || '')}>
-                          <div className={styles.boxContent}>
-                            <div className={styles.boxInfo}>
-                              <span className={styles.infoItem}>{exercise.name}</span>
-                              <span className={styles.infoItem}>approaches: {exercise?.approaches?.length}</span>
-                            </div>
-                            <div className={styles.deleteButton}>
-                              <button type="button">
-                                <AiOutlineClose />
-                              </button>
-                            </div>
+              </div>
+              <div className={styles.exercises}>
+                {exercises.length !== 0 ? (
+                  exercises.map((exercise) => (
+                    <div className={styles.box}>
+                      <div className={styles.boxItems} onClick={() => goToApproaches(exercise.uuid || '')}>
+                        <div className={styles.boxContent}>
+                          <div className={styles.boxInfo}>
+                            <span className={styles.infoItem}>{exercise.name}</span>
+                            <span className={styles.infoItem}>approaches: {exercise?.approaches?.length}</span>
+                          </div>
+                          <div className={styles.deleteButton}>
+                            <button type="button">
+                              <AiOutlineClose />
+                            </button>
                           </div>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <h1 className={styles.noExercises}>There are no exercises yet</h1>
+                    </div>
+                  ))
+                ) : (
+                  <h1 className={styles.noExercises}>There are no exercises yet</h1>
+                )}
+              </div>
+              <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
+                Add
+              </button>
+              <div className={styles.parametersBox}>
+                <Field name="comment">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.comment}
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('comment', event.target.value);
+                      }}
+                      placeholder="Comment"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                      className="form-input-wider"
+                    ></Input>
+                  )}
+                </Field>
+              </div>
+              <div>
+                <div className={styles.buttonsBox}>
+                  <button className="btn-black-less-margin" type="submit">
+                    Save
+                  </button>
+                  {uuid && (
+                    <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
+                      Delete
+                    </button>
                   )}
                 </div>
-                <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
-                  Add
-                </button>
-                <div className={styles.parametersBox}>
-                  <Field name="comment">
-                    {({ field, meta }: FieldProps) => (
-                      <Input
-                        type="text"
-                        {...field}
-                        value={fields.comment}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('comment', event.target.value);
-                        }}
-                        placeholder="Comment"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                        className="form-input-wider"
-                      ></Input>
-                    )}
-                  </Field>
+              </div>
+              <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                backdrop={<div className="backdrop" />}
+                className="dialog"
+              >
+                <p className={styles.p}>Delete workout?</p>
+                <div className={styles.buttonsBox}>
+                  <DialogDismiss className="btn-black" onClick={deleteWorkout}>
+                    Yes
+                  </DialogDismiss>
+                  <DialogDismiss className="btn-red">No</DialogDismiss>
                 </div>
-                <div>
-                  <div className={styles.buttonsBox}>
-                    <button className="btn-black-less-margin" type="submit">
-                      Save
-                    </button>
-                    {uuid && (
-                      <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
-                        Delete
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <Dialog
-                  open={open}
-                  onClose={() => setOpen(false)}
-                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
-                  backdrop={<div className="backdrop" />}
-                  className="dialog"
-                >
-                  <p className={styles.p}>Delete workout?</p>
-                  <div className={styles.buttonsBox}>
-                    <DialogDismiss className="btn-black" onClick={deleteWorkout}>
-                      Yes
-                    </DialogDismiss>
-                    <DialogDismiss className="btn-red">No</DialogDismiss>
-                  </div>
-                </Dialog>
-              </Form>
-            );
-          }}
-        </Formik>
+              </Dialog>
+            </Form>
+          );
+        }}
+      </Formik>
     </>
   );
 }
