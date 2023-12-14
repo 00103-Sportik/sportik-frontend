@@ -11,31 +11,26 @@
 }
 
 .boxInfoSize {
-  font-size: 16px;
+  @apply text-[16px]
 }
 
 .item {
-  font-size: 26px;
+  @apply text-[26px]
 }
 
 .p {
-  font-size: 20px;
-  text-align:center;
-  vertical-align: middle;
-  display: table-cell;
-  margin-top: 10px;
+  @apply text-xl text-center align-middle table-cell mt-2.5;
 }
 
 .p1 {
-  font-size: 26px;
+  @apply text-[26px]
 }
 
 .p2 {
-  font-size: 22px;
-  margin-right: 235px;
+  @apply text-[22px] mr-[235px]
 }
 
 .buttonsBox {
-  display: flex;
-  flex-direction: row;
+  @apply flex flex-row;
 }
+
