@@ -23,8 +23,8 @@ export const signInValidationSchema = Yup.object().shape({
   password: Yup.string()
     .test('noSpaces', 'No spaces allowed', (value) => !containsWhiteSpaces.test(value || ''))
     .required('Required field')
-    .min(MIN_PASSWORD_LENGTH, `Incorrect password: min length ${MIN_PASSWORD_LENGTH} characters`)
-    .max(MAX_PASSWORD_LENGTH, `Incorrect password: max length ${MAX_PASSWORD_LENGTH} characters`)
+    .min(MIN_PASSWORD_LENGTH, `Min length ${MIN_PASSWORD_LENGTH} characters`)
+    .max(MAX_PASSWORD_LENGTH, `Max length ${MAX_PASSWORD_LENGTH} characters`)
     .test(
       'containsOnlyAllowedCharacters',
       'The password must contain Latin letters (at least one lowercase and one uppercase) and at least one number',

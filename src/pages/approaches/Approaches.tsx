@@ -12,9 +12,9 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { IMask } from 'react-imask';
 
 function Approaches() {
-  const { id } = useParams();
+  const { uuid } = useParams();
   const exercisesFromStore = useAppSelector(selectExercises);
-  const exercise = exercisesFromStore.filter((exercise) => exercise.id === id)[0];
+  const exercise = exercisesFromStore.filter((exercise) => exercise.uuid === uuid)[0];
   const [approaches, setApproachesToState] = useState<ApproachRequest[]>(exercise.approaches || []);
   const dispatch = useAppDispatch();
   const combParams = combinationParams.filter((params) => params.params === exercise.combinationParams)[0];
@@ -22,17 +22,17 @@ function Approaches() {
 
   const onSubmit = () => {
     if (approaches.length === 0) {
-      const toApproaches: ApproachRequest = { id: 0, param1: intialVal.param1, param2: intialVal.param2 };
+      const toApproaches: ApproachRequest = { param1: intialVal.param1, param2: intialVal.param2 };
       setApproachesToState([toApproaches]);
     } else {
-      setApproachesToState([...approaches, { ...approaches[approaches.length - 1], id: approaches.length }]);
+      setApproachesToState([...approaches, { ...approaches[approaches.length - 1] }]);
     }
   };
 
   const saveApproaches = () => {
     dispatch(
       setApproaches({
-        exerciseId: exercise.id || '',
+        exerciseId: exercise.uuid || '',
         approaches: approaches,
       }),
     );

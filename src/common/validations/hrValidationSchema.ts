@@ -21,8 +21,8 @@ export type TableFields = {
 
 export const hrValidationSchema = Yup.object().shape({
   hr: Yup.number()
-    .min(MIN_HR, `Incorrect HRmax: min HRmax is ${MIN_HR}`)
-    .max(MAX_HR, `Incorrect HRmax: max HRmax is ${MAX_HR}`)
+    .min(MIN_HR, `Min HRmax is ${MIN_HR}`)
+    .max(MAX_HR, `Max HRmax is ${MAX_HR}`)
     .integer()
-    .typeError('Incorrect HRmax: HRmax must be an integer'),
+    .typeError('HRmax must be an integer'),
 });

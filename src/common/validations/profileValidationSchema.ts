@@ -43,22 +43,22 @@ export const profileValidationSchema = Yup.object().shape({
     .required('Required field')
     .email('Incorrect email'),
   name: Yup.string()
-    .min(MIN_NAME_LENGTH, `Incorrect name: min length ${MIN_NAME_LENGTH} characters`)
-    .max(MAX_NAME_LENGTH, `Incorrect name: max length ${MAX_NAME_LENGTH} characters`),
+    .min(MIN_NAME_LENGTH, `Min length ${MIN_NAME_LENGTH} characters`)
+    .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),
   surname: Yup.string()
-    .min(MIN_SURNAME_LENGTH, `Incorrect surname: min length ${MIN_SURNAME_LENGTH} characters`)
-    .max(MAX_SURNAME_LENGTH, `Incorrect surname: max length ${MAX_SURNAME_LENGTH} characters`),
+    .min(MIN_SURNAME_LENGTH, `Min length ${MIN_SURNAME_LENGTH} characters`)
+    .max(MAX_SURNAME_LENGTH, `Max length ${MAX_SURNAME_LENGTH} characters`),
   age: Yup.number()
-    .min(MIN_AGE, `Incorrect age: min age is ${MIN_AGE}`)
-    .max(MAX_AGE, `Incorrect age: max age is ${MAX_AGE}`)
+    .min(MIN_AGE, `Min age is ${MIN_AGE}`)
+    .max(MAX_AGE, `Max age is ${MAX_AGE}`)
     .integer()
-    .typeError('Incorrect age: age must be an integer'),
+    .typeError('Age must be an integer'),
   height: Yup.number()
-    .min(MIN_HEIGHT, `Incorrect height: min height is ${MIN_HEIGHT}`)
-    .max(MAX_HEIGHT, `Incorrect height: max height is ${MAX_HEIGHT}`)
+    .min(MIN_HEIGHT, `Min height is ${MIN_HEIGHT}`)
+    .max(MAX_HEIGHT, `Max height is ${MAX_HEIGHT}`)
     .integer()
-    .typeError('Incorrect height: height must be an integer'),
+    .typeError('Height must be an integer'),
   weight: Yup.string().matches(containOneCharacterAfterComma, {
-    message: `Incorrect weight: weight must be an integer or fractional with one decimal place (min - ${MIN_WEIGHT}, max - ${MAX_WEIGHT})`,
+    message: `Weight must be an integer or fractional with one decimal place (min - ${MIN_WEIGHT}, max - ${MAX_WEIGHT})`,
   }),
 });

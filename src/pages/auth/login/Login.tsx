@@ -18,6 +18,7 @@ function Login() {
   const onSubmit = (values: SignInFields) => {
     authentication(values);
   };
+
   if (isSuccess) {
     toast('Login successful!', {
       position: 'top-center',
@@ -29,7 +30,7 @@ function Login() {
       progress: undefined,
       theme: 'dark',
     });
-    navigate('/signin');
+    navigate('/');
   }
   if (error) {
     toast('message' in error ? error && error.message : 'Authentication failed!', {
@@ -51,25 +52,23 @@ function Login() {
           return (
             <Form>
               <div className={styles.titleLayout}>
-                <h1 className={styles.titleSize}>
-                  {mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}
-                </h1>
+                <h1 className={styles.titleSize}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
               </div>
               <div className={styles.inputsBox}>
                 <Field name="email">
                   {({ field, form }: FieldProps) => (
-                      <Input
-                          autoComplete="email"
-                          type="text"
-                          {...field}
-                          placeholder="Email"
-                          onClear={() => form.setFieldValue('email', '')}
-                      />
+                    <Input
+                      autoComplete="email"
+                      type="text"
+                      {...field}
+                      placeholder="Email"
+                      onClear={() => form.setFieldValue('email', '')}
+                    />
                   )}
                 </Field>
                 <Field name="password">
                   {({ field }: FieldProps) => (
-                      <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
+                    <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
                   )}
                 </Field>
               </div>
@@ -81,7 +80,9 @@ function Login() {
               >
                 Sign In
               </button>
-              <NavLink to="/signup" className={styles.referenceBack}>You do not have an account? Sign Up</NavLink>
+              <NavLink to="/signup" className={styles.referenceBack}>
+                You do not have an account? Sign Up
+              </NavLink>
             </Form>
           );
         }}

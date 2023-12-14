@@ -13,9 +13,9 @@ export const workoutsApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Workouts'],
     }),
-    getWorkout: builder.query<WorkoutResponse, Pick<WorkoutRequest, 'id'>>({
-      query: ({ id }) => ({
-        url: `${WORKOUTS_URL}?id=${id}`,
+    getWorkout: builder.query<WorkoutResponse, Pick<WorkoutRequest, 'uuid'>>({
+      query: ({ uuid }) => ({
+        url: `${WORKOUTS_URL}/${uuid}`,
         method: 'GET',
       }),
       providesTags: ['Workouts'],
@@ -36,9 +36,9 @@ export const workoutsApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Workouts'],
     }),
-    deleteWorkout: builder.mutation<void, Pick<WorkoutRequest, 'id'>>({
-      query: ({ id }) => ({
-        url: `${WORKOUTS_URL}?id=${id}`,
+    deleteWorkout: builder.mutation<void, Pick<WorkoutRequest, 'uuid'>>({
+      query: ({ uuid }) => ({
+        url: `${WORKOUTS_URL}/${uuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Workouts'],

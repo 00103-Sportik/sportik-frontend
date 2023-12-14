@@ -26,11 +26,11 @@ function AppRoutes() {
             <Route path="profile" element={<Profile />} />
             <Route index element={<Workouts />} />
             <Route path="workouts" element={<Workout />} />
-            <Route path="workouts/:id" element={<Workout />} />
+            <Route path="workouts/:uuid" element={<Workout />} />
             <Route path="subtypes/:type" element={<Subtypes />} />
             <Route path="exercises/:type" element={<Exercises />} />
             <Route path="exercises" element={<Exercise />} />
-            <Route path="approaches/:id" element={<Approaches />} />
+            <Route path="approaches/:uuid" element={<Approaches />} />
             <Route path="hr-calc" element={<HRCalc />} />
           </Route>
         </Route>

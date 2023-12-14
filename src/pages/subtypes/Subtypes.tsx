@@ -17,7 +17,7 @@ import {
   subtypeValidationSchema,
 } from '../../common/validations/subtypeValidationSchema.ts';
 import { toast } from 'react-toastify';
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 
 function Subtypes() {
   const navigate = useNavigate();
@@ -95,18 +95,28 @@ function Subtypes() {
           <div className={styles.box}>
             <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${subtype.uuid}`)}>
               <span className={styles.boxInfoSize}>{subtype.name}</span>
-              <button type="button" onClick={() => deleteSubtype(subtype.uuid)} hidden={subtype.user_uuid === null}>
-                <AiOutlineClose />
-              </button>
+              <div>
+                <button type="button" onClick={() => deleteSubtype(subtype.uuid)} hidden={subtype.user_uuid === null}>
+                  <AiOutlineClose />
+                </button>
+                <button type="button">
+                  <AiFillEdit />
+                </button>
+              </div>
             </div>
           </div>
         ))}
         <div className={styles.box}>
           <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
             <span className={styles.boxInfoSize}>name</span>
-            <button type="button">
-              <AiOutlineClose />
-            </button>
+            <div>
+              <button type="button">
+                <AiOutlineClose />
+              </button>
+              <button type="button">
+                <AiFillEdit />
+              </button>
+            </div>
           </div>
         </div>
       </div>
