@@ -1,5 +1,5 @@
 .approaches {
-  @apply w-[370px] h-[370px] flex flex-col items-center gap-[1px] overflow-y-auto mt-5;
+  @apply w-[370px] h-[539px] flex flex-col items-center gap-[1px] overflow-y-auto mt-5;
 }
 
 .box {
@@ -21,3 +21,15 @@
 .buttonsBox {
   @apply flex flex-row;
 }
+
+.p1 {
+  @apply text-[26px]
+}
+
+.p2 {
+  @apply text-[22px] mr-[235px]
+}
+
+/*.wrapping {*/
+/*  @apply flex items-center justify-center*/
+/*}*/

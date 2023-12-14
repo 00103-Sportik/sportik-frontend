@@ -32,6 +32,7 @@
 
 .p2 {
   @apply text-[22px] mr-[235px];
+
 }
 
 .buttonsBox {
@@ -41,3 +42,4 @@
 .sideButtonsBox {
   @apply flex flex-row gap-[8px] mr-4;
 }
+
