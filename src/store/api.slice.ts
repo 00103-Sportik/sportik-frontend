@@ -1,9 +1,9 @@
 import { BaseQueryApi, BaseQueryFn, createApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { AUTHENTICATION_URL, BASE_URL, ResponseCodes, UPDATE_TOKENS_URL } from '../common/constants/api.ts';
+import { BASE_URL, ResponseCodes } from '../common/constants/api.ts';
 import { AppRootStateType } from './types.ts';
 import { setLoading } from './loading/loading.slice.ts';
 import { logout, setCredentials } from './auth/auth.slice.ts';
-import { AuthResponse } from '../common/types/auth.ts';
+import { AuthResponse, SuccessAuthResponse } from '../common/types/auth.ts';
 import { ErrorResponse } from 'react-router-dom';
 
 const baseQuery = fetchBaseQuery({
@@ -29,11 +29,9 @@ export const query: BaseQueryFn<FetchArgs, unknown, ErrorResponse> = async (
 
     const result = await baseQuery(args, api, extraOptions);
 
-    let refreshTokenResult;
-    let resultAfterUpdatingToken;
     let credentials;
 
-    if (result?.meta?.request.url === `${BASE_URL}${AUTHENTICATION_URL}`) {
+    if (result?.meta?.request.url === `${BASE_URL}auth/signin`) {
       if (result.data) {
         credentials = (result.data as { data: AuthResponse }).data;
         api.dispatch(setCredentials(credentials));
@@ -46,7 +44,21 @@ export const query: BaseQueryFn<FetchArgs, unknown, ErrorResponse> = async (
     }
     switch (result?.error?.status) {
       case ResponseCodes.UNAUTHORIZED:
-        refreshTokenResult = await baseQuery(UPDATE_TOKENS_URL, api, extraOptions);
+        // @ts-ignore
+        const refreshToken = JSON.parse(JSON.parse(window.localStorage.getItem('persist:redux')).auth).refresh_token;
+        const refreshTokenResult = await (
+          await fetch(`${BASE_URL}auth/update-token`, {
+            mode: 'cors',
+            credentials: 'include',
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              refresh_token: refreshToken,
+            }),
+          })
+        ).json();
         if (refreshTokenResult.error) {
           api.dispatch(logout());
 
@@ -57,9 +69,9 @@ export const query: BaseQueryFn<FetchArgs, unknown, ErrorResponse> = async (
             },
           };
         }
-        credentials = (refreshTokenResult.data as { data: AuthResponse }).data;
+        credentials = (refreshTokenResult as SuccessAuthResponse).data;
         api.dispatch(setCredentials(credentials as AuthResponse));
-        resultAfterUpdatingToken = await baseQuery(args, api, extraOptions);
+        const resultAfterUpdatingToken = await baseQuery(args, api, extraOptions);
 
         if (resultAfterUpdatingToken.error) {
           return {

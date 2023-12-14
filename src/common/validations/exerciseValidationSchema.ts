@@ -22,12 +22,9 @@ export const exerciseInitialValue: ExerciseFields = {
 
 export const exerciseValidationSchema = Yup.object().shape({
   name: Yup.string()
-    .min(MIN_NAME_LENGTH, `Incorrect name: min length ${MIN_NAME_LENGTH} characters`)
-    .max(MAX_NAME_LENGTH, `Incorrect name: max length ${MAX_NAME_LENGTH} characters`)
+    .min(MIN_NAME_LENGTH, `Min length ${MIN_NAME_LENGTH} characters`)
+    .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`)
     .required('Required field'),
-  description: Yup.string().max(
-    MAX_DESCRIPTION_LENGTH,
-    `Incorrect description: max length ${MAX_NAME_LENGTH} characters`,
-  ),
+  description: Yup.string().max(MAX_DESCRIPTION_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),
   combinationParams: Yup.string().required('Required field'),
 });

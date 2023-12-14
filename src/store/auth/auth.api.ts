@@ -1,5 +1,10 @@
-import { AuthRequest, SuccessAuthResponse } from '../../common/types/auth.ts';
-import { AUTHENTICATION_URL, REGISTRATION_URL, RESEND_EMAIL_URL } from '../../common/constants/api.ts';
+import { AuthRequest, SuccessAuthResponse, UpdateRequest } from '../../common/types/auth.ts';
+import {
+  AUTHENTICATION_URL,
+  REGISTRATION_URL,
+  RESEND_EMAIL_URL,
+  UPDATE_TOKEN_URL,
+} from '../../common/constants/api.ts';
 import { apiSlice } from '../api.slice.ts';
 
 export const authApi = apiSlice.injectEndpoints({
@@ -18,6 +23,13 @@ export const authApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    updateToken: builder.mutation<SuccessAuthResponse, UpdateRequest>({
+      query: (body) => ({
+        url: UPDATE_TOKEN_URL,
+        method: 'PUT',
+        body,
+      }),
+    }),
     resendEmail: builder.mutation<SuccessAuthResponse, Pick<AuthRequest, 'email'>>({
       query: (body) => ({
         url: RESEND_EMAIL_URL,
@@ -28,4 +40,5 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAuthenticationMutation, useRegistrationMutation, useResendEmailMutation } = authApi;
+export const { useAuthenticationMutation, useUpdateTokenMutation, useRegistrationMutation, useResendEmailMutation } =
+  authApi;

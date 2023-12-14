@@ -4,7 +4,7 @@ import { useDeleteExerciseMutation, useGetExercisesQuery } from '../../store/exe
 import { useAppDispatch } from '../../store/hooks.ts';
 import { setExercise, setSubtype } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequest } from '../../common/types/workouts.ts';
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
 function Exercises() {
@@ -24,8 +24,8 @@ function Exercises() {
     navigate('/workouts');
   };
 
-  const deleteExercise = async (id: string) => {
-    await delExercise({ id });
+  const deleteExercise = async (uuid: string) => {
+    await delExercise({ uuid });
     if (isDeleted) {
       toast('Delete successful!', {
         position: 'top-center',
@@ -65,9 +65,14 @@ function Exercises() {
           <div className={styles.box}>
             <div className={styles.boxItems} onClick={() => addToWorkout(exercise)}>
               <span className={styles.boxInfoSize}>{exercise.name}</span>
-              <button type="button" onClick={() => deleteExercise(exercise.id || '')}>
-                <AiOutlineClose />
-              </button>
+              <div>
+                <button type="button" onClick={() => deleteExercise(exercise.uuid || '')}>
+                  <AiOutlineClose />
+                </button>
+                <button type="button" onClick={() => navigate(`/exercises/${exercise.uuid || ''}`)}>
+                  <AiFillEdit />
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -76,7 +81,7 @@ function Exercises() {
             className={styles.boxItems}
             onClick={() =>
               addToWorkout({
-                id: 'fsas234fsa3fs',
+                uuid: 'fsas234fsa3fs',
                 name: 'distant_time',
                 type: 'fsdfsd',
                 combinationParams: 'distant_time',
@@ -86,9 +91,14 @@ function Exercises() {
             }
           >
             <span className={styles.boxInfoSize}>name</span>
-            <button type="button">
-              <AiOutlineClose />
-            </button>
+            <div>
+              <button type="button">
+                <AiOutlineClose />
+              </button>
+              <button type="button">
+                <AiFillEdit />
+              </button>
+            </div>
           </div>
         </div>
         <div className={styles.box}>
@@ -96,7 +106,7 @@ function Exercises() {
             className={styles.boxItems}
             onClick={() =>
               addToWorkout({
-                id: 'fs2343fdsfs',
+                uuid: 'fs2343fdsfs',
                 name: 'count_time',
                 type: 'fsdfsd',
                 combinationParams: 'count_time',
@@ -106,9 +116,14 @@ function Exercises() {
             }
           >
             <span className={styles.boxInfoSize}>name</span>
-            <button type="button">
-              <AiOutlineClose />
-            </button>
+            <div>
+              <button type="button">
+                <AiOutlineClose />
+              </button>
+              <button type="button">
+                <AiFillEdit />
+              </button>
+            </div>
           </div>
         </div>
         <div className={styles.box}>
@@ -116,7 +131,7 @@ function Exercises() {
             className={styles.boxItems}
             onClick={() =>
               addToWorkout({
-                id: 'fs2343fds123fs',
+                uuid: 'fs2343fds123fs',
                 name: 'count_weight',
                 type: 'fsdfsd',
                 combinationParams: 'count_weight',
@@ -126,9 +141,14 @@ function Exercises() {
             }
           >
             <span className={styles.boxInfoSize}>name</span>
-            <button type="button">
-              <AiOutlineClose />
-            </button>
+            <div>
+              <button type="button">
+                <AiOutlineClose />
+              </button>
+              <button type="button">
+                <AiFillEdit />
+              </button>
+            </div>
           </div>
         </div>
       </div>

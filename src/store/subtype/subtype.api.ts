@@ -6,7 +6,7 @@ export const subtypeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSubtypes: builder.query<SubtypesResponse, Pick<SubtypesRequest, 'type'>>({
       query: ({ type }) => ({
-        url: `${SUBTYPES_URL}?type=${type}`,
+        url: `${SUBTYPES_URL}?workout_type=${type}`,
         method: 'GET',
       }),
       providesTags: ['Subtypes'],
@@ -29,7 +29,7 @@ export const subtypeApi = apiSlice.injectEndpoints({
     }),
     deleteSubtype: builder.mutation<void, Pick<SubtypeResponse, 'uuid'>>({
       query: ({ uuid }) => ({
-        url: `${SUBTYPES_URL}?uuid=${uuid}`,
+        url: `${SUBTYPES_URL}/${uuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Subtypes'],

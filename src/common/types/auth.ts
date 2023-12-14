@@ -8,6 +8,12 @@ interface AuthRequest {
   password: string;
 }
 
+interface UpdateRequest {
+  refresh_token: string;
+}
+interface UpdateResponse {
+  refresh_token: string;
+}
 interface SuccessAuthResponse {
   message: string;
   data: AuthResponse | {};
@@ -23,4 +29,4 @@ export const hPathToTitle = {
   '/signup': 'Start your journey!',
 };
 
-export type { AuthRequest, AuthResponse, SuccessAuthResponse };
+export type { AuthRequest, UpdateRequest, UpdateResponse, AuthResponse, SuccessAuthResponse };

@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 export type WorkoutFields = {
-  id?: string;
+  uuid?: string;
   name: string;
   date: string;
   type: string;
@@ -9,9 +9,9 @@ export type WorkoutFields = {
 };
 
 export const workoutInitialValues: WorkoutFields = {
-  id: '',
+  uuid: '',
   name: '',
-  date: new Date().toISOString().split('T')[0],
+  date: new Date().toLocaleDateString(),
   type: '',
   comment: '',
 };
@@ -23,9 +23,8 @@ const MAX_COMMENT = 255;
 
 export const workoutValidationSchema = Yup.object().shape({
   name: Yup.string()
-    .min(MIN_NAME_LENGTH, `Incorrect name: min length ${MIN_NAME_LENGTH} characters`)
-    .max(MAX_NAME_LENGTH, `Incorrect name: max length ${MAX_NAME_LENGTH} characters`),
-  date: Yup.string().required('Required field'),
-  type: Yup.string().required('Required field'),
-  comment: Yup.string().max(MAX_COMMENT, `Incorrect comment: max length ${MAX_COMMENT} characters`),
+    .min(MIN_NAME_LENGTH, `Min length ${MIN_NAME_LENGTH} characters`)
+    .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),
+  type: Yup.string().nonNullable(),
+  comment: Yup.string().max(MAX_COMMENT, `Max length ${MAX_COMMENT} characters`),
 });

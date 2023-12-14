@@ -12,10 +12,8 @@ export const authSlice = createSlice({
   reducers: {
     setCredentials: (state: Draft<AuthResponse>, action: PayloadAction<AuthResponse>) => {
       const { access_token, refresh_token } = action.payload;
-      if (access_token !== null) {
-        state.access_token = access_token;
-        state.refresh_token = refresh_token;
-      }
+      state.access_token = access_token;
+      state.refresh_token = refresh_token;
     },
     logout: (state: Draft<AuthResponse>) => {
       state.access_token = null;
