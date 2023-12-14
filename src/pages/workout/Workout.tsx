@@ -35,9 +35,10 @@ function Workout() {
   const navigate = useNavigate();
   const exercisesFromStore = useAppSelector(selectExercises);
   const [exercises, setExercises] = useState<ExerciseRequest[]>(exercisesFromStore);
-  const [updateWorkout, { error: updateError }] = useUpdateWorkoutMutation();
-  const [createWorkout, { error: createError, data }] = useCreateWorkoutMutation();
-  const [delWorkout, { error: deleteError }] = useDeleteWorkoutMutation();
+  const [updateWorkout, { error: updateError, isSuccess: isSuccessUpdate }] = useUpdateWorkoutMutation();
+  const [createWorkout, { error: createError, isSuccess: isSuccesCreate, data: dataCreate }] =
+    useCreateWorkoutMutation();
+  const [delWorkout, { error: deleteError, isSuccess: isSuccessDelete }] = useDeleteWorkoutMutation();
   const { uuid } = useParams();
   const dispatch = useAppDispatch();
   const workoutInfo = useAppSelector(selectFullWorkoutInfo);
@@ -70,6 +71,60 @@ function Workout() {
     setCheck(false);
   }
 
+  if (updateError) {
+    toast('message' in updateError ? updateError && updateError.message : 'Update failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
+  if (isSuccessUpdate) {
+    toast('Update successful!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
+  if (createError) {
+    toast('message' in createError ? createError && createError.message : 'Create failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
+  if (isSuccesCreate) {
+    dispatch(discardWorkoutInfo());
+    navigate(`${WORKOUTS_URL}/${dataCreate?.data.uuid}`);
+    toast('Create successful!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
   const onSubmit = async (values: WorkoutFields) => {
     if (uuid) {
       await updateWorkout({
@@ -80,29 +135,6 @@ function Workout() {
         comment: values.comment,
         exercises: exercises,
       });
-      if (updateError) {
-        toast('message' in updateError ? updateError && updateError.message : 'Update failed!', {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        });
-      } else {
-        toast('Update successful!', {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        });
-      }
     } else {
       await createWorkout({
         date: fields.date,
@@ -111,31 +143,6 @@ function Workout() {
         comment: fields.comment,
         exercises: exercises,
       });
-      if (createError) {
-        toast('message' in createError ? createError && createError.message : 'Create failed!', {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        });
-      } else {
-        dispatch(discardWorkoutInfo());
-        navigate(`${WORKOUTS_URL}/${data?.data.uuid}`);
-        toast('Create successful!', {
-          position: 'top-center',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'dark',
-        });
-      }
     }
   };
 
@@ -147,32 +154,35 @@ function Workout() {
     );
   }, []);
 
+  if (deleteError) {
+    toast('message' in deleteError ? deleteError && deleteError.message : 'Delete failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
+  if (isSuccessDelete) {
+    navigate('/');
+    toast('Delete successful!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
   const deleteWorkout = async () => {
     await delWorkout({ uuid });
-    if (deleteError) {
-      toast('message' in deleteError ? deleteError && deleteError.message : 'Delete successful!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    } else {
-      navigate('/');
-      toast('Delete successful!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
   };
 
   const goToSubtypes = () => {
@@ -241,10 +251,10 @@ function Workout() {
                     }}
                   >
                     <option value="strength" selected={fields.type === 'strength'}>
-                      Strength
+                      strength
                     </option>
                     <option value="cardio" selected={fields.type === 'cardio'}>
-                      Cardio
+                      cardio
                     </option>
                   </select>
                 </div>

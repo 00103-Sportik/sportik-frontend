@@ -18,8 +18,8 @@ function Registration() {
   const [seconds, setSeconds] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [email, setEmail] = useState('');
-  const [registration, { isSuccess }] = useRegistrationMutation();
-  const [resendEmail, {}] = useResendEmailMutation();
+  const [registration, { isSuccess, error }] = useRegistrationMutation();
+  const [resendEmail, { isSuccess: isSuccessResend, error: errorResend }] = useResendEmailMutation();
 
   useEffect(() => {
     if (seconds > 0 && timerActive) {
@@ -35,7 +35,7 @@ function Registration() {
   };
 
   if (isSuccess && !open) {
-    toast('Activation link sent to your email!', {
+    toast('Registration successful! Activation link sent to your email!', {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
@@ -47,6 +47,47 @@ function Registration() {
     });
     setOpen(true);
     setTimerActive(!timerActive);
+  }
+
+  if (error) {
+    toast('message' in error ? error && error.message : 'Incorrect email or password', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
+  if (isSuccessResend) {
+    toast('Registration successful! Activation link sent to your email!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+    setOpen(true);
+    setTimerActive(!timerActive);
+  }
+
+  if (errorResend) {
+    toast('message' in errorResend ? errorResend && errorResend.message : 'Failed resend email', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
   }
 
   return (
@@ -111,16 +152,6 @@ function Registration() {
                       resendEmail({ email });
                       setSeconds(60);
                       setTimerActive(true);
-                      toast('Activation link sent to your email!', {
-                        position: 'top-center',
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: 'dark',
-                      });
                     }}
                   >
                     Send again

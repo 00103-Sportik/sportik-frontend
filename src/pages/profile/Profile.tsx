@@ -7,9 +7,9 @@ import {
 } from '../../common/validations/profileValidationSchema.ts';
 import { useGetProfileQuery, useUpdateProfileMutation } from '../../store/profile/profile.api.ts';
 import logo from '../../assets/avatar.jpg';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
-import { updateAvatar } from '../../store/profile/profile.slice.ts';
+import { setProfile, updateAvatar } from '../../store/profile/profile.slice.ts';
 import { AvatarUpdate, ProfileRequest } from '../../common/types/profile.ts';
 import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
@@ -19,22 +19,41 @@ import styles from './Profile.module.css';
 
 function Profile() {
   const [open, setOpen] = useState(false);
+  const [check, setCheck] = useState(true);
+  const [check2, setCheck2] = useState(false);
   const [open2, setOpen2] = useState(false);
-  const [updateProfile, { isSuccess }] = useUpdateProfileMutation();
-  const { data, refetch } = useGetProfileQuery();
+  const [updateProfile, { isSuccess: isSuccessUpdate, error }] = useUpdateProfileMutation();
+  const { data, isSuccess, refetch } = useGetProfileQuery();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
-
   const [fields, setFields] = useState<ProfileFields>({
-    email: data?.data.email || '',
-    name: data?.data.name || '',
-    surname: data?.data.surname || '',
-    sex: data?.data.sex || '',
-    age: String(data?.data.age) || '',
-    height: String(data?.data.height) || '',
-    weight: String(data?.data.weight) || '',
-    avatar: data?.data.avatar || '',
+    email: '',
+    name: '',
+    surname: '',
+    sex: '',
+    age: '',
+    height: '',
+    weight: '',
+    avatar: '',
   });
+
+  if (isSuccess && check) {
+    setCheck(false);
+    setFields({
+      email: data?.data.email || '',
+      name: data?.data.name || '',
+      surname: data?.data.surname || '',
+      sex: data?.data.sex || '',
+      age: data?.data.age !== null ? String(data?.data.age) : '',
+      height: data?.data.height !== null ? String(data?.data.height) : '',
+      weight: data?.data.weight !== null ? String(data?.data.weight) : '',
+      avatar: data?.data.avatar || '',
+    });
+  }
+
+  useEffect(() => {
+    dispatch(setProfile(fields));
+  }, [fields]);
 
   const getValuesToUpdate = (values: ProfileFields) => {
     const tempValues: ProfileRequest = { email: values.email };
@@ -62,37 +81,43 @@ function Profile() {
     return tempValues;
   };
 
+  if (isSuccessUpdate && check2) {
+    toast('Profile updated successfully!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+    setCheck2(false);
+  }
+
+  if (error) {
+    toast('message' in error ? error && error.message : 'Profile update failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
   const onSubmit = async (values: ProfileFields) => {
     const valuesToUpdate = getValuesToUpdate(values);
     await updateProfile(valuesToUpdate);
-    if (isSuccess) {
-      setOpen(false);
-      toast('Profile updated successfully!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    } else {
-      toast('Profile update failed!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
+    setOpen(false);
+    setCheck2(true);
   };
 
   const discard = async () => {
     await refetch();
+    setCheck(true);
     setOpen2(false);
     toast('Updates have been canceled!', {
       position: 'top-center',
@@ -161,126 +186,105 @@ function Profile() {
                     />
                   )}
                 </Field>
-                <div>
-                  <Field name="name">
-                    {({ field, meta }: FieldProps) => (
-                      <Input
-                        type="text"
-                        {...field}
-                        value={fields.name}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('name', event.target.value);
-                        }}
-                        placeholder="Name"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                      />
-                    )}
-                  </Field>
-                  <Field name="surname">
-                    {({ field, meta }: FieldProps) => (
-                      <Input
-                        type="text"
-                        {...field}
-                        value={fields.surname}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('surname', event.target.value);
-                        }}
-                        placeholder="Surname"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                      />
-                    )}
-                  </Field>
-                </div>
-                <div>
-                  <Field name="age">
-                    {({ field, meta }: FieldProps) => (
-                      <Input
-                        type="text"
-                        {...field}
-                        value={fields.age}
-                        onChange={(event) => {
-                          props.handleChange(event);
-                          changeField('age', event.target.value);
-                        }}
-                        placeholder="Age"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                      />
-                    )}
-                  </Field>
-                  <div className="select-container">
-                    <select
-                      className="select-box"
+                <Field name="name">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.name}
                       onChange={(event) => {
                         props.handleChange(event);
-                        changeField('sex', event.target.value);
+                        changeField('name', event.target.value);
                       }}
-                    >
-                      <option value="" selected={fields.sex === ''} disabled hidden>
-                        Sex
-                      </option>
-                      <option value="Male" selected={fields.sex === 'Male'}>
-                        Male
-                      </option>
-                      <option value="Female" selected={fields.sex === 'Female'}>
-                        Female
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <Field name="height">
-                      {({ field, meta }: FieldProps) => (
-                        <Input
-                          type="text"
-                          {...field}
-                          value={fields.height}
-                          onChange={(event) => {
-                            props.handleChange(event);
-                            changeField('height', event.target.value);
-                          }}
-                          placeholder="Height"
-                          error={meta.touched && !!meta.error}
-                          errorText={meta.error}
-                        />
-                      )}
-                    </Field>
-                    <Field name="weight">
-                      {({ field, meta }: FieldProps) => (
-                        <Input
-                          type="text"
-                          {...field}
-                          value={fields.weight}
-                          onChange={(event) => {
-                            props.handleChange(event);
-                            changeField('weight', event.target.value);
-                          }}
-                          placeholder="Weight"
-                          error={meta.touched && !!meta.error}
-                          errorText={meta.error}
-                        />
-                      )}
-                    </Field>
-                  </div>
+                      placeholder="Name"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                    />
+                  )}
+                </Field>
+                <Field name="surname">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.surname}
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('surname', event.target.value);
+                      }}
+                      placeholder="Surname"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                    />
+                  )}
+                </Field>
+                <Field name="age">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.age}
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('age', event.target.value);
+                      }}
+                      placeholder="Age"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                    />
+                  )}
+                </Field>
+                <div className="select-container">
+                  <select
+                    className="select-box"
+                    onChange={(event) => {
+                      props.handleChange(event);
+                      changeField('sex', event.target.value);
+                    }}
+                  >
+                    <option value="" selected={fields.sex === ''} disabled hidden>
+                      Sex
+                    </option>
+                    <option value="Male" selected={fields.sex === 'Male'}>
+                      Male
+                    </option>
+                    <option value="Female" selected={fields.sex === 'Female'}>
+                      Female
+                    </option>
+                  </select>
                 </div>
-                <Dialog
-                  open={open}
-                  onClose={() => setOpen(false)}
-                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
-                  backdrop={<div className="backdrop" />}
-                  className="dialog"
-                >
-                  <p className={styles.p}>Save changes?</p>
-                  <div className="flex gap-[10px]">
-                    <button className="btn-red" type="submit">
-                      Yes
-                    </button>
-                    <DialogDismiss className="btn-black">No</DialogDismiss>
-                  </div>
-                </Dialog>
+                <Field name="height">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.height}
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('height', event.target.value);
+                      }}
+                      placeholder="Height"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                    />
+                  )}
+                </Field>
+                <Field name="weight">
+                  {({ field, meta }: FieldProps) => (
+                    <Input
+                      type="text"
+                      {...field}
+                      value={fields.weight}
+                      onChange={(event) => {
+                        props.handleChange(event);
+                        changeField('weight', event.target.value);
+                      }}
+                      placeholder="Weight"
+                      error={meta.touched && !!meta.error}
+                      errorText={meta.error}
+                    />
+                  )}
+                </Field>
                 <Dialog
                   open={open2}
                   onClose={() => setOpen2(false)}
@@ -291,6 +295,21 @@ function Profile() {
                   <p className={styles.p}>Discard changes?</p>
                   <div className="flex gap-[10px]">
                     <button className="btn-red" onClick={discard}>
+                      Yes
+                    </button>
+                    <DialogDismiss className="btn-black">No</DialogDismiss>
+                  </div>
+                </Dialog>
+                <Dialog
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                  backdrop={<div className="backdrop" />}
+                  className="dialog"
+                >
+                  <p className={styles.p}>Save changes?</p>
+                  <div className="flex gap-[10px]">
+                    <button className="btn-red" onClick={() => onSubmit(fields)}>
                       Yes
                     </button>
                     <DialogDismiss className="btn-black">No</DialogDismiss>

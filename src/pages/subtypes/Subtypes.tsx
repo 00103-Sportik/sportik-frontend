@@ -25,29 +25,16 @@ function Subtypes() {
   const [subtype, setSubtype] = useState('');
   const [open, setOpen] = useState(false);
   const { data, isSuccess } = useGetSubtypesQuery({ type: type || '' });
-  const [createSubtype] = useCreateSubtypeMutation();
-  const [delSubtype, { isSuccess: isDeleted }] = useDeleteSubtypeMutation();
+  const [createSubtype, { isSuccess: isSuccessCreate, error: errorCreate }] = useCreateSubtypeMutation();
+  const [delSubtype, { isSuccess: isSuccessDelete, error: errorDelete }] = useDeleteSubtypeMutation();
   const [subtypes, setSubtypes] = useState<SubtypeResponse[]>([]);
 
   if (isSuccess) {
     setSubtypes(data?.data.subtypes);
   }
 
-  const onSubmit = async (values: SubtypeField) => {
-    try {
-      await createSubtype({ ...values });
-      toast('Create successful!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    } catch (e) {}
-    toast('Create failed!', {
+  if (isSuccessCreate) {
+    toast('Create successful!', {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
@@ -57,33 +44,52 @@ function Subtypes() {
       progress: undefined,
       theme: 'dark',
     });
+  }
+
+  if (errorCreate) {
+    toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+
+  const onSubmit = async (values: SubtypeField) => {
+    await createSubtype({ ...values });
   };
+
+  if (isSuccessDelete) {
+    toast('Delete subtype successfully!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
+  if (errorDelete) {
+    toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete subtype failed!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+  }
 
   const deleteSubtype = async (uuid: string) => {
     await delSubtype({ uuid });
-    if (isDeleted) {
-      toast('Delete subtype successfully!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    } else {
-      toast('Delete subtype failed!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
   };
 
   return (
@@ -91,21 +97,25 @@ function Subtypes() {
       <p className={styles.p1}>{type}</p>
       <p className={styles.p2}>Subtypes</p>
       <div className={styles.subtypes}>
-        {subtypes.map((subtype) => (
-          <div className={styles.box}>
-            <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${subtype.uuid}`)}>
-              <span className={styles.boxInfoSize}>{subtype.name}</span>
-              <div>
-                <button type="button" onClick={() => deleteSubtype(subtype.uuid)} hidden={subtype.user_uuid === null}>
-                  <AiOutlineClose />
-                </button>
-                <button type="button">
-                  <AiFillEdit />
-                </button>
+        {subtypes.length !== 0 ? (
+          subtypes.map((subtype) => (
+            <div className={styles.box}>
+              <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${subtype.uuid}`)}>
+                <span className={styles.boxInfoSize}>{subtype.name}</span>
+                <div>
+                  <button type="button" onClick={() => deleteSubtype(subtype.uuid)} hidden={subtype.user_uuid === null}>
+                    <AiOutlineClose />
+                  </button>
+                  <button type="button">
+                    <AiFillEdit />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <h1 className={styles.noSubtypes}>There are no subtypes yet</h1>
+        )}
         <div className={styles.box}>
           <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
             <span className={styles.boxInfoSize}>name</span>
