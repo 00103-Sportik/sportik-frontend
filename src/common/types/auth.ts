@@ -11,12 +11,15 @@ interface AuthRequest {
 interface UpdateRequest {
   refresh_token: string;
 }
-interface UpdateResponse {
-  refresh_token: string;
-}
+
 interface SuccessAuthResponse {
   message: string;
   data: AuthResponse | {};
+}
+
+interface ActivateRequest {
+  email: string;
+  activation_code: string;
 }
 
 export const mapPathToTitle = {
@@ -29,4 +32,4 @@ export const hPathToTitle = {
   '/signup': 'Start your journey!',
 };
 
-export type { AuthRequest, UpdateRequest, UpdateResponse, AuthResponse, SuccessAuthResponse };
+export type { AuthRequest, UpdateRequest, ActivateRequest, AuthResponse, SuccessAuthResponse };
