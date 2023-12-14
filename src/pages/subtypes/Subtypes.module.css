@@ -10,32 +10,34 @@
   @apply h-[80px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray w-full;
 }
 
-.boxInfoSize {
-  font-size: 16px;
+.boxContent {
+  @apply flex flex-row;
 }
 
-.item {
-  font-size: 26px;
+.boxInfo {
+  @apply w-[350px] flex flex-col gap-[6px];
+}
+
+.boxInfoSize {
+  @apply text-[16px];
 }
 
 .p {
-  font-size: 20px;
-  text-align:center;
-  vertical-align: middle;
-  display: table-cell;
-  margin-top: 10px;
+  @apply text-xl text-center align-middle table-cell mt-2.5;
 }
 
 .p1 {
-  font-size: 26px;
+  @apply text-[26px];
 }
 
 .p2 {
-  font-size: 22px;
-  margin-right: 235px;
+  @apply text-[22px] mr-[235px];
 }
 
 .buttonsBox {
-  display: flex;
-  flex-direction: row;
+  @apply flex flex-row;
+}
+
+.sideButtonsBox {
+  @apply flex flex-row gap-[8px] mr-4;
 }

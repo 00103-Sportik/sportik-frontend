@@ -1,22 +1,15 @@
 .button-container {
-    display: inline-flex;
-    gap: 70px;
-    flex-direction: row;
+    @apply inline-flex gap-[70px] flex-row;
 }
 
 .img {
-    border-radius: 10%;
+    @apply rounded-[10%];
 }
 
 .profileH1 {
-    font-size: 26px;
-    text-align: center;
+    @apply text-[26px] text-center;
 }
 
 .p {
-    font-size: 20px;
-    text-align:center;
-    vertical-align: middle;
-    display: table-cell;
-    margin-top: 10px;
+    @apply text-xl text-center align-middle table-cell mt-2.5;
 }

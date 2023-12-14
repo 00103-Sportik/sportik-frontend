@@ -3,7 +3,7 @@
 }
 
 .box {
-  @apply flex flex-col w-[350px] flex pr-2;
+  @apply flex flex-col w-[350px] pr-2;
 }
 
 .boxItems {
@@ -15,11 +15,9 @@
 }
 
 .noApproaches {
-  @apply flex items-center justify-center h-full;
-  font-size: 18px;
+  @apply flex items-center justify-center text-[18px] h-full;
 }
 
 .buttonsBox {
-  display: flex;
-  flex-direction: row;
+  @apply flex flex-row;
 }

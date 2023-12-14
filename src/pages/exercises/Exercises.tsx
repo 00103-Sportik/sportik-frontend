@@ -64,93 +64,51 @@ function Exercises() {
         {exercises?.map((exercise) => (
           <div className={styles.box}>
             <div className={styles.boxItems} onClick={() => addToWorkout(exercise)}>
-              <span className={styles.boxInfoSize}>{exercise.name}</span>
-              <div>
-                <button type="button" onClick={() => deleteExercise(exercise.uuid || '')}>
-                  <AiOutlineClose />
-                </button>
-                <button type="button" onClick={() => navigate(`/exercises/${exercise.uuid || ''}`)}>
-                  <AiFillEdit />
-                </button>
+                <div className={styles.boxContent}>
+                    <div className={styles.boxInfo}>
+                        <span className={styles.boxInfoSize}>{exercise.name}</span>
+                    </div>
+                    <div className={styles.sideButtonsBox}>
+                        <button type="button" onClick={() => navigate(`/exercises/${exercise.uuid || ''}`)}>
+                            <AiFillEdit />
+                        </button>
+                        <button type="button" onClick={() => deleteExercise(exercise.uuid || '')}>
+                            <AiOutlineClose />
+                        </button>
+                </div>
               </div>
             </div>
           </div>
         ))}
-        <div className={styles.box}>
-          <div
-            className={styles.boxItems}
-            onClick={() =>
-              addToWorkout({
-                uuid: 'fsas234fsa3fs',
-                name: 'distant_time',
-                type: 'fsdfsd',
-                combinationParams: 'distant_time',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span className={styles.boxInfoSize}>name</span>
-            <div>
-              <button type="button">
-                <AiOutlineClose />
-              </button>
-              <button type="button">
-                <AiFillEdit />
-              </button>
-            </div>
+          <div className={styles.box}>
+              <div
+                  className={styles.boxItems}
+                  onClick={() =>
+                      addToWorkout({
+                          uuid: 'fsas234fsa3fs',
+                          name: 'distant_time',
+                          type: 'fsdfsd',
+                          combinationParams: 'distant_time',
+                          description: 'ffsdfs',
+                          approaches: [],
+                      })
+                  }
+              >
+                  <div className={styles.boxContent}>
+                      <div className={styles.boxInfo}>
+                          <span className={styles.boxInfoSize}>name</span>
+                      </div>
+                      <div className={styles.sideButtonsBox}>
+                          <button type="button">
+                              <AiFillEdit />
+                          </button>
+                          <button type="button">
+                              <AiOutlineClose />
+                          </button>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxItems}
-            onClick={() =>
-              addToWorkout({
-                uuid: 'fs2343fdsfs',
-                name: 'count_time',
-                type: 'fsdfsd',
-                combinationParams: 'count_time',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span className={styles.boxInfoSize}>name</span>
-            <div>
-              <button type="button">
-                <AiOutlineClose />
-              </button>
-              <button type="button">
-                <AiFillEdit />
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className={styles.box}>
-          <div
-            className={styles.boxItems}
-            onClick={() =>
-              addToWorkout({
-                uuid: 'fs2343fds123fs',
-                name: 'count_weight',
-                type: 'fsdfsd',
-                combinationParams: 'count_weight',
-                description: 'ffsdfs',
-                approaches: [],
-              })
-            }
-          >
-            <span className={styles.boxInfoSize}>name</span>
-            <div>
-              <button type="button">
-                <AiOutlineClose />
-              </button>
-              <button type="button">
-                <AiFillEdit />
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
       <button className="btn-black" onClick={() => goToCreateExercises()}>
         Add
