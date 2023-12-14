@@ -20,6 +20,7 @@ function Login() {
   };
 
   if (isSuccess) {
+    navigate('/');
     toast('Login successful!', {
       position: 'top-center',
       autoClose: 3000,
@@ -30,10 +31,9 @@ function Login() {
       progress: undefined,
       theme: 'dark',
     });
-    navigate('/');
   }
   if (error) {
-    toast('message' in error ? error && error.message : 'Authentication failed!', {
+    toast('Incorrect email or password', {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
@@ -72,7 +72,7 @@ function Login() {
                   )}
                 </Field>
               </div>
-              {!isValid && !!submitCount && <p className="text-error">Incorrect email or password!</p>}
+              {!isValid && !!submitCount && <p className="text-error pl-5">Incorrect email or password!</p>}
               <button
                 disabled={values.email.length === 0 || values.password.length === 0}
                 className="btn-black"
