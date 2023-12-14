@@ -1,11 +1,11 @@
 export interface ApproachRequest {
-  id?: number;
+  uuid?: number;
   param1: string;
   param2: string;
 }
 
 export interface ExerciseRequest {
-  id?: string;
+  uuid?: string;
   type: string;
   name: string;
   combinationParams: string;
@@ -21,16 +21,16 @@ export interface ExerciseResponse {
 }
 
 export interface WorkoutRequest {
-  id?: string;
+  uuid?: string;
   name: string;
-  date: number;
+  date: string;
   type: string;
   comment: string;
   exercises: ExerciseRequest[];
 }
 
 export interface MainWorkoutState {
-  id?: string;
+  uuid?: string;
   date: string;
   name: string;
   type: string;
@@ -38,7 +38,7 @@ export interface MainWorkoutState {
 }
 
 export interface WorkoutState {
-  id: string;
+  uuid: string;
   count: number;
   subtype: string;
   name: string;
@@ -49,7 +49,7 @@ export interface WorkoutState {
 }
 
 export const workoutStateInitialValues: WorkoutState = {
-  id: '',
+  uuid: '',
   count: 0,
   date: '',
   subtype: '',
@@ -76,8 +76,8 @@ export interface WorkoutsRequest {
   limit: number;
   offset: number;
   sort: string;
-  from?: number;
-  to?: number;
+  from?: string;
+  to?: string;
 }
 
 export const combinationParams = [

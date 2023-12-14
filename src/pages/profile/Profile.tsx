@@ -10,7 +10,7 @@ import logo from '../../assets/avatar.jpg';
 import React, { useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { updateAvatar } from '../../store/profile/profile.slice.ts';
-import { AvatarUpdate } from '../../common/types/profile.ts';
+import { AvatarUpdate, ProfileRequest } from '../../common/types/profile.ts';
 import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { produce } from 'immer';
@@ -30,14 +30,41 @@ function Profile() {
     name: data?.data.name || '',
     surname: data?.data.surname || '',
     sex: data?.data.sex || '',
-    age: data?.data.age || '',
-    height: data?.data.height || '',
-    weight: data?.data.weight || '',
+    age: String(data?.data.age) || '',
+    height: String(data?.data.height) || '',
+    weight: String(data?.data.weight) || '',
     avatar: data?.data.avatar || '',
   });
 
+  const getValuesToUpdate = (values: ProfileFields) => {
+    const tempValues: ProfileRequest = { email: values.email };
+    if (values.name) {
+      tempValues.name = values.name;
+    }
+    if (values.surname) {
+      tempValues.surname = values.surname;
+    }
+    if (values.sex) {
+      tempValues.sex = values.sex;
+    }
+    if (values.age) {
+      tempValues.age = Number(values.age);
+    }
+    if (values.height) {
+      tempValues.height = Number(values.height);
+    }
+    if (values.weight) {
+      tempValues.weight = Number(values.weight);
+    }
+    if (values.avatar) {
+      tempValues.avatar = values.avatar;
+    }
+    return tempValues;
+  };
+
   const onSubmit = async (values: ProfileFields) => {
-    await updateProfile(values);
+    const valuesToUpdate = getValuesToUpdate(values);
+    await updateProfile(valuesToUpdate);
     if (isSuccess) {
       setOpen(false);
       toast('Profile updated successfully!', {

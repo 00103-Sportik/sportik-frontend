@@ -1,11 +1,6 @@
 import * as Yup from 'yup';
 import { combinationParams } from '../types/workouts.ts';
 
-export type ApproachField = {
-  distant: string;
-  time: string;
-};
-
 export const approachInitialValue = [
   {
     name: combinationParams[0].name,
@@ -39,7 +34,7 @@ export const approachValidationSchema = [
           param1: Yup.string()
             .matches(/^\d{1,3}(\.\d)?$/, {
               // message: `Incorrect distant: distant must be an integer or fractional with one decimal place`,
-              message: `Must contains a digitals. Max-999.9.`,
+              message: `Must must be an integer or fractional with one decimal place. Max - 999.9`,
             })
             .nonNullable(),
           param2: Yup.string().matches(/^\d{1,2}:[0-5][0-9]:[0-5][0-9]$/, {
@@ -56,11 +51,11 @@ export const approachValidationSchema = [
         Yup.object().shape({
           param1: Yup.string()
             .matches(/^\d{1,4}$/, {
-              message: `Incorrect count: count must be an integer`,
+              message: `Count must be an integer. Max - 9999`,
             })
             .nonNullable(),
           param2: Yup.string().matches(/^\d{1,3}(\.\d)?$/, {
-            message: `Incorrect weight: weight must be an integer or fractional with one decimal place`,
+            message: `Weight must be an integer or fractional with one decimal place. Max - 999.9`,
           }),
         }),
       ),
@@ -73,11 +68,11 @@ export const approachValidationSchema = [
         Yup.object().shape({
           param1: Yup.string()
             .matches(/^\d{1,4}$/, {
-              message: `Incorrect count: count must be an integer`,
+              message: `Count must be an integer. Max - 9999`,
             })
             .nonNullable(),
           param2: Yup.string().matches(/^\d{1,2}:[0-5][0-9]:[0-5][0-9]$/, {
-            message: `Incorrect time: format - hh:mm:ss, max - 99:59:59`,
+            message: `Max - 99:59:59`,
           }),
         }),
       ),

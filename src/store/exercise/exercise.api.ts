@@ -6,7 +6,7 @@ export const exercisesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getExercises: builder.query<ExerciseResponse, Pick<ExerciseRequest, 'type'>>({
       query: ({ type }) => ({
-        url: `${EXERCISES_URL}?subtype=${type}`,
+        url: `${EXERCISES_URL}?subtype_uuid=${type}`,
         method: 'GET',
       }),
       providesTags: ['Exercises'],
@@ -27,9 +27,9 @@ export const exercisesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Exercises'],
     }),
-    deleteExercise: builder.mutation<void, Pick<ExerciseRequest, 'id'>>({
-      query: ({ id }) => ({
-        url: `${EXERCISES_URL}?id=${id}`,
+    deleteExercise: builder.mutation<void, Pick<ExerciseRequest, 'uuid'>>({
+      query: ({ uuid }) => ({
+        url: `${EXERCISES_URL}/${uuid}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Exercises'],

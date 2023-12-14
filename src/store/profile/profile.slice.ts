@@ -1,12 +1,12 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
-import { AvatarUpdate, ProfileRequest } from '../../common/types/profile.ts';
-import { profileInitialValues } from '../../common/validations/profileValidationSchema.ts';
+import { AvatarUpdate } from '../../common/types/profile.ts';
+import { ProfileFields, profileInitialValues } from '../../common/validations/profileValidationSchema.ts';
 
 export const profileSlice = createSlice({
   name: 'profile',
   initialState: profileInitialValues,
   reducers: {
-    updateAvatar: (state: Draft<ProfileRequest>, action: PayloadAction<AvatarUpdate>) => {
+    updateAvatar: (state: Draft<ProfileFields>, action: PayloadAction<AvatarUpdate>) => {
       const { avatar } = action.payload;
       state.avatar = avatar;
     },

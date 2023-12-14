@@ -3,9 +3,9 @@ export interface ProfileRequest {
   name?: string;
   surname?: string;
   sex?: string;
-  age?: string;
-  height?: string;
-  weight?: string;
+  age?: number;
+  height?: number;
+  weight?: number;
   avatar?: string;
 }
 

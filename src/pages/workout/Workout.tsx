@@ -5,7 +5,7 @@ import {
   workoutInitialValues,
   workoutValidationSchema,
 } from '../../common/validations/workoutValidationSchema.ts';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   useCreateWorkoutMutation,
   useDeleteWorkoutMutation,
@@ -31,47 +31,52 @@ import styles from './Workout.module.css';
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
   const [open, setOpen] = useState(false);
+  const [check, setCheck] = useState(true);
   const navigate = useNavigate();
   const exercisesFromStore = useAppSelector(selectExercises);
   const [exercises, setExercises] = useState<ExerciseRequest[]>(exercisesFromStore);
   const [updateWorkout, { error: updateError }] = useUpdateWorkoutMutation();
   const [createWorkout, { error: createError, data }] = useCreateWorkoutMutation();
   const [delWorkout, { error: deleteError }] = useDeleteWorkoutMutation();
-  const { id } = useParams();
+  const { uuid } = useParams();
   const dispatch = useAppDispatch();
   const workoutInfo = useAppSelector(selectFullWorkoutInfo);
+
   let [fields, setFields] = useState<WorkoutFields>({
     name: workoutInfo.name || `Новая тренировка ${count}`,
-    date: workoutInfo.date || new Date().toISOString().split('T')[0],
+    date: workoutInfo.date
+      ? new Date(workoutInfo.date).toISOString().split('T')[0]
+      : new Date().toISOString().split('T')[0],
     type: workoutInfo.type || 'strength',
     comment: workoutInfo.comment || '',
   });
 
-  if (id) {
-    dispatch(setCurrentWorkouts({ id }));
-    const { data, isSuccess } = useGetWorkoutQuery({ id });
+  if (uuid && check) {
+    dispatch(setCurrentWorkouts({ uuid }));
+    const { data, isSuccess } = useMemo(() => useGetWorkoutQuery({ uuid }));
 
     if (isSuccess) {
       [fields, setFields] = useState<WorkoutFields>({
-        id: data?.data.id || '',
+        uuid: data?.data.uuid || '',
         name: data?.data.name || `Новая тренировка ${count}`,
         date: data?.data.date
-          ? new Date(data?.data.date * 1000).toISOString().split('T')[0]
+          ? new Date(data?.data.date).toISOString().split('T')[0]
           : new Date().toISOString().split('T')[0],
         type: data?.data.type || 'strength',
         comment: data?.data.comment || '',
       });
       setExercises(data?.data?.exercises || []);
     }
+    setCheck(false);
   }
 
   const onSubmit = async (values: WorkoutFields) => {
-    if (id) {
+    if (uuid) {
       await updateWorkout({
-        id: values.id,
-        date: new Date(values.date).getTime(),
-        name: values.name,
-        type: values.type,
+        uuid: values.uuid,
+        date: fields.date,
+        name: fields.name,
+        type: fields.type,
         comment: values.comment,
         exercises: exercises,
       });
@@ -100,10 +105,10 @@ function Workout() {
       }
     } else {
       await createWorkout({
-        date: new Date(values.date).getTime(),
-        name: values.name,
-        type: values.type,
-        comment: values.comment,
+        date: fields.date,
+        name: fields.name,
+        type: fields.type,
+        comment: fields.comment,
         exercises: exercises,
       });
       if (createError) {
@@ -119,7 +124,7 @@ function Workout() {
         });
       } else {
         dispatch(discardWorkoutInfo());
-        navigate(`${WORKOUTS_URL}/${data?.data.id}`);
+        navigate(`${WORKOUTS_URL}/${data?.data.uuid}`);
         toast('Create successful!', {
           position: 'top-center',
           autoClose: 3000,
@@ -143,7 +148,7 @@ function Workout() {
   }, []);
 
   const deleteWorkout = async () => {
-    await delWorkout({ id });
+    await delWorkout({ uuid });
     if (deleteError) {
       toast('message' in deleteError ? deleteError && deleteError.message : 'Delete successful!', {
         position: 'top-center',
@@ -171,7 +176,15 @@ function Workout() {
   };
 
   const goToSubtypes = () => {
-    dispatch(setMainInfo({ id: id, date: fields.date, name: fields.name, type: fields.type, comment: fields.comment }));
+    dispatch(
+      setMainInfo({
+        uuid: uuid,
+        date: new Date(fields.date).toISOString().split('T')[0],
+        name: fields.name,
+        type: fields.type,
+        comment: fields.comment,
+      }),
+    );
     navigate(SUBTYPES_URL + '/' + fields.type);
   };
 
@@ -214,8 +227,6 @@ function Workout() {
                           changeField('date', event.target.value);
                         }}
                         placeholder="Date"
-                        min="0000-01-01"
-                        max="9999-12-31"
                         error={meta.touched && !!meta.error}
                         errorText={meta.error}
                         className="form-input-wider"
@@ -242,7 +253,7 @@ function Workout() {
                   {exercises.length !== 0 ? (
                     exercises.map((exercise) => (
                       <div className={styles.box}>
-                        <div className={styles.boxItems} onClick={() => goToApproaches(exercise.id || '')}>
+                        <div className={styles.boxItems} onClick={() => goToApproaches(exercise.uuid || '')}>
                           <div className={styles.boxContent}>
                             <div className={styles.boxInfo}>
                               <span className={styles.infoItem}>{exercise.name}</span>
@@ -288,28 +299,28 @@ function Workout() {
                     <button className="btn-black-less-margin" type="submit">
                       Save
                     </button>
-                    {id && (
+                    {uuid && (
                       <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
                         Delete
                       </button>
                     )}
                   </div>
-                  <Dialog
-                    open={open}
-                    onClose={() => setOpen(false)}
-                    getPersistentElements={() => document.querySelectorAll('.Toastify')}
-                    backdrop={<div className="backdrop" />}
-                    className="dialog"
-                  >
-                    <p className={styles.p}>Delete workout?</p>
-                    <div className={styles.buttonsBox}>
-                      <DialogDismiss className="btn-black" onClick={deleteWorkout}>
-                        Yes
-                      </DialogDismiss>
-                      <DialogDismiss className="btn-red">No</DialogDismiss>
-                    </div>
-                  </Dialog>
                 </div>
+                <Dialog
+                  open={open}
+                  onClose={() => setOpen(false)}
+                  getPersistentElements={() => document.querySelectorAll('.Toastify')}
+                  backdrop={<div className="backdrop" />}
+                  className="dialog"
+                >
+                  <p className={styles.p}>Delete workout?</p>
+                  <div className={styles.buttonsBox}>
+                    <DialogDismiss className="btn-black" onClick={deleteWorkout}>
+                      Yes
+                    </DialogDismiss>
+                    <DialogDismiss className="btn-red">No</DialogDismiss>
+                  </div>
+                </Dialog>
               </Form>
             );
           }}

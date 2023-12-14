@@ -31,38 +31,28 @@ function Registration() {
 
   const onSubmit = async (values: SignUpFields) => {
     setEmail(values.email);
-    await registration(values);
-    if (isSuccess) {
-      toast('Activation link sent to your email!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-      setOpen(true);
-      setTimerActive(!timerActive);
-    } else {
-      toast('Registration failed!', {
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
-      });
-    }
+    registration(values);
   };
+
+  if (isSuccess && !open) {
+    toast('Activation link sent to your email!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'dark',
+    });
+    setOpen(true);
+    setTimerActive(!timerActive);
+  }
 
   return (
     <>
       <Formik initialValues={signUpInitialValues} onSubmit={onSubmit} validationSchema={signUpValidationSchema}>
-        {({ isValid, submitCount }) => (
+        {() => (
           <Form>
             <div className={styles.titleLayout}>
               <h1 className={styles.titleSize}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
@@ -70,31 +60,30 @@ function Registration() {
             <div className={styles.inputsBox}>
               <Field name="email">
                 {({ field, form, meta }: FieldProps) => (
-                    <Input
-                        autoComplete="email"
-                        type="text"
-                        {...field}
-                        placeholder="Email"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                        onClear={() => form.setFieldValue('email', '')}
-                    />
+                  <Input
+                    autoComplete="email"
+                    type="text"
+                    {...field}
+                    placeholder="Email"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                    onClear={() => form.setFieldValue('email', '')}
+                  />
                 )}
               </Field>
               <Field name="password">
                 {({ field, meta }: FieldProps) => (
-                    <Input
-                        autoComplete="new-password"
-                        type="password"
-                        {...field}
-                        placeholder="Password"
-                        error={meta.touched && !!meta.error}
-                        errorText={meta.error}
-                    />
+                  <Input
+                    autoComplete="new-password"
+                    type="password"
+                    {...field}
+                    placeholder="Password"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                  />
                 )}
               </Field>
             </div>
-            {/*{!isValid && !!submitCount && <div className={styles.textError}>Введите корректный email или пароль.</div>}*/}
             <button className="btn-black" type="submit">
               Sign Up
             </button>
@@ -139,7 +128,9 @@ function Registration() {
                 )}
               </div>
             </Dialog>
-            <NavLink to="/signin" className={styles.referenceBack}>Already have an account? Sign In</NavLink>
+            <NavLink to="/signin" className={styles.referenceBack}>
+              Already have an account? Sign In
+            </NavLink>
           </Form>
         )}
       </Formik>
