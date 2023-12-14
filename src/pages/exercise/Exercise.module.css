@@ -1,5 +1,4 @@
 .buttonsBox {
-    display: flex;
-    flex-direction: row;
-    margin-top: 250px;
+    @apply flex flex-row mt-[250px];
 }
+

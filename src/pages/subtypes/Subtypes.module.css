@@ -10,12 +10,16 @@
   @apply h-[80px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray w-full;
 }
 
-.boxInfoSize {
-  @apply text-[16px]
+.boxContent {
+  @apply flex flex-row;
 }
 
-.item {
-  @apply text-[26px]
+.boxInfo {
+  @apply w-[350px] flex flex-col gap-[6px];
+}
+
+.boxInfoSize {
+  @apply text-[16px];
 }
 
 .p {
@@ -23,14 +27,19 @@
 }
 
 .p1 {
-  @apply text-[26px]
+  @apply text-[26px];
 }
 
 .p2 {
-  @apply text-[22px] mr-[235px]
+  @apply text-[22px] mr-[235px];
+
 }
 
 .buttonsBox {
   @apply flex flex-row;
+}
+
+.sideButtonsBox {
+  @apply flex flex-row gap-[8px] mr-4;
 }
 

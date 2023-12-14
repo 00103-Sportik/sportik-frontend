@@ -118,14 +118,18 @@ function Subtypes() {
         )}
         <div className={styles.box}>
           <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
-            <span className={styles.boxInfoSize}>name</span>
-            <div>
-              <button type="button">
-                <AiOutlineClose />
-              </button>
-              <button type="button">
-                <AiFillEdit />
-              </button>
+            <div className={styles.boxContent}>
+              <div className={styles.boxInfo}>
+                <span className={styles.boxInfoSize}>name</span>
+              </div>
+              <div className={styles.sideButtonsBox}>
+                <button type="button">
+                  <AiFillEdit />
+                </button>
+                <button type="button">
+                  <AiOutlineClose />
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -166,6 +166,7 @@ function Profile() {
 
   return (
     <>
+
       <h1 className={styles.profileH1}>Profile</h1>
       <div className="@apply flex flex-row">
         <Formik initialValues={profileInitialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema}>

@@ -8,28 +8,17 @@
 }
 
 .buttonsContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-}
-
-.layout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex items-center justify-center gap-5;
 }
 
 .tableConfig {
-  width: 230px;
-  height: 300px;
+  @apply w-[230px] h-[300px];
 }
 
 .tableConfig th {
-  font-weight: bold;
-  padding: 5px;
+  @apply font-[bold] p-[5px];
 }
 
 .tableConfig td {
-  padding: 15px;
+  @apply p-[15px];
 }
