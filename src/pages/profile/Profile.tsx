@@ -15,7 +15,8 @@ import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { produce } from 'immer';
 import { toast } from 'react-toastify';
-import styles from './Profile.module.css';
+import styles from '../../styles/base.module.css';
+import styles2 from './Profile.module.css';
 
 function Profile() {
   const [open, setOpen] = useState(false);
@@ -170,7 +171,7 @@ function Profile() {
   return (
     <>
 
-      <h1 className={styles.profileH1}>Profile</h1>
+      <h1 className={styles.h1}>Profile</h1>
       <div className="@apply flex flex-row">
         <Formik initialValues={profileInitialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema}>
           {(props) => {
@@ -325,7 +326,7 @@ function Profile() {
         </Formik>
         <div>
           <img
-            className={styles.img}
+            className={styles2.img}
             width={100}
             height={100}
             src={!avatar ? logo : `data:image/*;base64,${avatar}`}

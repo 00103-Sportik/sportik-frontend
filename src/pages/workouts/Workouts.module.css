@@ -1,44 +1,20 @@
-.sortFilter {
-    @apply flex items-end gap-[40px] mb-2;
+.boxItems {
+    @apply w-[350px] min-h-[120px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray;
 }
 
-.filter {
-    @apply flex;
+.sortFilter {
+    @apply flex items-end gap-[40px] mb-4;
 }
 
 .dateRange {
     @apply inline-flex;
 }
 
-.workouts {
-    @apply  w-[350px] h-[499px] flex flex-col overflow-y-auto;
+.applyButton {
+    @apply mt-14 mr-14;
 }
 
-.box {
-    @apply flex w-full min-h-[120px] pl-2 border-solid;
+/*!!!The text is subject to change!!!*/
+.selectBox {
+    @apply select-box w-[220px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear mb-0 mr-6 border-b-[white] border-[none] border-b border-solid;
 }
-
-.boxItems {
-    @apply flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray w-full;
-}
-
-.boxContent {
-    @apply flex flex-row;
-}
-
-.boxInfo {
-    @apply w-[270px] flex flex-col pl-1;
-}
-
-.infoItem {
-    @apply w-full text-[20px] gap-[6px];
-}
-
-.deleteButton {
-    @apply ml-2 mt-9;
-}
-
-.noWorkouts {
-    @apply flex items-center justify-center h-full;
-}
-

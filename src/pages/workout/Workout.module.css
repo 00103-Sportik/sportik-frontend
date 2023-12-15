@@ -1,48 +1,7 @@
-.exercises {
-  @apply w-[350px] h-[350px] flex flex-col items-center gap-[1px] overflow-y-auto mt-5;
-}
-
-.box {
-  @apply w-[340px] flex;
-}
-
-.boxItems {
-  @apply w-full flex flex-col justify-center rounded-[20px] mb-1 pl-2 bg-gray;
-}
-
-.boxInfo {
-  @apply w-[350px] flex flex-col gap-[6px] pl-3 pt-1;
-}
-
-.infoItem {
-  @apply w-full text-[16px]
-}
-
-.boxContent {
-  @apply flex flex-row;
-}
-
-.deleteButton {
-  @apply mr-5 mt-5;
-}
-
-.parameterInfoSize {
-  @apply text-[18px];
-}
-
-.noExercises {
-  @apply flex items-center justify-center text-[18px] h-full;
+.mainBox {
+  @apply w-[370px] h-[370px] flex flex-col items-center overflow-y-auto mt-2;
 }
 
 .parametersBox {
-  @apply text-[16px] ml-[10px]
-}
-
-/*------Out------*/
-.buttonsBox {
-  @apply flex flex-row;
-}
-
-.p {
-  @apply text-xl text-center align-middle table-cell mt-2.5;
+  @apply text-[16px] ml-[16px]
 }

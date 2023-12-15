@@ -1,0 +1,63 @@
+/*Main container for displaying entities*/
+.mainBox {
+    @apply w-[370px] h-[539px] flex flex-col items-center overflow-y-auto;
+}
+
+/*Element, entity*/
+.itemBox {
+    @apply w-[350px] flex pr-2;
+}
+
+/*An element containing a set of content*/
+.boxItems {
+    @apply w-[350px] min-h-[80px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray;
+}
+
+/*Boxing content *hehehe**/
+.boxContent {
+    @apply flex flex-row;
+}
+
+/*Text*/
+.boxInfo {
+    @apply w-[350px] flex flex-col gap-[6px] text-[16px];
+}
+
+/*Container for buttons on page*/
+.buttonsBox {
+    @apply flex flex-row;
+}
+
+/*Container for buttons inside the boxes*/
+.sideButtonsBox {
+    @apply flex flex-row gap-[8px] mr-4;
+}
+
+/*Used if there are no entities*/
+.noEntities {
+    @apply h-full flex items-center justify-center;
+}
+
+/*Used in pop-up windows*/
+.p {
+    @apply text-[16px] text-center align-middle table-cell mt-2.5;
+}
+
+/*Main page title*/
+.p1 {
+    @apply text-[26px];
+}
+
+/*Secondary page title*/
+.p2 {
+    @apply text-[22px] mr-[235px];
+}
+
+.h1 {
+    @apply text-[26px] text-center;
+}
+
+.deleteButton {
+    @apply flex mr-5;
+}
+

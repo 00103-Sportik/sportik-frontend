@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from './Exercises.module.css';
 import { useDeleteExerciseMutation, useGetExercisesQuery } from '../../store/exercise/exercise.api.ts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { setExercise, setSubtype } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequest, ExerciseRequestPost } from '../../common/types/workouts.ts';
 import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import styles from '../../styles/base.module.css';
 import { useEffect, useState } from 'react';
 import { selectCurrentWorkout, selectType } from '../../store/workouts/workouts.selectors.ts';
 import { useGetSubtypesQuery } from '../../store/subtype/subtype.api.ts';
@@ -82,10 +82,10 @@ function Exercises() {
     <>
       <p className={styles.p1}>{subtypeName}</p>
       <p className={styles.p2}>Exercises</p>
-      <div className={styles.exercises}>
+      <div className={styles.mainBox}>
         {exercises.length !== 0 ? (
           exercises?.map((exercise) => (
-            <div className={styles.box}>
+            <div className={styles.itemBox}>
               <div
                 className={styles.boxItems}
                 onClick={(event) => {
@@ -106,20 +106,24 @@ function Exercises() {
                   }
                 }}
               >
-                <span className={styles.boxInfoSize}>{exercise.name}</span>
-                <div hidden={exercise.user_uuid === null}>
-                  <button className="delete-exercise">
-                    <AiOutlineClose />
-                  </button>
-                  <button className="update-exercise">
-                    <AiFillEdit />
-                  </button>
+                <div className={styles.boxContent}>
+                  <div className={styles.boxInfo}>
+                    <span>{exercise.name}</span>
+                  </div>
+                  <div className={styles.sideButtonsBox}>
+                    <button className="delete-exercise">
+                      <AiFillEdit />
+                    </button>
+                    <button className="update-exercise">
+                      <AiOutlineClose />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <h1 className={styles.noExercises}>There are no exercises yet</h1>
+          <h1 className={styles.noEntities}>There are no exercises yet</h1>
         )}
         {/* <div className={styles.box}> */}
         {/*   <div */}

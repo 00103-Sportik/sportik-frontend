@@ -26,7 +26,8 @@ import { Dialog, DialogDismiss } from '@ariakit/react';
 import { setCountWorkouts, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequestPost } from '../../common/types/workouts.ts';
 import { AiOutlineClose } from 'react-icons/ai';
-import styles from './Workout.module.css';
+import styles from '../../styles/base.module.css';
+import styles2 from './Workout.module.css';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
@@ -226,7 +227,7 @@ function Workout() {
         {(props) => {
           return (
             <Form>
-              <div className={styles.parametersBox}>
+              <div className={styles2.parametersBox}>
                 <Field name="name">
                   {({ field, meta }: FieldProps) => (
                     <Input
@@ -277,10 +278,10 @@ function Workout() {
                   </select>
                 </div>
               </div>
-              <div className={styles.exercises}>
+              <div className={styles2.mainBox}>
                 {exercises.length !== 0 ? (
                   exercises.map((exercise, index) => (
-                    <div className={styles.box}>
+                    <div className={styles.itemBox}>
                       <div
                         className={styles.boxItems}
                         onClick={(event) => {
@@ -297,8 +298,8 @@ function Workout() {
                       >
                         <div className={styles.boxContent}>
                           <div className={styles.boxInfo}>
-                            <span className={styles.infoItem}>{exercise.name}</span>
-                            <span className={styles.infoItem}>approaches: {exercise?.approaches?.length}</span>
+                            <span>{exercise.name}</span>
+                            <span>approaches: {exercise?.approaches?.length}</span>
                           </div>
                           <div className={styles.deleteButton}>
                             <button className="delete-from-workout">
@@ -310,13 +311,13 @@ function Workout() {
                     </div>
                   ))
                 ) : (
-                  <h1 className={styles.noExercises}>There are no exercises yet</h1>
+                  <h1 className={styles.noEntities}>There are no exercises yet</h1>
                 )}
               </div>
               <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
                 Add
               </button>
-              <div className={styles.parametersBox}>
+              <div className={styles2.parametersBox}>
                 <Field name="comment">
                   {({ field, meta }: FieldProps) => (
                     <Input
@@ -335,17 +336,15 @@ function Workout() {
                   )}
                 </Field>
               </div>
-              <div>
-                <div className={styles.buttonsBox}>
-                  <button className="btn-black-less-margin" type="submit">
-                    Save
+              <div className={styles.buttonsBox}>
+                <button className="btn-black-less-margin" type="submit">
+                  Save
+                </button>
+                {uuid && (
+                  <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
+                    Delete
                   </button>
-                  {uuid && (
-                    <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
-                      Delete
-                    </button>
-                  )}
-                </div>
+                )}
               </div>
               <Dialog
                 open={open}

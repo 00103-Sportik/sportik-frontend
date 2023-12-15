@@ -1,4 +1,4 @@
-import styles from './Subtypes.module.css';
+import styles from '../../styles/base.module.css';
 import { EXERCISES_URL } from '../../common/constants/api.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -141,10 +141,10 @@ function Subtypes() {
     <>
       <p className={styles.p1}>{type}</p>
       <p className={styles.p2}>Subtypes</p>
-      <div className={styles.subtypes}>
+      <div className={styles.mainBox}>
         {subtypes.length !== 0 ? (
           subtypes.map((subtype) => (
-            <div className={styles.box}>
+            <div className={styles.itemBox}>
               <div
                 className={styles.boxItems}
                 onClick={(event) => {
@@ -164,31 +164,39 @@ function Subtypes() {
                   }
                 }}
               >
-                <span className={styles.boxInfoSize}>{subtype.name}</span>
-                <div hidden={subtype.user_uuid === null}>
-                  <button className="delete-subtype" hidden={subtype.user_uuid === null}>
-                    <AiOutlineClose />
-                  </button>
-                  <button className="update-subtype">
-                    <AiFillEdit />
-                  </button>
+                <div className={styles.boxContent}>
+                  <div className={styles.boxInfo}>
+                    <span>{subtype.name}</span>
+                  </div>
+                  <div hidden={subtype.user_uuid === null} className={styles.sideButtonsBox}>
+                    <button className="delete-subtype" hidden={subtype.user_uuid === null}>
+                      <AiOutlineClose />
+                    </button>
+                    <button className="update-subtype">
+                      <AiFillEdit />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <h1 className={styles.noSubtypes}>There are no subtypes yet</h1>
+          <h1 className={styles.noEntities}>There are no subtypes yet</h1>
         )}
-        {/* <div className={styles.box}> */}
+        {/* <div className={styles.itemBox}> */}
         {/*   <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}> */}
-        {/*     <span className={styles.boxInfoSize}>name</span> */}
-        {/*     <div> */}
-        {/*       <button type="button"> */}
-        {/*         <AiOutlineClose /> */}
-        {/*       </button> */}
-        {/*       <button type="button"> */}
-        {/*         <AiFillEdit /> */}
-        {/*       </button> */}
+        {/*     <div className={styles.boxContent}> */}
+        {/*       <div className={styles.boxInfo}> */}
+        {/*         <span>name</span> */}
+        {/*       </div> */}
+        {/*       <div className={styles.sideButtonsBox}> */}
+        {/*         <button type="button"> */}
+        {/*           <AiFillEdit /> */}
+        {/*         </button> */}
+        {/*         <button type="button"> */}
+        {/*           <AiOutlineClose /> */}
+        {/*         </button> */}
+        {/*       </div> */}
         {/*     </div> */}
         {/*   </div> */}
         {/* </div> */}
