@@ -9,7 +9,7 @@ export type ExerciseFields = {
   description: string;
   type: string;
   subtype: string;
-  combinationParams: string;
+  combination_params: string;
 };
 
 export const exerciseInitialValue: ExerciseFields = {
@@ -17,7 +17,7 @@ export const exerciseInitialValue: ExerciseFields = {
   description: '',
   type: '',
   subtype: '',
-  combinationParams: '',
+  combination_params: '',
 };
 
 export const exerciseValidationSchema = Yup.object().shape({
@@ -26,5 +26,5 @@ export const exerciseValidationSchema = Yup.object().shape({
     .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`)
     .required('Required field'),
   description: Yup.string().max(MAX_DESCRIPTION_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),
-  combinationParams: Yup.string().required('Required field'),
+  combination_params: Yup.string().required('Required field'),
 });

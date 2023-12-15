@@ -1,4 +1,4 @@
-import { AiFillFilter, AiOutlineClose } from 'react-icons/ai';
+import { AiFillFilter } from 'react-icons/ai';
 import React, { useEffect, useState } from 'react';
 import { useGetWorkoutsQuery } from '../../store/workouts/workouts.api.ts';
 import { Dialog } from '@ariakit/react';
@@ -9,7 +9,7 @@ import { WorkoutRequest } from '../../common/types/workouts.ts';
 import { useNavigate } from 'react-router-dom';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
-import { setCountWorkouts } from '../../store/workouts/workouts.slice.ts';
+import { discardWorkoutInfo, setCountWorkouts } from '../../store/workouts/workouts.slice.ts';
 import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
 import styles from '../../styles/base.module.css';
 import styles2 from './Workouts.module.css';
@@ -22,11 +22,18 @@ function Workouts() {
   const [to, setTo] = useState('');
   const [fetching, setFetching] = useState(true);
   const limit = 10;
-  let { data } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
-  const [workouts, setWorkouts] = useState<WorkoutRequest[]>(data?.data !== undefined ? data.data.workouts : []);
+  let { data, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+  const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const count = useAppSelector(selectWorkoutsCount);
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setWorkouts(data.data.workouts);
+      dispatch(discardWorkoutInfo());
+    }
+  }, [isSuccess, data]);
 
   const changeWorkouts = async (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -34,10 +41,10 @@ function Workouts() {
     setOffset(0);
   };
 
-  const onSubmit = async (values: DateFields) => {
-    setOffset(0);
+  const onSubmit = (values: DateFields) => {
     setFrom(values.from);
-    setTo(values.from);
+    setTo(values.to);
+    setOffset(0);
     setOpen(false);
   };
 
@@ -57,7 +64,7 @@ function Workouts() {
     if (fetching) {
       if (data !== undefined) {
         setWorkouts([...workouts, ...data.data.workouts]);
-        setOffset((prevState) => prevState + 1);
+        setOffset((prevState) => prevState + limit);
       }
       setFetching(false);
     }
@@ -80,7 +87,7 @@ function Workouts() {
           <AiFillFilter />
         </button>
         <Formik initialValues={dateInitialValues} onSubmit={onSubmit} validationSchema={dateValidationSchema}>
-          {({}) => {
+          {({ values }) => {
             return (
               <Dialog
                 open={open}
@@ -106,7 +113,7 @@ function Workouts() {
                     <Field name="to">
                       {({ field, meta }: FieldProps) => (
                         <Input
-                          type="text"
+                          type="date"
                           {...field}
                           placeholder="To"
                           error={meta.touched && !!meta.error}
@@ -116,7 +123,7 @@ function Workouts() {
                     </Field>
                   </div>
                   <div className={styles2.applyButton}>
-                    <button className="btn-black" type="submit">
+                    <button className="btn-black" onClick={() => onSubmit(values)}>
                       Apply
                     </button>
                   </div>
@@ -136,6 +143,28 @@ function Workouts() {
         </div>
       </div>
       <div className={styles.mainBox} id="box">
+        {/* <div className={styles.box}> */}
+        {/*   <div */}
+        {/*     className={styles.boxItems} */}
+        {/*     onClick={() => { */}
+        {/*       dispatch(setCountWorkouts({ count: data?.data.workouts_count || count })); */}
+        {/*       navigate(`${WORKOUTS_URL}/${1}`); */}
+        {/*     }} */}
+        {/*   > */}
+        {/*     <div className={styles.boxContent}> */}
+        {/*       <div className={styles.boxInfo}> */}
+        {/*         <span className={styles.infoItem}>name</span> */}
+        {/*         <span className={styles.infoItem}>date</span> */}
+        {/*         <span className={styles.infoItem}>type</span> */}
+        {/*       </div> */}
+        {/*       <div className={styles.deleteButton}> */}
+        {/*         <button type="button"> */}
+        {/*           <AiOutlineClose /> */}
+        {/*         </button> */}
+        {/*       </div> */}
+        {/*     </div> */}
+        {/*   </div> */}
+        {/* </div> */}
         {workouts.length !== 0 ? (
           workouts.map((workout) => (
             <div className={styles.itemBox}>
@@ -151,11 +180,6 @@ function Workouts() {
                     <span>{workout.name}</span>
                     <span>{workout.date}</span>
                     <span>{workout.type}</span>
-                  </div>
-                  <div className={styles.deleteButton}>
-                    <button type="button">
-                      <AiOutlineClose />
-                    </button>
                   </div>
                 </div>
               </div>

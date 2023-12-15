@@ -1,7 +1,7 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import {
   ApproachRequest,
-  ExerciseRequest,
+  ExerciseRequestPost,
   MainWorkoutState,
   WorkoutState,
   workoutStateInitialValues,
@@ -19,7 +19,7 @@ export const workoutsSlice = createSlice({
       const { uuid } = action.payload;
       state.uuid = uuid;
     },
-    setExercise: (state: Draft<WorkoutState>, action: PayloadAction<ExerciseRequest>) => {
+    setExercise: (state: Draft<WorkoutState>, action: PayloadAction<ExerciseRequestPost>) => {
       const exercise = action.payload;
       state.exercises = [...state.exercises, exercise];
     },

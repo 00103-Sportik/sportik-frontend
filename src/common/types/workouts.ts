@@ -1,15 +1,29 @@
 export interface ApproachRequest {
   uuid?: number;
+  param1: number;
+  param2: number;
+}
+
+export interface ApproachState {
+  uuid?: number;
   param1: string;
   param2: string;
 }
 
 export interface ExerciseRequest {
   uuid?: string;
-  type: string;
+  user_uuid?: string | null;
+  subtype_uuid: string;
   name: string;
-  combinationParams: string;
+  combination_params: string;
   description: string;
+  approaches?: ApproachRequest[];
+}
+
+export interface ExerciseRequestPost {
+  uuid: string;
+  name: string;
+  combination_params?: string;
   approaches?: ApproachRequest[];
 }
 
@@ -26,7 +40,7 @@ export interface WorkoutRequest {
   date: string;
   type: string;
   comment: string;
-  exercises: ExerciseRequest[];
+  exercises: ExerciseRequestPost[];
 }
 
 export interface MainWorkoutState {
@@ -45,7 +59,7 @@ export interface WorkoutState {
   date: string;
   type: string;
   comment: string;
-  exercises: ExerciseRequest[];
+  exercises: ExerciseRequestPost[];
 }
 
 export const workoutStateInitialValues: WorkoutState = {

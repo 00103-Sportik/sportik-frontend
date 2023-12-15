@@ -20,8 +20,8 @@ export const subtypeApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Subtypes'],
     }),
     updateSubtype: builder.mutation<void, SubtypesRequest>({
-      query: (body) => ({
-        url: SUBTYPES_URL,
+      query: ({ uuid, ...body }) => ({
+        url: `${SUBTYPES_URL}/${uuid}`,
         method: 'PUT',
         body,
       }),

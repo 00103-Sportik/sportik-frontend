@@ -22,6 +22,7 @@ function Profile() {
   const [open, setOpen] = useState(false);
   const [check, setCheck] = useState(true);
   const [check2, setCheck2] = useState(false);
+  const [check3, setCheck3] = useState(true);
   const [open2, setOpen2] = useState(false);
   const [updateProfile, { isSuccess: isSuccessUpdate, error }] = useUpdateProfileMutation();
   const { data, isSuccess, refetch } = useGetProfileQuery();
@@ -35,7 +36,7 @@ function Profile() {
     age: '',
     height: '',
     weight: '',
-    avatar: '',
+    image: '',
   });
 
   if (isSuccess && check) {
@@ -48,7 +49,7 @@ function Profile() {
       age: data?.data.age !== null ? String(data?.data.age) : '',
       height: data?.data.height !== null ? String(data?.data.height) : '',
       weight: data?.data.weight !== null ? String(data?.data.weight) : '',
-      avatar: data?.data.avatar || '',
+      image: data?.data.image || '',
     });
   }
 
@@ -57,6 +58,9 @@ function Profile() {
   }, [fields]);
 
   const getValuesToUpdate = (values: ProfileFields) => {
+    console.log(values);
+    console.log(data);
+    console.log(fields);
     const tempValues: ProfileRequest = { email: values.email };
     if (values.name) {
       tempValues.name = values.name;
@@ -76,8 +80,8 @@ function Profile() {
     if (values.weight) {
       tempValues.weight = Number(values.weight);
     }
-    if (values.avatar) {
-      tempValues.avatar = values.avatar;
+    if (values.image) {
+      tempValues.image = fields.image;
     }
     return tempValues;
   };
@@ -96,7 +100,7 @@ function Profile() {
     setCheck2(false);
   }
 
-  if (error) {
+  if (error && check3) {
     toast('message' in error ? error && error.message : 'Profile update failed!', {
       position: 'top-center',
       autoClose: 3000,
@@ -107,6 +111,7 @@ function Profile() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck3(false);
   }
 
   const onSubmit = async (values: ProfileFields) => {
@@ -159,10 +164,8 @@ function Profile() {
     const target = e.target as HTMLInputElement;
     const file = (target.files as FileList)[0];
     const base64 = (await convertBase64({ file: file })) as string;
-    const data: AvatarUpdate = {
-      avatar: base64,
-    };
-    dispatch(updateAvatar(data));
+    setFields({ ...fields, image: base64 });
+    dispatch(updateAvatar({ image: base64 } as AvatarUpdate));
   }
 
   return (
@@ -247,11 +250,11 @@ function Profile() {
                     <option value="" selected={fields.sex === ''} disabled hidden>
                       Sex
                     </option>
-                    <option value="Male" selected={fields.sex === 'Male'}>
-                      Male
+                    <option value="male" selected={fields.sex === 'male'}>
+                      male
                     </option>
-                    <option value="Female" selected={fields.sex === 'Female'}>
-                      Female
+                    <option value="female" selected={fields.sex === 'female'}>
+                      female
                     </option>
                   </select>
                 </div>

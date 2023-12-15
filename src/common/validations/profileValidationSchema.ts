@@ -8,7 +8,7 @@ export type ProfileFields = {
   age: string;
   height: string;
   weight: string;
-  avatar: string;
+  image: string;
 };
 
 export const profileInitialValues: ProfileFields = {
@@ -19,7 +19,7 @@ export const profileInitialValues: ProfileFields = {
   age: '',
   height: '',
   weight: '',
-  avatar: '',
+  image: '',
 };
 
 const MIN_NAME_LENGTH = 2;
@@ -59,5 +59,5 @@ export const profileValidationSchema = Yup.object().shape({
   weight: Yup.string().matches(containOneCharacterAfterComma, {
     message: `Weight must be an integer or fractional with one decimal place (min - ${MIN_WEIGHT}, max - ${MAX_WEIGHT})`,
   }),
-  avatar: Yup.string(),
+  image: Yup.string(),
 });
