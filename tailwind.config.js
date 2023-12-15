@@ -46,7 +46,7 @@ export default {
           '@apply translate-y-0': {},
         },
         '.dialog': {
-          '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
+          '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col justify-center gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
             {},
         },
         '.text-err': {
@@ -73,7 +73,7 @@ export default {
           '@apply btn w-[140px] h-[43px] bg-[#2B2E38] border-[#2B2E38] mt-3': {},
         },
         '.btn-black-filter': {
-          '@apply btn w-[110px] bg-[#2B2E38] border-[#2B2E38] mb-0': {},
+          '@apply btn w-[110px] bg-[#2B2E38] border-[#2B2E38] mb-0 ml-6': {},
         },
         '.btn-black-less-margin': {
           '@apply btn bg-[#2B2E38] border-[#2B2E38] mt-5': {},

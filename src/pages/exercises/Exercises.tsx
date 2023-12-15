@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from './Exercises.module.css';
 import { useDeleteExerciseMutation, useGetExercisesQuery } from '../../store/exercise/exercise.api.ts';
 import { useAppDispatch } from '../../store/hooks.ts';
 import { setExercise, setSubtype } from '../../store/workouts/workouts.slice.ts';
 import { ExerciseRequest } from '../../common/types/workouts.ts';
 import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import styles from '../../styles/base.module.css';
 
 function Exercises() {
   const navigate = useNavigate();
@@ -60,13 +60,13 @@ function Exercises() {
     <>
       <p className={styles.p1}>{type}</p>
       <p className={styles.p2}>Exercises</p>
-      <div className={styles.exercises}>
+      <div className={styles.mainBox}>
         {exercises?.map((exercise) => (
-          <div className={styles.box}>
+          <div className={styles.itemBox}>
             <div className={styles.boxItems} onClick={() => addToWorkout(exercise)}>
                 <div className={styles.boxContent}>
                     <div className={styles.boxInfo}>
-                        <span className={styles.boxInfoSize}>{exercise.name}</span>
+                        <span>{exercise.name}</span>
                     </div>
                     <div className={styles.sideButtonsBox}>
                         <button type="button" onClick={() => navigate(`/exercises/${exercise.uuid || ''}`)}>
@@ -80,7 +80,7 @@ function Exercises() {
             </div>
           </div>
         ))}
-          <div className={styles.box}>
+          <div className={styles.itemBox}>
               <div
                   className={styles.boxItems}
                   onClick={() =>
@@ -96,7 +96,7 @@ function Exercises() {
               >
                   <div className={styles.boxContent}>
                       <div className={styles.boxInfo}>
-                          <span className={styles.boxInfoSize}>name</span>
+                          <span>name</span>
                       </div>
                       <div className={styles.sideButtonsBox}>
                           <button type="button">

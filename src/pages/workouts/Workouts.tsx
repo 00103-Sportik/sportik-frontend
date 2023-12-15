@@ -11,7 +11,8 @@ import { WORKOUTS_URL } from '../../common/constants/api.ts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import { setCountWorkouts } from '../../store/workouts/workouts.slice.ts';
 import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
-import styles from './Workouts.module.css';
+import styles from '../../styles/base.module.css';
+import styles2 from './Workouts.module.css';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
@@ -74,7 +75,7 @@ function Workouts() {
 
   return (
     <>
-      <div className={styles.sortFilter}>
+      <div className={styles2.sortFilter}>
         <button className="btn-black-filter" onClick={() => setOpen(true)}>
           <AiFillFilter />
         </button>
@@ -88,8 +89,8 @@ function Workouts() {
                 backdrop={<div className="backdrop" />}
                 className="dialog"
               >
-                <p className="description">Enter the dates filter range:</p>
-                <Form className={styles.dateRange}>
+                <p className={styles.p}>Enter the dates filter range:</p>
+                <Form className={styles2.dateRange}>
                   <div>
                     <Field name="from">
                       {({ field, meta }: FieldProps) => (
@@ -114,16 +115,18 @@ function Workouts() {
                       )}
                     </Field>
                   </div>
-                  <button className="btn-black" type="submit">
-                    Apply
-                  </button>
+                  <div className={styles2.applyButton}>
+                    <button className="btn-black" type="submit">
+                      Apply
+                    </button>
+                  </div>
                 </Form>
               </Dialog>
             );
           }}
         </Formik>
         <div className="select-container">
-          <select className="select-box-narrow" onChange={changeWorkouts}>
+          <select className={styles2.selectBox} onChange={changeWorkouts}>
             <option value="new" selected>
               Newest
             </option>
@@ -132,34 +135,12 @@ function Workouts() {
           </select>
         </div>
       </div>
-      <div className={styles.workouts} id="box">
-        <div className={styles.box}>
-          <div
-            className={styles.boxItems}
-            onClick={() => {
-              dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
-              navigate(`${WORKOUTS_URL}/${1}`);
-            }}
-          >
-            <div className={styles.boxContent}>
-              <div className={styles.boxInfo}>
-                <span className={styles.infoItem}>name</span>
-                <span className={styles.infoItem}>date</span>
-                <span className={styles.infoItem}>type</span>
-              </div>
-              <div className={styles.deleteButton}>
-                <button type="button">
-                  <AiOutlineClose />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className={styles.mainBox} id="box">
         {workouts.length !== 0 ? (
           workouts.map((workout) => (
-            <div className={styles.box}>
+            <div className={styles.itemBox}>
               <div
-                className={styles.boxItems}
+                className={styles2.boxItems}
                 onClick={() => {
                   dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
                   navigate(`${WORKOUTS_URL}/${workout.uuid}`);
@@ -167,9 +148,9 @@ function Workouts() {
               >
                 <div className={styles.boxContent}>
                   <div className={styles.boxInfo}>
-                    <span className={styles.infoItem}>{workout.name}</span>
-                    <span className={styles.infoItem}>{workout.date}</span>
-                    <span className={styles.infoItem}>{workout.type}</span>
+                    <span>{workout.name}</span>
+                    <span>{workout.date}</span>
+                    <span>{workout.type}</span>
                   </div>
                   <div className={styles.deleteButton}>
                     <button type="button">
@@ -181,11 +162,11 @@ function Workouts() {
             </div>
           ))
         ) : (
-          <h1 className={styles.noWorkouts}>There are no workouts yet</h1>
+          <h1 className={styles.noEntities}>There are no workouts yet</h1>
         )}
       </div>
       <button
-        className="btn-black"
+        className="btn-black-less-margin"
         onClick={() => {
           dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
           navigate(WORKOUTS_URL);

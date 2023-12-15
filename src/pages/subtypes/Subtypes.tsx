@@ -1,4 +1,4 @@
-import styles from './Subtypes.module.css';
+import styles from '../../styles/base.module.css';
 import { EXERCISES_URL } from '../../common/constants/api.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
@@ -96,31 +96,33 @@ function Subtypes() {
     <>
       <p className={styles.p1}>{type}</p>
       <p className={styles.p2}>Subtypes</p>
-      <div className={styles.subtypes}>
+      <div className={styles.mainBox}>
         {subtypes.length !== 0 ? (
           subtypes.map((subtype) => (
-            <div className={styles.box}>
+            <div className={styles.itemBox}>
               <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${subtype.uuid}`)}>
-                <span className={styles.boxInfoSize}>{subtype.name}</span>
-                <div>
-                  <button type="button" onClick={() => deleteSubtype(subtype.uuid)} hidden={subtype.user_uuid === null}>
-                    <AiOutlineClose />
-                  </button>
-                  <button type="button">
-                    <AiFillEdit />
-                  </button>
+                <div className={styles.boxContent}>
+                  <span>{subtype.name}</span>
+                  <div className={styles.sideButtonsBox}>
+                    <button type="button" onClick={() => deleteSubtype(subtype.uuid)} hidden={subtype.user_uuid === null}>
+                      <AiOutlineClose />
+                    </button>
+                    <button type="button">
+                      <AiFillEdit />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <h1 className={styles.noSubtypes}>There are no subtypes yet</h1>
+          <h1 className={styles.noEntities}>There are no subtypes yet</h1>
         )}
-        <div className={styles.box}>
+        <div className={styles.itemBox}>
           <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}>
             <div className={styles.boxContent}>
               <div className={styles.boxInfo}>
-                <span className={styles.boxInfoSize}>name</span>
+                <span>name</span>
               </div>
               <div className={styles.sideButtonsBox}>
                 <button type="button">

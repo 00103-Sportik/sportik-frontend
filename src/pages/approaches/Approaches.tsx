@@ -1,4 +1,5 @@
-import styles from './Approaches.module.css';
+import styles from '../../styles/base.module.css';
+import styles2 from './Approaches.module.css'
 import { useParams } from 'react-router-dom';
 import { Input } from '../../common/components/input/Input.tsx';
 import { useState } from 'react';
@@ -57,89 +58,95 @@ function Approaches() {
         >
           {(props) => (
             <Form>
-              <div className={styles.approaches}>
-                <div className={styles.box}>
-                  {approaches.length !== 0 ? (
+              <div className={styles.mainBox}>
+                {approaches.length !== 0 ? (
                     approaches.map((approach, index) => (
-                      <div key={index} className={styles.boxItems}>
-                        <Field name={`fields.${index}.param1`} className={styles.boxInfo}>
-                          {({ meta, field }: FieldProps) => (
-                            <Input
-                              type="text"
-                              {...field}
-                              value={approach.param1}
-                              onChange={(e) => {
-                                const tempApproach = { ...approach };
-                                tempApproach.param1 = e.target.value;
-                                const tempApproaches = [...approaches];
-                                tempApproaches[index] = tempApproach;
-                                setApproachesToState(tempApproaches);
-                                props.handleChange(e);
-                              }}
-                              placeholder={combParams.param1}
-                              error={meta.touched && !!meta.error}
-                              errorText={meta.error}
-                              className="form-input-narrow w-[150px]"
-                            ></Input>
-                          )}
-                        </Field>
-                        <Field name={`fields.${index}.param2`} className={styles.boxInfo}>
-                          {({ meta, field }: FieldProps) =>
-                            combParams.param2 === 'Time' ? (
-                              <Input
-                                id={`time.${index}`}
-                                type="text"
-                                {...field}
-                                value={approach.param2}
-                                onChange={(e) => {
-                                  const tempApproach = { ...approach };
-                                  const element = document.getElementById(`time.${index}`);
-                                  const maskOptions = {
-                                    mask: '00:00:00',
-                                  };
-                                  // @ts-ignore
-                                  IMask(element, maskOptions);
-                                  tempApproach.param2 = e.target.value;
-                                  const tempApproaches = [...approaches];
-                                  tempApproaches[index] = tempApproach;
-                                  setApproachesToState(tempApproaches);
-                                  props.handleChange(e);
-                                }}
-                                placeholder={combParams.param2}
-                                error={meta.touched && !!meta.error}
-                                errorText={meta.error}
-                                className="form-input-narrow w-[150px]"
-                              ></Input>
-                            ) : (
-                              <Input
-                                type="text"
-                                {...field}
-                                value={approach.param2}
-                                onChange={(e) => {
-                                  const tempApproach = { ...approach };
-                                  tempApproach.param2 = e.target.value;
-                                  const tempApproaches = [...approaches];
-                                  tempApproaches[index] = tempApproach;
-                                  setApproachesToState(tempApproaches);
-                                  props.handleChange(e);
-                                }}
-                                placeholder={combParams.param2}
-                                error={meta.touched && !!meta.error}
-                                errorText={meta.error}
-                                className="form-input-narrow w-[150px]"
-                              ></Input>
-                            )
-                          }
-                        </Field>
-                        <button type="button" onClick={() => deleteApproach(index)}>
-                          <AiOutlineClose />
-                        </button>
-                      </div>
+                        <div className={styles.itemBox}>
+                          <div key={index} className={styles.boxItems}>
+                            <div className={styles.boxContent}>
+                              <div className={styles2.boxInfo}>
+                                <Field name={`fields.${index}.param1`}>
+                                  {({ meta, field }: FieldProps) => (
+                                      <Input
+                                          type="text"
+                                          {...field}
+                                          value={approach.param1}
+                                          onChange={(e) => {
+                                            const tempApproach = { ...approach };
+                                            tempApproach.param1 = e.target.value;
+                                            const tempApproaches = [...approaches];
+                                            tempApproaches[index] = tempApproach;
+                                            setApproachesToState(tempApproaches);
+                                            props.handleChange(e);
+                                          }}
+                                          placeholder={combParams.param1}
+                                          error={meta.touched && !!meta.error}
+                                          errorText={meta.error}
+                                          className="form-input-narrow w-[150px]"
+                                      ></Input>
+                                  )}
+                                </Field>
+                                <Field name={`fields.${index}.param2`}>
+                                  {({ meta, field }: FieldProps) =>
+                                      combParams.param2 === 'Time' ? (
+                                          <Input
+                                              id={`time.${index}`}
+                                              type="text"
+                                              {...field}
+                                              value={approach.param2}
+                                              onChange={(e) => {
+                                                const tempApproach = { ...approach };
+                                                const element = document.getElementById(`time.${index}`);
+                                                const maskOptions = {
+                                                  mask: '00:00:00',
+                                                };
+                                                // @ts-ignore
+                                                IMask(element, maskOptions);
+                                                tempApproach.param2 = e.target.value;
+                                                const tempApproaches = [...approaches];
+                                                tempApproaches[index] = tempApproach;
+                                                setApproachesToState(tempApproaches);
+                                                props.handleChange(e);
+                                              }}
+                                              placeholder={combParams.param2}
+                                              error={meta.touched && !!meta.error}
+                                              errorText={meta.error}
+                                              className="form-input-narrow w-[150px]"
+                                          ></Input>
+                                      ) : (
+                                          <Input
+                                              type="text"
+                                              {...field}
+                                              value={approach.param2}
+                                              onChange={(e) => {
+                                                const tempApproach = { ...approach };
+                                                tempApproach.param2 = e.target.value;
+                                                const tempApproaches = [...approaches];
+                                                tempApproaches[index] = tempApproach;
+                                                setApproachesToState(tempApproaches);
+                                                props.handleChange(e);
+                                              }}
+                                              placeholder={combParams.param2}
+                                              error={meta.touched && !!meta.error}
+                                              errorText={meta.error}
+                                              className="form-input-narrow w-[150px]"
+                                          ></Input>
+                                      )
+                                  }
+                                </Field>
+                              </div>
+                              <div className={styles.sideButtonsBox}>
+                                <button type="button" onClick={() => deleteApproach(index)}>
+                                  <AiOutlineClose />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     ))
-                  ) : (
-                    <h1 className={styles.noApproaches}>There are no approaches yet</h1>
-                  )}
-                </div>
+                ) : (
+                    <h1 className={styles.noEntities}>There are no approaches yet</h1>
+                )}
               </div>
               <div className={styles.buttonsBox}>
                 <button className="btn-black" type="submit">
