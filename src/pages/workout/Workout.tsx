@@ -33,14 +33,15 @@ import { IMask } from 'react-imask';
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
   const [open, setOpen] = useState(false);
-  const [check, setCheck] = useState(false);
   const navigate = useNavigate();
   const exercisesFromStore = useAppSelector(selectExercises);
   const [exercises, setExercises] = useState<ExerciseRequestPost[]>(exercisesFromStore);
-  const [updateWorkout, { error: updateError, isSuccess: isSuccessUpdate }] = useUpdateWorkoutMutation();
-  const [createWorkout, { error: createError, isSuccess: isSuccesCreate, data: dataCreate }] =
+  const [updateWorkout, { error: errorUpdate, isSuccess: isSuccessUpdate, isError: isErrorUpdate }] =
+    useUpdateWorkoutMutation();
+  const [createWorkout, { error: errorCreate, isSuccess: isSuccessCreate, data: dataCreate, isError: isErrorCreate }] =
     useCreateWorkoutMutation();
-  const [delWorkout, { error: deleteError, isSuccess: isSuccessDelete }] = useDeleteWorkoutMutation();
+  const [delWorkout, { error: errorDelete, isSuccess: isSuccessDelete, isError: isErrorDelete }] =
+    useDeleteWorkoutMutation();
   const { uuid } = useParams();
   const dispatch = useAppDispatch();
   const workoutInfo = useAppSelector(selectFullWorkoutInfo);
@@ -76,62 +77,98 @@ function Workout() {
     }
   }, [uuid]);
 
-  if (updateError && check) {
-    toast('message' in updateError ? updateError && updateError.message : 'Update failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessCreate && dataCreate) {
+      navigate(`${WORKOUTS_URL}/${dataCreate?.data.uuid}`);
+      dispatch(setCountWorkouts({ count: count + 1 }));
+      toast('Created successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessCreate, dataCreate, count]);
 
-  if (isSuccessUpdate && check) {
-    toast('Update successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessUpdate) {
+      toast('Updated successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessUpdate]);
 
-  if (createError && check) {
-    toast('message' in createError ? createError && createError.message : 'Create failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessDelete) {
+      navigate('/');
+      toast('Deleted successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessDelete]);
 
-  if (isSuccesCreate && check) {
-    navigate(`${WORKOUTS_URL}/${dataCreate?.data.uuid}`);
-    toast('Create successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isErrorCreate && errorCreate) {
+      toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorCreate, isErrorCreate]);
+
+  useEffect(() => {
+    if (isErrorUpdate && errorUpdate) {
+      toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorUpdate, isErrorUpdate]);
+
+  useEffect(() => {
+    if (errorDelete && isErrorDelete) {
+      toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorDelete, isErrorDelete]);
 
   const convertDate = (date: string) => {
     const parts = date.split('.');
@@ -160,7 +197,6 @@ function Workout() {
         exercises: toExercises,
       });
     }
-    setCheck(true);
   };
 
   const changeField = useCallback((field: keyof WorkoutFields, value: string) => {
@@ -171,39 +207,8 @@ function Workout() {
     );
   }, []);
 
-  if (deleteError && check) {
-    toast('message' in deleteError ? deleteError && deleteError.message : 'Delete failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
-
-  if (isSuccessDelete && check) {
-    dispatch(setCountWorkouts({ count }));
-    navigate('/');
-    toast('Delete successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
-
   const deleteWorkout = async () => {
     await delWorkout({ uuid });
-    setCheck(true);
   };
 
   const goToSubtypes = () => {
@@ -314,7 +319,7 @@ function Workout() {
                         <div className={styles.boxContent}>
                           <div className={styles.boxInfo}>
                             <span>{exercise.name}</span>
-                            <span>approaches: {exercise?.approaches?.length}</span>
+                            <span>approaches: {exercise?.approaches?.length || 0}</span>
                           </div>
                           <div className={styles.deleteButton}>
                             <button className="delete-from-workout">

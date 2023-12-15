@@ -23,14 +23,16 @@ import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 function Subtypes() {
   const navigate = useNavigate();
   const { type } = useParams();
-  const [check, setCheck] = useState(false);
   const [subtype, setSubtype] = useState('');
   const [open, setOpen] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const { data, isSuccess } = useGetSubtypesQuery({ type: type || '' });
-  const [createSubtype, { isSuccess: isSuccessCreate, error: errorCreate }] = useCreateSubtypeMutation();
-  const [updateSubtype, { isSuccess: isSuccessUpdate, error: errorUpdate }] = useUpdateSubtypeMutation();
-  const [delSubtype, { isSuccess: isSuccessDelete, error: errorDelete }] = useDeleteSubtypeMutation();
+  const [createSubtype, { isSuccess: isSuccessCreate, error: errorCreate, isError: isErrorCreate }] =
+    useCreateSubtypeMutation();
+  const [updateSubtype, { isSuccess: isSuccessUpdate, error: errorUpdate, isError: isErrorUpdate }] =
+    useUpdateSubtypeMutation();
+  const [delSubtype, { isSuccess: isSuccessDelete, error: errorDelete, isError: isErrorDelete }] =
+    useDeleteSubtypeMutation();
   const [subtypes, setSubtypes] = useState<SubtypeResponse[]>([]);
   const [uuid, setUuid] = useState('');
 
@@ -40,101 +42,108 @@ function Subtypes() {
     }
   }, [isSuccess, data]);
 
-  if (isSuccessCreate && check) {
-    toast('Create successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessCreate) {
+      toast('Created successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessCreate]);
 
-  if (errorCreate && check) {
-    toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessUpdate) {
+      setSubtype('');
+      toast('Updated successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessUpdate]);
 
-  if (isSuccessUpdate && check) {
-    toast('Update successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessDelete) {
+      toast('Deleted successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessDelete]);
 
-  if (errorUpdate && check) {
-    toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isErrorCreate && errorCreate) {
+      toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorCreate, isErrorCreate]);
+
+  useEffect(() => {
+    if (isErrorUpdate && errorUpdate) {
+      toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorUpdate, isErrorUpdate]);
+
+  useEffect(() => {
+    if (errorDelete && isErrorDelete) {
+      toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorDelete, isErrorDelete]);
 
   const onSubmit = async (values: SubtypeField) => {
     if (isUpdate) {
+      setIsUpdate(false);
       await updateSubtype({ type: type || '', name: values.name, uuid });
     } else {
       await createSubtype({ name: values.name, type: type || '' });
     }
-    setCheck(true);
   };
-
-  if (isSuccessDelete && check) {
-    toast('Delete subtype successfully!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
-  if (errorDelete && check) {
-    toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete subtype failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
 
   const deleteSubtype = async (uuid: string) => {
     await delSubtype({ uuid });
-    setCheck(true);
   };
 
   return (

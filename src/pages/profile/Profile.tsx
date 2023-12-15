@@ -20,11 +20,9 @@ import styles2 from './Profile.module.css';
 
 function Profile() {
   const [open, setOpen] = useState(false);
-  const [check, setCheck] = useState(true);
-  const [check2, setCheck2] = useState(false);
-  const [check3, setCheck3] = useState(true);
   const [open2, setOpen2] = useState(false);
-  const [updateProfile, { isSuccess: isSuccessUpdate, error }] = useUpdateProfileMutation();
+  const [updateProfile, { isSuccess: isSuccessUpdate, error: errorUpdate, isError: isErrorUpdate }] =
+    useUpdateProfileMutation();
   const { data, isSuccess, refetch } = useGetProfileQuery();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
@@ -39,28 +37,26 @@ function Profile() {
     image: '',
   });
 
-  if (isSuccess && check) {
-    setCheck(false);
-    setFields({
-      email: data?.data.email || '',
-      name: data?.data.name || '',
-      surname: data?.data.surname || '',
-      sex: data?.data.sex || '',
-      age: data?.data.age !== null ? String(data?.data.age) : '',
-      height: data?.data.height !== null ? String(data?.data.height) : '',
-      weight: data?.data.weight !== null ? String(data?.data.weight) : '',
-      image: data?.data.image || '',
-    });
-  }
+  useEffect(() => {
+    if (isSuccess && data) {
+      setFields({
+        email: data?.data.email || '',
+        name: data?.data.name || '',
+        surname: data?.data.surname || '',
+        sex: data?.data.sex || '',
+        age: data?.data.age !== null ? String(data?.data.age) : '',
+        height: data?.data.height !== null ? String(data?.data.height) : '',
+        weight: data?.data.weight !== null ? String(data?.data.weight) : '',
+        image: data?.data.image || '',
+      });
+    }
+  }, [isSuccess, data]);
 
   useEffect(() => {
     dispatch(setProfile(fields));
   }, [fields]);
 
   const getValuesToUpdate = (values: ProfileFields) => {
-    console.log(values);
-    console.log(data);
-    console.log(fields);
     const tempValues: ProfileRequest = { email: values.email };
     if (values.name) {
       tempValues.name = values.name;
@@ -86,46 +82,46 @@ function Profile() {
     return tempValues;
   };
 
-  if (isSuccessUpdate && check2) {
-    toast('Profile updated successfully!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck2(false);
-  }
+  useEffect(() => {
+    if (isSuccessUpdate) {
+      toast('Updated successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessUpdate]);
 
-  if (error && check3) {
-    toast('message' in error ? error && error.message : 'Profile update failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck3(false);
-  }
+  useEffect(() => {
+    if (isErrorUpdate && errorUpdate) {
+      toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorUpdate, isErrorUpdate]);
 
   const onSubmit = async (values: ProfileFields) => {
     const valuesToUpdate = getValuesToUpdate(values);
     await updateProfile(valuesToUpdate);
     setOpen(false);
-    setCheck2(true);
   };
 
   const discard = async () => {
     await refetch();
-    setCheck(true);
     setOpen2(false);
-    toast('Updates have been canceled!', {
+    toast('Updates cancelled!', {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,
@@ -170,7 +166,6 @@ function Profile() {
 
   return (
     <>
-
       <h1 className={styles.h1}>Profile</h1>
       <div className="@apply flex flex-row">
         <Formik initialValues={profileInitialValues} onSubmit={onSubmit} validationSchema={profileValidationSchema}>

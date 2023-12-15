@@ -13,6 +13,7 @@ import { useGetSubtypesQuery } from '../../store/subtype/subtype.api.ts';
 import { combinationParams, ExerciseRequest } from '../../common/types/workouts.ts';
 import {
   useCreateExerciseMutation,
+  useDeleteExerciseMutation,
   useGetExercisesQuery,
   useUpdateExerciseMutation,
 } from '../../store/exercise/exercise.api.ts';
@@ -26,12 +27,15 @@ function Exercise() {
   const navigate = useNavigate();
   const { uuid } = useParams();
   const type = useAppSelector(selectType);
-  const [check, setCheck] = useState(true);
   const subtype = useAppSelector(selectSubtype);
   const { data: dataExercise, isSuccess: isSuccessExercise } = useGetExercisesQuery({ subtype_uuid: subtype });
   const [subtypes, setSubtypes] = useState<SubtypeResponse[]>([]);
-  const [addExercise, { isSuccess: isSuccessCreate, error }] = useCreateExerciseMutation();
-  const [updateExercise, { isSuccess: isSuccessUpdate, error: errorUpdate }] = useUpdateExerciseMutation();
+  const [addExercise, { isSuccess: isSuccessCreate, error: errorCreate, isError: isErrorCreate }] =
+    useCreateExerciseMutation();
+  const [updateExercise, { isSuccess: isSuccessUpdate, error: errorUpdate, isError: isErrorUpdate }] =
+    useUpdateExerciseMutation();
+  const [delExercise, { isSuccess: isSuccessDelete, error: errorDelete, isError: isErrorDelete }] =
+    useDeleteExerciseMutation();
   const [fields, setFields] = useState<ExerciseFields>({
     name: '',
     description: '',
@@ -48,7 +52,7 @@ function Exercise() {
         name: exercise.name,
         description: exercise.description,
         type: type || '',
-        subtype: subtype || '',
+        subtype: exercise.subtype_uuid,
         combination_params: exercise.combination_params,
       });
     }
@@ -60,67 +64,105 @@ function Exercise() {
     }
   }, [isSuccess, data]);
 
-  if (isSuccessCreate && check) {
-    navigate(`${EXERCISES_URL}/${subtype}`);
-    toast('Create successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessCreate) {
+      navigate(`${EXERCISES_URL}/${subtype}`);
+      toast('Created successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessCreate]);
 
-  if (error && check) {
-    toast('Create failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessUpdate) {
+      navigate(`${EXERCISES_URL}/${subtype}`);
+      toast('Updated successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessUpdate]);
 
-  if (isSuccessUpdate && check) {
-    navigate(`${EXERCISES_URL}/${subtype}`);
-    toast('Update successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessDelete) {
+      navigate(`${EXERCISES_URL}/${subtype}`);
+      toast('Deleted successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessDelete]);
 
-  if (errorUpdate && check) {
-    toast('Update failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isErrorCreate && errorCreate) {
+      toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorCreate, isErrorCreate]);
+
+  useEffect(() => {
+    if (isErrorUpdate && errorUpdate) {
+      toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorUpdate, isErrorUpdate]);
+
+  useEffect(() => {
+    if (errorDelete && isErrorDelete) {
+      toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorDelete, isErrorDelete]);
 
   const getValues = (values: ExerciseFields) => {
-    const { type: _, subtype: name, ...val } = values;
-    return { ...val, subtype_uuid: subtype, uuid };
+    const { type: _, subtype: subtype_uuid, ...val } = values;
+    if (uuid) {
+      return { ...val, subtype_uuid, uuid };
+    }
+    return { ...val, subtype_uuid };
   };
 
   const onSubmit = async (values: ExerciseFields) => {
@@ -130,7 +172,6 @@ function Exercise() {
     } else {
       await addExercise(toCreate);
     }
-    setCheck(true);
   };
 
   const changeField = useCallback((field: keyof ExerciseFields, value: string) => {
@@ -140,6 +181,10 @@ function Exercise() {
       }),
     );
   }, []);
+
+  const deleteExercise = async (uuid: string) => {
+    await delExercise({ uuid });
+  };
 
   return (
     <>
@@ -244,6 +289,11 @@ function Exercise() {
                 >
                   Save
                 </button>
+                {uuid && (
+                  <button className="btn-red-less-margin" onClick={() => deleteExercise(uuid)}>
+                    Delete
+                  </button>
+                )}
               </div>
             </Form>
           );

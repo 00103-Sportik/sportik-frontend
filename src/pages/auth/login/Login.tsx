@@ -21,7 +21,7 @@ function Login() {
 
   if (isSuccess) {
     navigate('/');
-    toast('Login successful!', {
+    toast('Login successfully!', {
       position: 'top-center',
       autoClose: 3000,
       hideProgressBar: false,

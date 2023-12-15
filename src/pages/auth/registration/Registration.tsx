@@ -18,8 +18,9 @@ function Registration() {
   const [seconds, setSeconds] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [email, setEmail] = useState('');
-  const [registration, { isSuccess, error }] = useRegistrationMutation();
-  const [resendEmail, { isSuccess: isSuccessResend, error: errorResend }] = useResendEmailMutation();
+  const [registration, { isSuccess, error, isError }] = useRegistrationMutation();
+  const [resendEmail, { isSuccess: isSuccessResend, error: errorResend, isError: isErrorResend }] =
+    useResendEmailMutation();
 
   useEffect(() => {
     if (seconds > 0 && timerActive) {
@@ -29,66 +30,73 @@ function Registration() {
     }
   }, [seconds, timerActive]);
 
+  useEffect(() => {
+    if (isError && error) {
+      toast('message' in error ? error && error.message : 'Registration failed! Incorrect email or password', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [error, isError]);
+
+  useEffect(() => {
+    if (isErrorResend && errorResend) {
+      toast('message' in errorResend ? errorResend && errorResend.message : 'Resend failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorResend, isErrorResend]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('Registration successfully! Activation link sent to your email!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      setOpen(true);
+      setTimerActive(!timerActive);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isSuccessResend) {
+      toast('Activation link sent to your email!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      setTimerActive(!timerActive);
+    }
+  }, [isSuccessResend]);
+
   const onSubmit = async (values: SignUpFields) => {
     setEmail(values.email);
-    registration(values);
+    await registration(values);
   };
-
-  if (isSuccess && !open) {
-    toast('Registration successful! Activation link sent to your email!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setOpen(true);
-    setTimerActive(!timerActive);
-  }
-
-  if (error) {
-    toast('message' in error ? error && error.message : 'Incorrect email or password', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-  }
-
-  if (isSuccessResend) {
-    toast('Registration successful! Activation link sent to your email!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setOpen(true);
-    setTimerActive(!timerActive);
-  }
-
-  if (errorResend) {
-    toast('message' in errorResend ? errorResend && errorResend.message : 'Failed resend email', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-  }
 
   return (
     <>

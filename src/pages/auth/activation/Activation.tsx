@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useActivationMutation } from '../../../store/auth/auth.api.ts';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 function Activation() {
@@ -9,48 +9,44 @@ function Activation() {
   const [searchParams, _] = useSearchParams();
   const email = searchParams.get('email') || '';
   const activation_code = searchParams.get('activation_code') || '';
-  const [activate, { isSuccess, isLoading, error }] = useActivationMutation();
+  const [activate, { isSuccess, error, isError }] = useActivationMutation();
 
   if (check) {
     setCheck(false);
     activate({ email, activation_code });
   }
 
-  if (isLoading) {
-    return (
-      <>
-        <h1>Activate...</h1>
-      </>
-    );
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/signin');
+      toast('Activated successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccess]);
 
-  if (isSuccess) {
-    navigate('/signin');
-    toast('Activate successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-  }
-
-  if (error) {
-    navigate('/signin');
-    toast.error('message' in error ? error && error.message : 'Activate failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-  }
+  useEffect(() => {
+    if (isError && error) {
+      navigate('/signin');
+      toast.error('message' in error ? error && error.message : 'Activate failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [error, isError]);
 
   return (
     <>
