@@ -13,6 +13,7 @@ import { discardWorkoutInfo, setCountWorkouts } from '../../store/workouts/worko
 import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
 import styles from '../../styles/base.module.css';
 import styles2 from './Workouts.module.css';
+import { IMask } from 'react-imask';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
@@ -41,9 +42,19 @@ function Workouts() {
     setOffset(0);
   };
 
+  const convertDate = (date: string) => {
+    const parts = date.split('.');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  };
+
+  const convertToLocalDate = (date: string) => {
+    const parts = date.split('-');
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+  };
+
   const onSubmit = (values: DateFields) => {
-    setFrom(values.from);
-    setTo(values.to);
+    setFrom(convertDate(values.from));
+    setTo(convertDate(values.to));
     setOffset(0);
     setOpen(false);
   };
@@ -87,7 +98,7 @@ function Workouts() {
           <AiFillFilter />
         </button>
         <Formik initialValues={dateInitialValues} onSubmit={onSubmit} validationSchema={dateValidationSchema}>
-          {({ values }) => {
+          {({ handleChange }) => {
             return (
               <Dialog
                 open={open}
@@ -102,28 +113,50 @@ function Workouts() {
                     <Field name="from">
                       {({ field, meta }: FieldProps) => (
                         <Input
-                          type="date"
+                          id="date-from"
+                          type="text"
                           {...field}
+                          onChange={(e) => {
+                            const element = document.getElementById(`date-from`);
+                            const maskOptions = {
+                              mask: '00.00.0000',
+                            };
+                            // @ts-ignore
+                            IMask(element, maskOptions);
+                            handleChange(e);
+                          }}
                           placeholder="From"
                           error={meta.touched && !!meta.error}
                           errorText={meta.error}
+                          className="form-input-modal"
                         />
                       )}
                     </Field>
                     <Field name="to">
                       {({ field, meta }: FieldProps) => (
                         <Input
-                          type="date"
+                          id="date-to"
+                          type="text"
                           {...field}
+                          onChange={(e) => {
+                            handleChange(e);
+                            const element = document.getElementById(`date-to`);
+                            const maskOptions = {
+                              mask: '00.00.0000',
+                            };
+                            // @ts-ignore
+                            IMask(element, maskOptions);
+                          }}
                           placeholder="To"
                           error={meta.touched && !!meta.error}
                           errorText={meta.error}
+                          className="form-input-modal"
                         />
                       )}
                     </Field>
                   </div>
                   <div className={styles2.applyButton}>
-                    <button className="btn-black" onClick={() => onSubmit(values)}>
+                    <button className="btn-black" type="submit">
                       Apply
                     </button>
                   </div>
@@ -178,7 +211,7 @@ function Workouts() {
                 <div className={styles.boxContent}>
                   <div className={styles.boxInfo}>
                     <span>{workout.name}</span>
-                    <span>{workout.date}</span>
+                    <span>{convertToLocalDate(workout.date)}</span>
                     <span>{workout.type}</span>
                   </div>
                 </div>

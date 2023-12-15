@@ -234,7 +234,14 @@ function Exercise() {
                 )}
               </Field>
               <div className={styles.buttonsBox}>
-                <button className="btn-black" onClick={() => onSubmit(fields)}>
+                <button
+                  className="btn-black"
+                  onClick={() => {
+                    if (fields.name) {
+                      onSubmit(fields);
+                    }
+                  }}
+                >
                   Save
                 </button>
               </div>

@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, InputHTMLAttributes, MouseEventHandler, useC
 import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  type?: 'email' | 'password' | 'text' | 'file' | 'date';
+  type?: 'email' | 'password' | 'text' | 'file';
   value?: string;
   placeholder?: string;
   error?: boolean;
