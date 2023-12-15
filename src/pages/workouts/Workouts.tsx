@@ -5,7 +5,6 @@ import { Dialog } from '@ariakit/react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { Input } from '../../common/components/input/Input.tsx';
 import { DateFields, dateInitialValues, dateValidationSchema } from '../../common/validations/dateValidationSchema.ts';
-import { WorkoutRequest } from '../../common/types/workouts.ts';
 import { useNavigate } from 'react-router-dom';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
@@ -14,6 +13,8 @@ import { selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts'
 import styles from '../../styles/base.module.css';
 import styles2 from './Workouts.module.css';
 import { IMask } from 'react-imask';
+import { apiSlice } from '../../store/api.slice.ts';
+import { WorkoutRequest } from '../../common/types/workouts.ts';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
@@ -21,20 +22,36 @@ function Workouts() {
   const [sort, setSort] = useState('new');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [fetching, setFetching] = useState(true);
   const limit = 10;
-  let { data, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
-  const [workouts, setWorkouts] = useState<WorkoutRequest[]>([]);
+  const { data, isFetching, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const count = useAppSelector(selectWorkoutsCount);
 
   useEffect(() => {
-    if (isSuccess && data) {
-      setWorkouts(data.data.workouts);
-      dispatch(discardWorkoutInfo());
+    dispatch(apiSlice.util.invalidateTags(['Workouts']));
+  }, [limit, sort, from, to]);
+
+  useEffect(() => {
+    const scrollHandler = (e: Event) => {
+      if (
+        (e.target as HTMLInputElement).scrollHeight -
+          (e.target as HTMLInputElement).scrollTop -
+          (e.target as HTMLInputElement).clientHeight <
+          10 &&
+        !isFetching
+      ) {
+        setOffset((prevState) => prevState + limit);
+      }
+    };
+    const box = document.getElementById('box');
+    if (box) {
+      box.addEventListener('scroll', scrollHandler);
+      return () => {
+        box.removeEventListener('scroll', scrollHandler);
+      };
     }
-  }, [isSuccess, data]);
+  }, [offset, isFetching]);
 
   const changeWorkouts = async (e: React.ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -58,38 +75,6 @@ function Workouts() {
     setOffset(0);
     setOpen(false);
   };
-
-  const scrollHandler = (e: Event) => {
-    if (
-      e.target &&
-      (e.target as HTMLInputElement).scrollHeight -
-        (e.target as HTMLInputElement).scrollTop -
-        (e.target as HTMLInputElement).clientHeight <
-        10
-    ) {
-      setFetching(true);
-    }
-  };
-
-  useEffect(() => {
-    if (fetching) {
-      if (data !== undefined) {
-        setWorkouts([...workouts, ...data.data.workouts]);
-        setOffset((prevState) => prevState + limit);
-      }
-      setFetching(false);
-    }
-  }, [fetching]);
-
-  useEffect(() => {
-    const box = document.getElementById('box');
-    if (box) {
-      box.addEventListener('scroll', scrollHandler);
-      return () => {
-        box.removeEventListener('scroll', scrollHandler);
-      };
-    }
-  }, []);
 
   return (
     <>
@@ -198,12 +183,13 @@ function Workouts() {
         {/*     </div> */}
         {/*   </div> */}
         {/* </div> */}
-        {workouts.length !== 0 ? (
-          workouts.map((workout) => (
-            <div className={styles.itemBox}>
+        {data && data.data.workouts.length !== 0 ? (
+          data.data.workouts.map((workout) => (
+            <div className={styles.itemBox} key={workout.uuid}>
               <div
                 className={styles2.boxItems}
                 onClick={() => {
+                  dispatch(discardWorkoutInfo());
                   dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
                   navigate(`${WORKOUTS_URL}/${workout.uuid}`);
                 }}

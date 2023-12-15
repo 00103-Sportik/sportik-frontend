@@ -80,7 +80,6 @@ function Workout() {
   useEffect(() => {
     if (isSuccessCreate && dataCreate) {
       navigate(`${WORKOUTS_URL}/${dataCreate?.data.uuid}`);
-      dispatch(setCountWorkouts({ count: count + 1 }));
       toast('Created successfully!', {
         position: 'top-center',
         autoClose: 3000,
@@ -91,8 +90,9 @@ function Workout() {
         progress: undefined,
         theme: 'dark',
       });
+      dispatch(setCountWorkouts({ count: count + 1 }));
     }
-  }, [isSuccessCreate, dataCreate, count]);
+  }, [isSuccessCreate, dataCreate]);
 
   useEffect(() => {
     if (isSuccessUpdate) {
