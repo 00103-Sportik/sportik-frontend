@@ -1,15 +1,13 @@
 .styleH1 {
-    font-size: 32px;
-    text-align: center;
+    @apply text-[32px] text-center;
 }
 
 .styleH2 {
-    font-size: 26px;
-    text-align: center;
+    @apply text-[26px] text-center;
 }
 
 .mainTitleContainer {
-    @apply block justify-center items-center mb-4;
+    @apply block justify-center items-center mt-32;
 }
 
 .titleLayout {
@@ -17,7 +15,7 @@
 }
 
 .titleSize {
-    font-size: 26px;
+    @apply text-[26px];
 }
 
 .inputsBox {
@@ -29,9 +27,7 @@
 }
 
 .referenceBack {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @apply flex justify-center items-center;
 }
 
 .textError {

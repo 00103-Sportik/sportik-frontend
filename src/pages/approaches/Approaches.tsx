@@ -78,9 +78,8 @@ function Approaches() {
 
   return (
     <>
-      <p>{exercise.name}</p>
-      <p>Approaches</p>
-      <div>
+      <p className={styles.p1}>{exercise.name}</p>
+      <p className={styles.p2}>Approaches</p>
         <Formik
           initialValues={intialVal}
           onSubmit={onSubmit}
@@ -185,7 +184,6 @@ function Approaches() {
             </Form>
           )}
         </Formik>
-      </div>
     </>
   );
 }

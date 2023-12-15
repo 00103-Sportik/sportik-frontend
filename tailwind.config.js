@@ -125,10 +125,10 @@ export default {
         },
         //--Combobox--
         '.select-container': {
-          '@apply flex justify-center relative w-[200px] h-[33px] overflow-hidden cursor-pointer mt-8': {},
+          '@apply flex justify-center relative w-[220px] h-[33px] overflow-hidden cursor-pointer mt-8': {},
         },
         '.select-box': {
-          '@apply w-[300px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
+          '@apply w-[220px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 border-b-[white] border-[none] border-b border-solid':
             {},
         },
         '.select-box-narrow': {
