@@ -4,9 +4,9 @@ import { ExerciseRequest, ExerciseResponse } from '../../common/types/workouts.t
 
 export const exercisesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getExercises: builder.query<ExerciseResponse, Pick<ExerciseRequest, 'type'>>({
-      query: ({ type }) => ({
-        url: `${EXERCISES_URL}?subtype_uuid=${type}`,
+    getExercises: builder.query<ExerciseResponse, Pick<ExerciseRequest, 'subtype_uuid'>>({
+      query: ({ subtype_uuid }) => ({
+        url: `${EXERCISES_URL}?subtype_uuid=${subtype_uuid}`,
         method: 'GET',
       }),
       providesTags: ['Exercises'],
@@ -20,8 +20,8 @@ export const exercisesApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Exercises'],
     }),
     updateExercise: builder.mutation<void, ExerciseRequest>({
-      query: (body) => ({
-        url: EXERCISES_URL,
+      query: ({ uuid, ...body }) => ({
+        url: `${EXERCISES_URL}/${uuid}`,
         method: 'PUT',
         body,
       }),
