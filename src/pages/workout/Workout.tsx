@@ -28,6 +28,7 @@ import { ExerciseRequestPost } from '../../common/types/workouts.ts';
 import { AiOutlineClose } from 'react-icons/ai';
 import styles from '../../styles/base.module.css';
 import styles2 from './Workout.module.css';
+import { IMask } from 'react-imask';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
@@ -43,11 +44,15 @@ function Workout() {
   const { uuid } = useParams();
   const dispatch = useAppDispatch();
   const workoutInfo = useAppSelector(selectFullWorkoutInfo);
+
+  const convertToLocalDate = (date: string) => {
+    const parts = date.split('-');
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+  };
+
   const [fields, setFields] = useState<WorkoutFields>({
     name: workoutInfo.name || `Новая тренировка ${count}`,
-    date: workoutInfo.date
-      ? new Date(workoutInfo.date).toISOString().split('T')[0]
-      : new Date().toISOString().split('T')[0],
+    date: workoutInfo.date ? convertToLocalDate(workoutInfo.date) : new Date().toLocaleDateString(),
     type: workoutInfo.type || 'strength',
     comment: workoutInfo.comment || '',
   });
@@ -58,9 +63,7 @@ function Workout() {
       setFields({
         uuid: data?.data.uuid || '',
         name: data?.data.name || `Новая тренировка ${count}`,
-        date: data?.data.date
-          ? new Date(data?.data.date).toISOString().split('T')[0]
-          : new Date().toISOString().split('T')[0],
+        date: data?.data.date ? convertToLocalDate(data?.data.date) : new Date().toLocaleDateString(),
         type: data?.data.type || 'strength',
         comment: data?.data.comment || '',
       });
@@ -130,6 +133,11 @@ function Workout() {
     setCheck(false);
   }
 
+  const convertDate = (date: string) => {
+    const parts = date.split('.');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  };
+
   const onSubmit = async () => {
     const toExercises: ExerciseRequestPost[] = exercises.map((exercise) => {
       return { uuid: exercise.uuid, approaches: exercise.approaches || [] } as ExerciseRequestPost;
@@ -137,7 +145,7 @@ function Workout() {
     if (uuid) {
       await updateWorkout({
         uuid,
-        date: fields.date,
+        date: convertDate(fields.date),
         name: fields.name,
         type: fields.type,
         comment: fields.comment,
@@ -145,7 +153,7 @@ function Workout() {
       });
     } else {
       await createWorkout({
-        date: fields.date,
+        date: convertDate(fields.date),
         name: fields.name,
         type: fields.type,
         comment: fields.comment,
@@ -202,7 +210,7 @@ function Workout() {
     dispatch(
       setMainInfo({
         uuid: uuid,
-        date: new Date(fields.date).toISOString().split('T')[0],
+        date: convertDate(fields.date),
         name: fields.name,
         type: fields.type,
         comment: fields.comment,
@@ -248,11 +256,18 @@ function Workout() {
                 <Field name="date">
                   {({ field, meta }: FieldProps) => (
                     <Input
-                      type="date"
+                      id="workout-date"
+                      type="text"
                       {...field}
                       value={fields.date}
                       onChange={(event) => {
                         props.handleChange(event);
+                        const element = document.getElementById(`workout-date`);
+                        const maskOptions = {
+                          mask: '00.00.0000',
+                        };
+                        // @ts-ignore
+                        IMask(element, maskOptions);
                         changeField('date', event.target.value);
                       }}
                       placeholder="Date"
