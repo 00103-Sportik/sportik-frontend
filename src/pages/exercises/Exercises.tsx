@@ -15,11 +15,10 @@ function Exercises() {
   const navigate = useNavigate();
   const { type } = useParams();
   const workoutUuid = useAppSelector(selectCurrentWorkout);
-  const [check, setCheck] = useState(false);
   const [subtypeName, setSubtypeName] = useState('');
   const { data: dataSub, isSuccess: isSuccessSub } = useGetSubtypesQuery({ type: useAppSelector(selectType) });
   const { data, isSuccess } = useGetExercisesQuery({ subtype_uuid: type || '' });
-  const [delExercise, { isSuccess: isSuccessDelete, error }] = useDeleteExerciseMutation();
+  const [delExercise, { isSuccess: isSuccessDelete, error, isError }] = useDeleteExerciseMutation();
   const dispatch = useAppDispatch();
   const [exercises, setExercises] = useState<ExerciseRequest[]>([]);
 
@@ -36,41 +35,43 @@ function Exercises() {
   }, [isSuccessSub, dataSub]);
 
   const addToWorkout = (exercise: ExerciseRequestPost) => {
+    console.log(exercise);
     dispatch(setExercise(exercise));
     navigate(`${WORKOUTS_URL}/${workoutUuid}`);
   };
 
-  if (isSuccessDelete && check) {
-    toast('Delete successful!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isSuccessDelete) {
+      toast('Deleted successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [isSuccessDelete]);
 
-  if (error && check) {
-    toast('message' in error ? error && error.message : 'Delete failed!', {
-      position: 'top-center',
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'dark',
-    });
-    setCheck(false);
-  }
+  useEffect(() => {
+    if (isError && error) {
+      toast('message' in error ? error && error.message : 'Delete failed!', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [error, isError]);
 
   const deleteExercise = async (uuid: string) => {
     await delExercise({ uuid });
-    setCheck(true);
   };
 
   const goToCreateExercises = () => {
@@ -101,7 +102,7 @@ function Exercises() {
                     addToWorkout({
                       uuid: exercise.uuid || '',
                       combination_params: exercise.combination_params,
-                      name: exercise.combination_params,
+                      name: exercise.name,
                     });
                   }
                 }}
@@ -111,10 +112,10 @@ function Exercises() {
                     <span>{exercise.name}</span>
                   </div>
                   <div className={styles.sideButtonsBox}>
-                    <button className="delete-exercise">
+                    <button className="update-exercise">
                       <AiFillEdit />
                     </button>
-                    <button className="update-exercise">
+                    <button className="delete-exercise">
                       <AiOutlineClose />
                     </button>
                   </div>
