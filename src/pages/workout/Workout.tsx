@@ -5,7 +5,7 @@ import {
   workoutInitialValues,
   workoutValidationSchema,
 } from '../../common/validations/workoutValidationSchema.ts';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   useCreateWorkoutMutation,
   useDeleteWorkoutMutation,
@@ -23,18 +23,18 @@ import {
 import { toast } from 'react-toastify';
 import { APPROACHES_URL, SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
-import { discardWorkoutInfo, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
-import { ExerciseRequest } from '../../common/types/workouts.ts';
+import { setCountWorkouts, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
+import { ExerciseRequestPost } from '../../common/types/workouts.ts';
 import { AiOutlineClose } from 'react-icons/ai';
 import styles from './Workout.module.css';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
   const [open, setOpen] = useState(false);
-  const [check, setCheck] = useState(true);
+  const [check, setCheck] = useState(false);
   const navigate = useNavigate();
   const exercisesFromStore = useAppSelector(selectExercises);
-  const [exercises, setExercises] = useState<ExerciseRequest[]>(exercisesFromStore);
+  const [exercises, setExercises] = useState<ExerciseRequestPost[]>(exercisesFromStore);
   const [updateWorkout, { error: updateError, isSuccess: isSuccessUpdate }] = useUpdateWorkoutMutation();
   const [createWorkout, { error: createError, isSuccess: isSuccesCreate, data: dataCreate }] =
     useCreateWorkoutMutation();
@@ -42,8 +42,7 @@ function Workout() {
   const { uuid } = useParams();
   const dispatch = useAppDispatch();
   const workoutInfo = useAppSelector(selectFullWorkoutInfo);
-
-  let [fields, setFields] = useState<WorkoutFields>({
+  const [fields, setFields] = useState<WorkoutFields>({
     name: workoutInfo.name || `Новая тренировка ${count}`,
     date: workoutInfo.date
       ? new Date(workoutInfo.date).toISOString().split('T')[0]
@@ -51,13 +50,11 @@ function Workout() {
     type: workoutInfo.type || 'strength',
     comment: workoutInfo.comment || '',
   });
+  const { data, isSuccess } = useGetWorkoutQuery({ uuid });
 
-  if (uuid && check) {
-    dispatch(setCurrentWorkouts({ uuid }));
-    const { data, isSuccess } = useGetWorkoutQuery({ uuid });
-
-    if (isSuccess) {
-      [fields, setFields] = useState<WorkoutFields>({
+  useEffect(() => {
+    if (isSuccess && uuid) {
+      setFields({
         uuid: data?.data.uuid || '',
         name: data?.data.name || `Новая тренировка ${count}`,
         date: data?.data.date
@@ -66,12 +63,16 @@ function Workout() {
         type: data?.data.type || 'strength',
         comment: data?.data.comment || '',
       });
-      setExercises(data?.data?.exercises || []);
     }
-    setCheck(false);
-  }
+  }, [isSuccess, uuid]);
 
-  if (updateError) {
+  useEffect(() => {
+    if (uuid) {
+      dispatch(setCurrentWorkouts({ uuid }));
+    }
+  }, [uuid]);
+
+  if (updateError && check) {
     toast('message' in updateError ? updateError && updateError.message : 'Update failed!', {
       position: 'top-center',
       autoClose: 3000,
@@ -82,9 +83,10 @@ function Workout() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck(false);
   }
 
-  if (isSuccessUpdate) {
+  if (isSuccessUpdate && check) {
     toast('Update successful!', {
       position: 'top-center',
       autoClose: 3000,
@@ -95,9 +97,10 @@ function Workout() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck(false);
   }
 
-  if (createError) {
+  if (createError && check) {
     toast('message' in createError ? createError && createError.message : 'Create failed!', {
       position: 'top-center',
       autoClose: 3000,
@@ -108,10 +111,10 @@ function Workout() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck(false);
   }
 
-  if (isSuccesCreate) {
-    dispatch(discardWorkoutInfo());
+  if (isSuccesCreate && check) {
     navigate(`${WORKOUTS_URL}/${dataCreate?.data.uuid}`);
     toast('Create successful!', {
       position: 'top-center',
@@ -123,17 +126,21 @@ function Workout() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck(false);
   }
 
-  const onSubmit = async (values: WorkoutFields) => {
+  const onSubmit = async () => {
+    const toExercises: ExerciseRequestPost[] = exercises.map((exercise) => {
+      return { uuid: exercise.uuid, approaches: exercise.approaches || [] } as ExerciseRequestPost;
+    });
     if (uuid) {
       await updateWorkout({
-        uuid: values.uuid,
+        uuid,
         date: fields.date,
         name: fields.name,
         type: fields.type,
-        comment: values.comment,
-        exercises: exercises,
+        comment: fields.comment,
+        exercises: toExercises,
       });
     } else {
       await createWorkout({
@@ -141,9 +148,10 @@ function Workout() {
         name: fields.name,
         type: fields.type,
         comment: fields.comment,
-        exercises: exercises,
+        exercises: toExercises,
       });
     }
+    setCheck(true);
   };
 
   const changeField = useCallback((field: keyof WorkoutFields, value: string) => {
@@ -154,7 +162,7 @@ function Workout() {
     );
   }, []);
 
-  if (deleteError) {
+  if (deleteError && check) {
     toast('message' in deleteError ? deleteError && deleteError.message : 'Delete failed!', {
       position: 'top-center',
       autoClose: 3000,
@@ -165,9 +173,11 @@ function Workout() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck(false);
   }
 
-  if (isSuccessDelete) {
+  if (isSuccessDelete && check) {
+    dispatch(setCountWorkouts({ count }));
     navigate('/');
     toast('Delete successful!', {
       position: 'top-center',
@@ -179,10 +189,12 @@ function Workout() {
       progress: undefined,
       theme: 'dark',
     });
+    setCheck(false);
   }
 
   const deleteWorkout = async () => {
     await delWorkout({ uuid });
+    setCheck(true);
   };
 
   const goToSubtypes = () => {
@@ -200,6 +212,12 @@ function Workout() {
 
   const goToApproaches = (id: string) => {
     navigate(`${APPROACHES_URL}/${id}`);
+  };
+
+  const deleteExercise = (index: number) => {
+    const tempExercises = [...exercises];
+    tempExercises.splice(index, 1);
+    setExercises(tempExercises);
   };
 
   return (
@@ -261,16 +279,29 @@ function Workout() {
               </div>
               <div className={styles.exercises}>
                 {exercises.length !== 0 ? (
-                  exercises.map((exercise) => (
+                  exercises.map((exercise, index) => (
                     <div className={styles.box}>
-                      <div className={styles.boxItems} onClick={() => goToApproaches(exercise.uuid || '')}>
+                      <div
+                        className={styles.boxItems}
+                        onClick={(event) => {
+                          const target = event.target as HTMLElement;
+                          const button = target.closest('button');
+                          if (button) {
+                            if (button.classList.contains('delete-from-workout')) {
+                              deleteExercise(index);
+                            }
+                          } else {
+                            goToApproaches(exercise.uuid || '');
+                          }
+                        }}
+                      >
                         <div className={styles.boxContent}>
                           <div className={styles.boxInfo}>
                             <span className={styles.infoItem}>{exercise.name}</span>
                             <span className={styles.infoItem}>approaches: {exercise?.approaches?.length}</span>
                           </div>
                           <div className={styles.deleteButton}>
-                            <button type="button">
+                            <button className="delete-from-workout">
                               <AiOutlineClose />
                             </button>
                           </div>

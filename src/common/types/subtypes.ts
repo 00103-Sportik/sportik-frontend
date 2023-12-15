@@ -1,6 +1,7 @@
 export interface SubtypesRequest {
+  uuid?: string;
   name: string;
-  type?: string;
+  type: string;
 }
 
 export interface SubtypeResponse {

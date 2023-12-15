@@ -6,7 +6,7 @@ export interface ProfileRequest {
   age?: number;
   height?: number;
   weight?: number;
-  avatar?: string;
+  image?: string;
 }
 
 export interface ProfileResponse {
@@ -15,5 +15,5 @@ export interface ProfileResponse {
 }
 
 export interface AvatarUpdate {
-  avatar: string;
+  image: string;
 }

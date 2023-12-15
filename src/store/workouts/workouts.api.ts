@@ -29,8 +29,8 @@ export const workoutsApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Workouts'],
     }),
     updateWorkout: builder.mutation<WorkoutResponse, WorkoutRequest>({
-      query: (body) => ({
-        url: WORKOUTS_URL,
+      query: ({ uuid, ...body }) => ({
+        url: `${WORKOUTS_URL}/${uuid}`,
         method: 'PUT',
         body,
       }),

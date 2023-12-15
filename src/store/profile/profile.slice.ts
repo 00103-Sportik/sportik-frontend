@@ -7,11 +7,11 @@ export const profileSlice = createSlice({
   initialState: profileInitialValues,
   reducers: {
     updateAvatar: (state: Draft<ProfileFields>, action: PayloadAction<AvatarUpdate>) => {
-      const { avatar } = action.payload;
-      state.avatar = avatar;
+      const { image } = action.payload;
+      state.image = image;
     },
     setProfile: (state: Draft<ProfileFields>, action: PayloadAction<ProfileFields>) => {
-      const { email, name, surname, age, weight, height, sex, avatar } = action.payload;
+      const { email, name, surname, age, weight, height, sex, image } = action.payload;
       state.email = email;
       state.name = name;
       state.surname = surname;
@@ -19,7 +19,7 @@ export const profileSlice = createSlice({
       state.weight = weight;
       state.height = height;
       state.sex = sex;
-      state.avatar = avatar;
+      state.image = image;
     },
   },
 });
