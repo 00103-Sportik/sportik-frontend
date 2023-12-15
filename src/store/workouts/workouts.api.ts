@@ -11,6 +11,15 @@ export const workoutsApi = apiSlice.injectEndpoints({
         }`,
         method: 'GET',
       }),
+      serializeQueryArgs: ({ queryArgs }) => {
+        return { from: queryArgs.from, to: queryArgs.to, sort: queryArgs.sort };
+      },
+      merge: (currentCache, newItems) => {
+        currentCache.data.workouts.push(...newItems.data.workouts);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
       providesTags: ['Workouts'],
     }),
     getWorkout: builder.query<WorkoutResponse, Pick<WorkoutRequest, 'uuid'>>({

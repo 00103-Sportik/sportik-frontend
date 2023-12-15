@@ -73,7 +73,7 @@ export default {
           '@apply btn w-[140px] h-[43px] bg-[#2B2E38] border-[#2B2E38] mt-3': {},
         },
         '.btn-black-filter': {
-          '@apply btn w-[110px] bg-[#2B2E38] border-[#2B2E38] mb-0 ml-6': {},
+          '@apply btn w-[110px] bg-[#2B2E38] border-[#2B2E38] my-0 ml-6': {},
         },
         '.btn-black-less-margin': {
           '@apply btn bg-[#2B2E38] border-[#2B2E38] mt-5': {},
@@ -140,7 +140,7 @@ export default {
         },
         '.select-box-wider': {
           '@apply w-[340px] bg-transparent text-[white] text-[16px] transition-[left] duration-[0.2s] ease-linear pt-0 pb-2.5 px-0 mb-[0px] border-b-[white] border-[none] border-b border-solid':
-              {},
+            {},
         },
       });
     }),
