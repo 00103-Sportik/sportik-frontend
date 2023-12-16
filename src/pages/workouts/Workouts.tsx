@@ -151,11 +151,11 @@ function Workouts() {
         </Formik>
         <div className="select-container">
           <select className={styles2.selectBox} onChange={changeWorkouts}>
-            <option value="new" selected>
+            <option value="new" selected className="select-option">
               Newest
             </option>
-            <option value="old">Oldest</option>
-            <option value="name">By name</option>
+            <option value="old" className="select-option">Oldest</option>
+            <option value="name" className="select-option">By name</option>
           </select>
         </div>
       </div>

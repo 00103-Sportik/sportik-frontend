@@ -26,16 +26,16 @@ const MIN_NAME_LENGTH = 2;
 const MIN_SURNAME_LENGTH = 2;
 const MIN_AGE = 0;
 const MIN_HEIGHT = 2;
-const MIN_WEIGHT = 0;
+const MIN_WEIGHT = -999.9;
 
 const MAX_NAME_LENGTH = 32;
 const MAX_SURNAME_LENGTH = 32;
 const MAX_AGE = 150;
 const MAX_HEIGHT = 3;
-const MAX_WEIGHT = 999;
+const MAX_WEIGHT = 999.9;
 
 const containsWhiteSpaces = /\s/;
-const containOneCharacterAfterComma = /^\d{1,3}(\.\d)?$/;
+const containOneCharacterAfterComma = /^-?\d{1,3}(\.\d)?$/;
 
 export const profileValidationSchema = Yup.object().shape({
   email: Yup.string()

@@ -242,13 +242,13 @@ function Profile() {
                       changeField('sex', event.target.value);
                     }}
                   >
-                    <option value="" selected={fields.sex === ''} disabled hidden>
+                    <option value="" selected={fields.sex === ''} disabled hidden className="select-option">
                       Sex
                     </option>
-                    <option value="male" selected={fields.sex === 'male'}>
+                    <option value="male" selected={fields.sex === 'male'} className="select-option">
                       male
                     </option>
-                    <option value="female" selected={fields.sex === 'female'}>
+                    <option value="female" selected={fields.sex === 'female'} className="select-option">
                       female
                     </option>
                   </select>
