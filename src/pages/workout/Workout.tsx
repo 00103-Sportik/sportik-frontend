@@ -103,7 +103,7 @@ function Workout() {
       navigate(`${WORKOUTS_URL}/${dataCreate?.data.uuid}`);
       toast('Created successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -119,7 +119,7 @@ function Workout() {
     if (isSuccessUpdate) {
       toast('Updated successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -135,7 +135,7 @@ function Workout() {
       navigate('/');
       toast('Deleted successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -150,7 +150,7 @@ function Workout() {
     if (isErrorCreate && errorCreate) {
       toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -165,7 +165,7 @@ function Workout() {
     if (isErrorUpdate && errorUpdate) {
       toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -180,7 +180,7 @@ function Workout() {
     if (errorDelete && isErrorDelete) {
       toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -382,31 +382,29 @@ function Workout() {
                 <button className="btn-black-less-margin" type="submit">
                   Save
                 </button>
-                {uuid && (
-                  <button className="btn-red-less-margin" onClick={() => setOpen(true)}>
-                    Delete
-                  </button>
-                )}
+                <button className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
+                  Delete
+                </button>
               </div>
-              <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-                getPersistentElements={() => document.querySelectorAll('.Toastify')}
-                backdrop={<div className="backdrop" />}
-                className="dialog"
-              >
-                <p className={styles.p}>Delete workout?</p>
-                <div className={styles.buttonsBox}>
-                  <DialogDismiss className="btn-black" onClick={deleteWorkout}>
-                    Yes
-                  </DialogDismiss>
-                  <DialogDismiss className="btn-red">No</DialogDismiss>
-                </div>
-              </Dialog>
             </Form>
           );
         }}
       </Formik>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        getPersistentElements={() => document.querySelectorAll('.Toastify')}
+        backdrop={<div className="backdrop" />}
+        className="dialog"
+      >
+        <p className={styles.p}>Delete workout?</p>
+        <div className={styles.buttonsBox}>
+          <DialogDismiss className="btn-black" onClick={deleteWorkout}>
+            Yes
+          </DialogDismiss>
+          <DialogDismiss className="btn-red">No</DialogDismiss>
+        </div>
+      </Dialog>
     </>
   );
 }

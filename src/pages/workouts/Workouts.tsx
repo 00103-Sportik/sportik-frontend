@@ -140,7 +140,7 @@ function Workouts() {
                     </Field>
                   </div>
                   <div className={styles2.applyButton}>
-                    <button className="btn-black" type="submit">
+                    <button className="btn-black-less-margin" type="submit">
                       Apply
                     </button>
                   </div>
@@ -154,12 +154,16 @@ function Workouts() {
             <option value="new" selected className="select-option">
               Newest
             </option>
-            <option value="old" className="select-option">Oldest</option>
-            <option value="name" className="select-option">By name</option>
+            <option value="old" className="select-option">
+              Oldest
+            </option>
+            <option value="name" className="select-option">
+              By name
+            </option>
           </select>
         </div>
       </div>
-      <div className={styles.mainBox} id="box">
+      <div className={styles2.mainBox} id="box">
         {data && data.data.workouts.length !== 0 ? (
           data.data.workouts.map((workout) => (
             <div className={styles.itemBox} key={workout.uuid}>

@@ -35,7 +35,6 @@ function Exercises() {
   }, [isSuccessSub, dataSub]);
 
   const addToWorkout = (exercise: ExerciseRequestPost) => {
-    console.log(exercise);
     dispatch(setExercise(exercise));
     navigate(`${WORKOUTS_URL}/${workoutUuid}`);
   };
@@ -44,7 +43,7 @@ function Exercises() {
     if (isSuccessDelete) {
       toast('Deleted successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -59,7 +58,7 @@ function Exercises() {
     if (isError && error) {
       toast('message' in error ? error && error.message : 'Delete failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

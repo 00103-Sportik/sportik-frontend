@@ -34,7 +34,7 @@ function Registration() {
     if (isError && error) {
       toast('message' in error ? error && error.message : 'Registration failed! Incorrect email or password', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -49,7 +49,7 @@ function Registration() {
     if (isErrorResend && errorResend) {
       toast('message' in errorResend ? errorResend && errorResend.message : 'Resend failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -64,7 +64,7 @@ function Registration() {
     if (isSuccess) {
       toast('Registration successfully! Activation link sent to your email!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -81,7 +81,7 @@ function Registration() {
     if (isSuccessResend) {
       toast('Activation link sent to your email!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -148,10 +148,10 @@ function Registration() {
               <div className="buttons">
                 {seconds ? (
                   <div className="@apply flex flex-col">
-                    <p className="@apply">Time to resend: {seconds} sec.</p>
                     <button disabled className="btn-black">
                       Send again
                     </button>
+                    <p className="@apply flex justify-center">Time to resend: {seconds} sec.</p>
                   </div>
                 ) : (
                   <button

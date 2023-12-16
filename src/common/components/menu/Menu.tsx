@@ -3,7 +3,8 @@ import { logout } from '../../../store/auth/auth.slice.ts';
 import { useState } from 'react';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Menu.module.css'
+import styles from './Menu.module.css';
+import { discardWorkoutInfo } from '../../../store/workouts/workouts.slice.ts';
 
 export function Menu() {
   const [open, setOpen] = useState(false);
@@ -11,6 +12,7 @@ export function Menu() {
   const dispatch = useAppDispatch();
 
   const exit = () => {
+    dispatch(discardWorkoutInfo());
     dispatch(logout());
     navigate('/signin');
   };
@@ -19,12 +21,12 @@ export function Menu() {
     <>
       <ul className="menu">
         <li>
-          <a href="/profile" className="menu-link">
+          <a href="/profile" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
             Profile
           </a>
         </li>
         <li>
-          <a href="/hr-calc" className="menu-link">
+          <a href="/hr-calc" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
             HR Calculator
           </a>
         </li>
