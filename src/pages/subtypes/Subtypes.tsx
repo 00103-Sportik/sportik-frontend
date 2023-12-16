@@ -178,11 +178,11 @@ function Subtypes() {
                     <span>{subtype.name}</span>
                   </div>
                   <div hidden={subtype.user_uuid === null} className={styles.sideButtonsBox}>
-                    <button className="delete-subtype" hidden={subtype.user_uuid === null}>
-                      <AiOutlineClose />
-                    </button>
                     <button className="update-subtype">
                       <AiFillEdit />
+                    </button>
+                    <button className="delete-subtype" hidden={subtype.user_uuid === null}>
+                      <AiOutlineClose />
                     </button>
                   </div>
                 </div>

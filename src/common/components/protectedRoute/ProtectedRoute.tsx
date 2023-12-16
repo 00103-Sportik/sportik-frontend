@@ -7,9 +7,9 @@ export function ProtectedRoute() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const location = useLocation();
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/signin" state={{ from: location }} replace />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
 
   return (
     <>
