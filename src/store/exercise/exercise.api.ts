@@ -1,12 +1,19 @@
 import { apiSlice } from '../api.slice';
 import { EXERCISES_URL } from '../../common/constants/api';
-import { ExerciseRequest, ExerciseResponse } from '../../common/types/workouts.ts';
+import { ExerciseRequest, ExerciseResponse, OneExerciseResponse } from '../../common/types/workouts.ts';
 
 export const exercisesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getExercises: builder.query<ExerciseResponse, Pick<ExerciseRequest, 'subtype_uuid'>>({
       query: ({ subtype_uuid }) => ({
         url: `${EXERCISES_URL}?subtype_uuid=${subtype_uuid}`,
+        method: 'GET',
+      }),
+      providesTags: ['Exercises'],
+    }),
+    getExercise: builder.query<OneExerciseResponse, Pick<ExerciseRequest, 'uuid'>>({
+      query: ({ uuid }) => ({
+        url: `${EXERCISES_URL}/${uuid}`,
         method: 'GET',
       }),
       providesTags: ['Exercises'],
@@ -37,5 +44,10 @@ export const exercisesApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetExercisesQuery, useCreateExerciseMutation, useUpdateExerciseMutation, useDeleteExerciseMutation } =
-  exercisesApi;
+export const {
+  useGetExercisesQuery,
+  useGetExerciseQuery,
+  useCreateExerciseMutation,
+  useUpdateExerciseMutation,
+  useDeleteExerciseMutation,
+} = exercisesApi;

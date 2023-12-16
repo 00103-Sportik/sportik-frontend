@@ -34,6 +34,11 @@ export interface ExerciseResponse {
   };
 }
 
+export interface OneExerciseResponse {
+  message: string;
+  data: ExerciseRequest;
+}
+
 export interface WorkoutRequest {
   uuid?: string;
   name: string;

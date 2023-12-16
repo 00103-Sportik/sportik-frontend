@@ -20,7 +20,7 @@ function HRCalc() {
 
   const calcByHR = () => {
     if (hr && document.getElementById('err')?.textContent?.length === 0) {
-      const zone5 = `${hr}-${Math.round(Number(hr) * 0.9)}`;
+      const zone5 = `${Math.round(Number(hr) * 0.9)}-${hr}`;
       const zone4 = `${Math.round(Number(hr) * 0.8)}-${Math.round(Number(hr) * 0.9)}`;
       const zone3 = `${Math.round(Number(hr) * 0.7)}-${Math.round(Number(hr) * 0.8)}`;
       const zone2 = `${Math.round(Number(hr) * 0.6)}-${Math.round(Number(hr) * 0.7)}`;
@@ -43,7 +43,7 @@ function HRCalc() {
   const calcByAge = () => {
     if (age) {
       const hrMaxByAge = 220 - Number(age);
-      const zone5 = `${hrMaxByAge}-${Math.round(Number(hrMaxByAge) * 0.9)}`;
+      const zone5 = `${Math.round(Number(hrMaxByAge) * 0.9)}-${hrMaxByAge}`;
       const zone4 = `${Math.round(Number(hrMaxByAge) * 0.8)}-${Math.round(Number(hrMaxByAge) * 0.9)}`;
       const zone3 = `${Math.round(Number(hrMaxByAge) * 0.7)}-${Math.round(Number(hrMaxByAge) * 0.8)}`;
       const zone2 = `${Math.round(Number(hrMaxByAge) * 0.6)}-${Math.round(Number(hrMaxByAge) * 0.7)}`;
