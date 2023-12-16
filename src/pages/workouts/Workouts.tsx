@@ -14,7 +14,6 @@ import styles from '../../styles/base.module.css';
 import styles2 from './Workouts.module.css';
 import { IMask } from 'react-imask';
 import { apiSlice } from '../../store/api.slice.ts';
-import { WorkoutRequest } from '../../common/types/workouts.ts';
 
 function Workouts() {
   const [open, setOpen] = useState(false);
@@ -23,7 +22,7 @@ function Workouts() {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const limit = 10;
-  const { data, isFetching, isSuccess } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
+  const { data, isFetching } = useGetWorkoutsQuery({ limit, offset, sort, from, to });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const count = useAppSelector(selectWorkoutsCount);
@@ -161,28 +160,6 @@ function Workouts() {
         </div>
       </div>
       <div className={styles.mainBox} id="box">
-        {/* <div className={styles.box}> */}
-        {/*   <div */}
-        {/*     className={styles.boxItems} */}
-        {/*     onClick={() => { */}
-        {/*       dispatch(setCountWorkouts({ count: data?.data.workouts_count || count })); */}
-        {/*       navigate(`${WORKOUTS_URL}/${1}`); */}
-        {/*     }} */}
-        {/*   > */}
-        {/*     <div className={styles.boxContent}> */}
-        {/*       <div className={styles.boxInfo}> */}
-        {/*         <span className={styles.infoItem}>name</span> */}
-        {/*         <span className={styles.infoItem}>date</span> */}
-        {/*         <span className={styles.infoItem}>type</span> */}
-        {/*       </div> */}
-        {/*       <div className={styles.deleteButton}> */}
-        {/*         <button type="button"> */}
-        {/*           <AiOutlineClose /> */}
-        {/*         </button> */}
-        {/*       </div> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
         {data && data.data.workouts.length !== 0 ? (
           data.data.workouts.map((workout) => (
             <div className={styles.itemBox} key={workout.uuid}>
