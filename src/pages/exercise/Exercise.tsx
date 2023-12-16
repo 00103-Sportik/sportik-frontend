@@ -69,7 +69,7 @@ function Exercise() {
       navigate(`${EXERCISES_URL}/${subtype}`);
       toast('Created successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -85,7 +85,7 @@ function Exercise() {
       navigate(`${EXERCISES_URL}/${subtype}`);
       toast('Updated successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -101,7 +101,7 @@ function Exercise() {
       navigate(`${EXERCISES_URL}/${subtype}`);
       toast('Deleted successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -116,7 +116,7 @@ function Exercise() {
     if (isErrorCreate && errorCreate) {
       toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -131,7 +131,7 @@ function Exercise() {
     if (isErrorUpdate && errorUpdate) {
       toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -146,7 +146,7 @@ function Exercise() {
     if (errorDelete && isErrorDelete) {
       toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -255,7 +255,11 @@ function Exercise() {
                   }}
                 >
                   {combinationParams.map((combination) => (
-                    <option value={combination.params} selected={fields.combination_params === combination.params} className="select-option">
+                    <option
+                      value={combination.params}
+                      selected={fields.combination_params === combination.params}
+                      className="select-option"
+                    >
                       {combination.name}
                     </option>
                   ))}

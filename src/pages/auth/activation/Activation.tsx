@@ -21,7 +21,7 @@ function Activation() {
       navigate('/signin');
       toast('Activated successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -37,7 +37,7 @@ function Activation() {
       navigate('/signin');
       toast.error('message' in error ? error && error.message : 'Activate failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

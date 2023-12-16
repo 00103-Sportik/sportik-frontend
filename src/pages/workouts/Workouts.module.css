@@ -10,11 +10,11 @@
   @apply flex flex-col justify-center items-center;
 }
 
-.applyButton {
-  @apply mt-14 mr-14;
-}
-
 /*!!!The text is subject to change!!!*/
 .selectBox {
   @apply select-box w-[220px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear mb-0 mr-6 border-b-[white] border-[none] border-b border-solid;
+}
+
+.mainBox {
+  @apply w-[370px] h-[630px] flex flex-col items-center overflow-y-auto;
 }

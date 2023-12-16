@@ -29,7 +29,7 @@ function HRCalc() {
     } else {
       toast('Please enter a valid HRmax!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -52,7 +52,7 @@ function HRCalc() {
     } else {
       toast("You didn't indicate your age in your profile", {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

@@ -23,7 +23,7 @@ function Login() {
     navigate('/');
     toast('Login successfully!', {
       position: 'top-center',
-      autoClose: 3000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -33,9 +33,9 @@ function Login() {
     });
   }
   if (error) {
-    toast('Incorrect email or password', {
+    toast('message' in error ? error && error.message : 'Incorrect email or password', {
       position: 'top-center',
-      autoClose: 3000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

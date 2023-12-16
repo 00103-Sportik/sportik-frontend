@@ -86,7 +86,7 @@ function Profile() {
     if (isSuccessUpdate) {
       toast('Updated successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -101,7 +101,7 @@ function Profile() {
     if (isErrorUpdate && errorUpdate) {
       toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -123,7 +123,7 @@ function Profile() {
     setOpen2(false);
     toast('Updates cancelled!', {
       position: 'top-center',
-      autoClose: 3000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

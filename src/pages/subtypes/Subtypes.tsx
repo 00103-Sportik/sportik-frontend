@@ -46,7 +46,7 @@ function Subtypes() {
     if (isSuccessCreate) {
       toast('Created successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -62,7 +62,7 @@ function Subtypes() {
       setSubtype('');
       toast('Updated successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -77,7 +77,7 @@ function Subtypes() {
     if (isSuccessDelete) {
       toast('Deleted successfully!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -92,7 +92,7 @@ function Subtypes() {
     if (isErrorCreate && errorCreate) {
       toast('message' in errorCreate ? errorCreate && errorCreate.message : 'Create failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -107,7 +107,7 @@ function Subtypes() {
     if (isErrorUpdate && errorUpdate) {
       toast('message' in errorUpdate ? errorUpdate && errorUpdate.message : 'Update failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -122,7 +122,7 @@ function Subtypes() {
     if (errorDelete && isErrorDelete) {
       toast('message' in errorDelete ? errorDelete && errorDelete.message : 'Delete failed!', {
         position: 'top-center',
-        autoClose: 3000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -148,7 +148,7 @@ function Subtypes() {
 
   return (
     <>
-      <p className={styles.p1}>{type}</p>
+      <p className={styles.p1}>{type === 'cardio' ? 'Cardio training' : 'Muscle groups'}</p>
       <p className={styles.p2}>Subtypes</p>
       <div className={styles.mainBox}>
         {subtypes.length !== 0 ? (
