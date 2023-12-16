@@ -289,10 +289,10 @@ function Workout() {
                       changeField('type', event.target.value);
                     }}
                   >
-                    <option value="strength" selected={fields.type === 'strength'}>
+                    <option value="strength" selected={fields.type === 'strength'} className="select-option">
                       strength
                     </option>
-                    <option value="cardio" selected={fields.type === 'cardio'}>
+                    <option value="cardio" selected={fields.type === 'cardio'} className="select-option">
                       cardio
                     </option>
                   </select>

@@ -217,10 +217,10 @@ function Exercise() {
                     changeField('type', event.target.value);
                   }}
                 >
-                  <option value="strength" selected={fields.type === 'strength'}>
+                  <option value="strength" selected={fields.type === 'strength'} className="select-option">
                     strength
                   </option>
-                  <option value="cardio" selected={fields.type === 'cardio'}>
+                  <option value="cardio" selected={fields.type === 'cardio'} className="select-option">
                     cardio
                   </option>
                 </select>
@@ -235,12 +235,12 @@ function Exercise() {
                 >
                   {subtypes.length !== 0 ? (
                     subtypes.map((subtype) => (
-                      <option value={subtype.name} selected={fields.name === subtype.name}>
+                      <option value={subtype.name} selected={fields.name === subtype.name} className="select-option">
                         {subtype.name}
                       </option>
                     ))
                   ) : (
-                    <option value="" selected disabled hidden>
+                    <option value="" selected disabled hidden className="select-option">
                       Subtype
                     </option>
                   )}
@@ -255,7 +255,7 @@ function Exercise() {
                   }}
                 >
                   {combinationParams.map((combination) => (
-                    <option value={combination.params} selected={fields.combination_params === combination.params}>
+                    <option value={combination.params} selected={fields.combination_params === combination.params} className="select-option">
                       {combination.name}
                     </option>
                   ))}
@@ -290,7 +290,7 @@ function Exercise() {
                   Save
                 </button>
                 {uuid && (
-                  <button className="btn-red-less-margin" onClick={() => deleteExercise(uuid)}>
+                  <button className="btn-red" onClick={() => deleteExercise(uuid)}>
                     Delete
                   </button>
                 )}

@@ -124,6 +124,9 @@ export default {
           '@apply text-btnRed': {},
         },
         //--Combobox--
+        '.select-option': {
+          '@apply bg-layout':{},
+        },
         '.select-container': {
           '@apply flex justify-center relative w-[220px] h-[33px] overflow-hidden cursor-pointer mt-8': {},
         },
