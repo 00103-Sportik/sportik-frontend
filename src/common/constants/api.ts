@@ -12,7 +12,6 @@ export const UPDATE_PROFILE_URL = GET_PROFILE_URL;
 export const WORKOUTS_URL = '/workouts';
 export const EXERCISES_URL = '/exercises';
 export const EXERCISE_URL = '/exercise';
-
 export const SUBTYPES_URL = '/subtypes';
 export const APPROACHES_URL = '/approaches';
 

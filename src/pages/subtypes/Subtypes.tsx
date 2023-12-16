@@ -192,23 +192,6 @@ function Subtypes() {
         ) : (
           <h1 className={styles.noEntities}>There are no subtypes yet</h1>
         )}
-        {/* <div className={styles.itemBox}> */}
-        {/*   <div className={styles.boxItems} onClick={() => navigate(`${EXERCISES_URL}/${1}`)}> */}
-        {/*     <div className={styles.boxContent}> */}
-        {/*       <div className={styles.boxInfo}> */}
-        {/*         <span>name</span> */}
-        {/*       </div> */}
-        {/*       <div className={styles.sideButtonsBox}> */}
-        {/*         <button type="button"> */}
-        {/*           <AiFillEdit /> */}
-        {/*         </button> */}
-        {/*         <button type="button"> */}
-        {/*           <AiOutlineClose /> */}
-        {/*         </button> */}
-        {/*       </div> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
       </div>
       <Formik initialValues={subtypeInitialValue} onSubmit={onSubmit} validationSchema={subtypeValidationSchema}>
         {(props) => {

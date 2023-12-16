@@ -96,6 +96,7 @@ function Exercises() {
                     if (button.classList.contains('delete-exercise')) {
                       deleteExercise(exercise.uuid || '');
                     } else if (button.classList.contains('update-exercise')) {
+                      dispatch(setSubtype({ subtype: type || '' }));
                       navigate(`${EXERCISE_URL}/${exercise.uuid || ''}`);
                     }
                   } else {
@@ -126,72 +127,6 @@ function Exercises() {
         ) : (
           <h1 className={styles.noEntities}>There are no exercises yet</h1>
         )}
-        {/* <div className={styles.box}> */}
-        {/*   <div */}
-        {/*     className={styles.boxItems} */}
-        {/*     onClick={() => */}
-        {/*       addToWorkout({ */}
-        {/*         uuid: 'fsas234fsa3fs', */}
-        {/*         name: 'distant_time', */}
-        {/*         approaches: [], */}
-        {/*       }) */}
-        {/*     } */}
-        {/*   > */}
-        {/*     <span className={styles.boxInfoSize}>name</span> */}
-        {/*     <div hidden={true}> */}
-        {/*       <button type="button"> */}
-        {/*         <AiOutlineClose /> */}
-        {/*       </button> */}
-        {/*       <button type="button"> */}
-        {/*         <AiFillEdit /> */}
-        {/*       </button> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
-        {/* <div className={styles.box}> */}
-        {/*   <div */}
-        {/*     className={styles.boxItems} */}
-        {/*     onClick={() => */}
-        {/*       addToWorkout({ */}
-        {/*         uuid: 'fs2343fdsfs', */}
-        {/*         name: 'count_time', */}
-        {/*         approaches: [], */}
-        {/*       }) */}
-        {/*     } */}
-        {/*   > */}
-        {/*     <span className={styles.boxInfoSize}>name</span> */}
-        {/*     <div> */}
-        {/*       <button type="button"> */}
-        {/*         <AiOutlineClose /> */}
-        {/*       </button> */}
-        {/*       <button type="button"> */}
-        {/*         <AiFillEdit /> */}
-        {/*       </button> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
-        {/* <div className={styles.box}> */}
-        {/*   <div */}
-        {/*     className={styles.boxItems} */}
-        {/*     onClick={() => */}
-        {/*       addToWorkout({ */}
-        {/*         uuid: 'fs2343fds123fs', */}
-        {/*         name: 'count_weight', */}
-        {/*         approaches: [], */}
-        {/*       }) */}
-        {/*     } */}
-        {/*   > */}
-        {/*     <span className={styles.boxInfoSize}>name</span> */}
-        {/*     <div> */}
-        {/*       <button type="button"> */}
-        {/*         <AiOutlineClose /> */}
-        {/*       </button> */}
-        {/*       <button type="button"> */}
-        {/*         <AiFillEdit /> */}
-        {/*       </button> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
       </div>
       <button className="btn-black" onClick={() => goToCreateExercises()}>
         Add
