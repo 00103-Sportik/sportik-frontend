@@ -112,7 +112,7 @@ function Exercises() {
                   <div className={styles.boxInfo}>
                     <span>{exercise.name}</span>
                   </div>
-                  <div className={styles.sideButtonsBox}>
+                  <div className={styles.sideButtonsBox} hidden={exercise.user_uuid === null}>
                     <button className="update-exercise">
                       <AiFillEdit />
                     </button>

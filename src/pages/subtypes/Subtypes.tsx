@@ -181,7 +181,7 @@ function Subtypes() {
                     <button className="update-subtype">
                       <AiFillEdit />
                     </button>
-                    <button className="delete-subtype" hidden={subtype.user_uuid === null}>
+                    <button className="delete-subtype">
                       <AiOutlineClose />
                     </button>
                   </div>

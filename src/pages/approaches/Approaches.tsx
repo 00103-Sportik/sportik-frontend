@@ -12,9 +12,11 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import { AiOutlineClose } from 'react-icons/ai';
 import { IMask } from 'react-imask';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
+import { useGetExerciseQuery } from '../../store/exercise/exercise.api.ts';
 
 function Approaches() {
   const { uuid } = useParams();
+  const { data } = useGetExerciseQuery({ uuid });
   const exercisesFromStore = useAppSelector(selectExercises);
   const exercise = exercisesFromStore.filter((exercise) => exercise.uuid === uuid)[0];
   const combParams = combinationParams.filter((params) => params.params === exercise.combination_params)[0];
@@ -22,8 +24,11 @@ function Approaches() {
   if (exercise.approaches) {
     if (combParams.param2 === 'Time') {
       toApproaches = exercise.approaches.map((approach) => {
-        const time = `${Math.floor(approach.param2 / 3600)}:${Math.floor((approach.param2 % 3600) / 60)}:${
-          approach.param2 % 60
+        const hours = Math.floor(approach.param2 / 3600);
+        const minutes = Math.floor((approach.param2 % 3600) / 60);
+        const seconds = approach.param2 % 60;
+        const time = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${
+          seconds < 10 ? '0' + seconds : seconds
         }`;
         console.log(time);
         return { param1: String(approach.param1), param2: time } as ApproachState;
@@ -64,7 +69,7 @@ function Approaches() {
     }
     dispatch(
       setApproaches({
-        exerciseId: exercise.uuid || '',
+        exerciseId: uuid || '',
         approaches: toApproaches,
       }),
     );
@@ -79,7 +84,7 @@ function Approaches() {
 
   return (
     <>
-      <p className={styles.p1}>{exercise.name}</p>
+      <p className={styles.p1}>{data?.data.name || ''}</p>
       <p className={styles.p2}>Approaches</p>
       <Formik
         initialValues={intialVal}

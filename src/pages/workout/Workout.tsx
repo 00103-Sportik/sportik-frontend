@@ -23,8 +23,14 @@ import {
 import { toast } from 'react-toastify';
 import { APPROACHES_URL, SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
-import { setCountWorkouts, setCurrentWorkouts, setMainInfo } from '../../store/workouts/workouts.slice.ts';
-import { ExerciseRequestPost } from '../../common/types/workouts.ts';
+import {
+  setApproaches,
+  setCountWorkouts,
+  setCurrentWorkouts,
+  setExercise,
+  setMainInfo,
+} from '../../store/workouts/workouts.slice.ts';
+import { ApproachRequest, ExerciseRequestPost } from '../../common/types/workouts.ts';
 import { AiOutlineClose } from 'react-icons/ai';
 import styles from '../../styles/base.module.css';
 import styles2 from './Workout.module.css';
@@ -58,6 +64,21 @@ function Workout() {
     comment: workoutInfo.comment || '',
   });
   const { data, isSuccess } = useGetWorkoutQuery({ uuid });
+
+  useEffect(() => {
+    setExercises(exercisesFromStore);
+  }, [exercisesFromStore]);
+
+  useEffect(() => {
+    if (data) {
+      data?.data.exercises.map((curExercise) => {
+        if (!exercises.find((tmpExercise) => curExercise.uuid === tmpExercise.uuid)) {
+          dispatch(setExercise(curExercise));
+          dispatch(setApproaches({ exerciseId: curExercise.uuid, approaches: curExercise.approaches || [] }));
+        }
+      });
+    }
+  }, [setExercises, data]);
 
   useEffect(() => {
     if (isSuccess && uuid) {
@@ -224,7 +245,8 @@ function Workout() {
     navigate(SUBTYPES_URL + '/' + fields.type);
   };
 
-  const goToApproaches = (id: string) => {
+  const goToApproaches = (id: string, approaches: ApproachRequest[]) => {
+    dispatch(setApproaches({ exerciseId: id, approaches }));
     navigate(`${APPROACHES_URL}/${id}`);
   };
 
@@ -312,7 +334,7 @@ function Workout() {
                               deleteExercise(index);
                             }
                           } else {
-                            goToApproaches(exercise.uuid || '');
+                            goToApproaches(exercise.uuid || '', exercise.approaches || []);
                           }
                         }}
                       >
