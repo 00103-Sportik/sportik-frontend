@@ -23,7 +23,7 @@ function Profile() {
   const [open2, setOpen2] = useState(false);
   const [updateProfile, { isSuccess: isSuccessUpdate, error: errorUpdate, isError: isErrorUpdate }] =
     useUpdateProfileMutation();
-  const { data, isSuccess, refetch } = useGetProfileQuery();
+  const { data, isFetching, refetch } = useGetProfileQuery();
   const dispatch = useAppDispatch();
   const avatar = useAppSelector(selectAvatar);
   const [fields, setFields] = useState<ProfileFields>({
@@ -38,7 +38,7 @@ function Profile() {
   });
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (!isFetching && data) {
       setFields({
         email: data?.data.email || '',
         name: data?.data.name || '',
@@ -50,7 +50,7 @@ function Profile() {
         image: data?.data.image || '',
       });
     }
-  }, [isSuccess, data]);
+  }, [isFetching, data]);
 
   useEffect(() => {
     dispatch(setProfile(fields));

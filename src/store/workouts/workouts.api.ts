@@ -7,7 +7,7 @@ export const workoutsApi = apiSlice.injectEndpoints({
     getWorkouts: builder.query<WorkoutsResponse, WorkoutsRequest>({
       query: ({ limit, offset, sort, from, to }) => ({
         url: `${WORKOUTS_URL}?limit=${limit}&offset=${offset}&sort=${sort}${
-          from !== to ? '&from=' + from + '&to=' + to : ''
+          from !== '' && to !== '' ? '&from=' + from + '&to=' + to : ''
         }`,
         method: 'GET',
       }),
