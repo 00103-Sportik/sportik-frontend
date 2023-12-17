@@ -31,12 +31,16 @@ export const approachValidationSchema = [
     approach: Yup.object().shape({
       fields: Yup.array().of(
         Yup.object().shape({
-          param1: Yup.string().matches(/^\d{1,3}(\.\d)?$/, {
-            message: `Must be an integer or fractional with one decimal place. Max - 999.9`,
-          }),
-          param2: Yup.string().matches(/^\d{1,2}:[0-5][0-9]:[0-5][0-9]$/, {
-            message: `Max - 99:59:59`,
-          }),
+          param1: Yup.string()
+            .matches(/^\d{1,3}(\.\d)?$/, {
+              message: `Must be an integer or fractional with one decimal place. Max - 999.9`,
+            })
+            .required('Required field'),
+          param2: Yup.string()
+            .matches(/^\d{1,2}:[0-5][0-9]:[0-5][0-9]$/, {
+              message: `Max - 99:59:59`,
+            })
+            .required('Required field'),
         }),
       ),
     }),
@@ -46,12 +50,16 @@ export const approachValidationSchema = [
     approach: Yup.object().shape({
       fields: Yup.array().of(
         Yup.object().shape({
-          param1: Yup.string().matches(/^\d{1,4}$/, {
-            message: `Count must be an integer. Max - 9999`,
-          }),
-          param2: Yup.string().matches(/^\d{1,3}(\.\d)?$/, {
-            message: `Weight must be an integer or fractional with one decimal place. Max - 999.9`,
-          }),
+          param1: Yup.string()
+            .matches(/^\d{1,4}$/, {
+              message: `Count must be an integer. Max - 9999`,
+            })
+            .required('Required field'),
+          param2: Yup.string()
+            .matches(/^\d{1,3}(\.\d)?$/, {
+              message: `Weight must be an integer or fractional with one decimal place. Max - 999.9`,
+            })
+            .required('Required field'),
         }),
       ),
     }),
@@ -61,12 +69,16 @@ export const approachValidationSchema = [
     approach: Yup.object().shape({
       fields: Yup.array().of(
         Yup.object().shape({
-          param1: Yup.string().matches(/^\d{1,4}$/, {
-            message: `Count must be an integer. Max - 9999`,
-          }),
-          param2: Yup.string().matches(/^\d{1,2}:[0-5][0-9]:[0-5][0-9]$/, {
-            message: `Max - 99:59:59`,
-          }),
+          param1: Yup.string()
+            .matches(/^\d{1,4}$/, {
+              message: `Count must be an integer. Max - 9999`,
+            })
+            .required('Required field'),
+          param2: Yup.string()
+            .matches(/^\d{1,2}:[0-5][0-9]:[0-5][0-9]$/, {
+              message: `Max - 99:59:59`,
+            })
+            .required('Required field'),
         }),
       ),
     }),
