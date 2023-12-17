@@ -14,11 +14,7 @@ import {
 } from '../../store/workouts/workouts.api.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
-import {
-  selectExercises,
-  selectFullWorkoutInfo,
-  selectWorkoutsCount,
-} from '../../store/workouts/workouts.selectors.ts';
+import { selectFullWorkoutInfo, selectWorkoutsCount } from '../../store/workouts/workouts.selectors.ts';
 import { toast } from 'react-toastify';
 import { APPROACHES_URL, SUBTYPES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
@@ -28,6 +24,7 @@ import {
   setCurrentWorkouts,
   setExercise,
   setMainInfo,
+  unsetExercise,
 } from '../../store/workouts/workouts.slice.ts';
 import { ApproachRequest, ExerciseRequestPost } from '../../common/types/workouts.ts';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -37,10 +34,10 @@ import { IMask } from 'react-imask';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
+  const workoutInfo = useAppSelector(selectFullWorkoutInfo);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const exercisesFromStore = useAppSelector(selectExercises);
-  const [exercises, setExercises] = useState<ExerciseRequestPost[]>(exercisesFromStore);
+  const [exercises, setExercises] = useState<ExerciseRequestPost[]>([]);
   const [updateWorkout, { error: errorUpdate, isSuccess: isSuccessUpdate, isError: isErrorUpdate }] =
     useUpdateWorkoutMutation();
   const [createWorkout, { error: errorCreate, isSuccess: isSuccessCreate, data: dataCreate, isError: isErrorCreate }] =
@@ -49,7 +46,13 @@ function Workout() {
     useDeleteWorkoutMutation();
   const { uuid } = useParams();
   const dispatch = useAppDispatch();
-  const workoutInfo = useAppSelector(selectFullWorkoutInfo);
+
+  const deleteExercise = (index: number) => {
+    dispatch(unsetExercise({ index }));
+    const tempExercises = [...exercises];
+    tempExercises.splice(index, 1);
+    setExercises(tempExercises);
+  };
 
   const convertToLocalDate = (date: string) => {
     const parts = date.split('-');
@@ -65,19 +68,19 @@ function Workout() {
   const { data, isSuccess } = useGetWorkoutQuery({ uuid });
 
   useEffect(() => {
-    setExercises(exercisesFromStore);
-  }, [exercisesFromStore]);
+    setExercises(workoutInfo.exercises);
+  }, [workoutInfo]);
 
   useEffect(() => {
-    if (data) {
+    if (isSuccess && data) {
       data?.data.exercises.map((curExercise) => {
-        if (!exercises.find((tmpExercise) => curExercise.uuid === tmpExercise.uuid)) {
+        if (!workoutInfo.exercises.find((tmpExercise) => curExercise.uuid === tmpExercise.uuid)) {
           dispatch(setExercise(curExercise));
           dispatch(setApproaches({ exerciseId: curExercise.uuid, approaches: curExercise.approaches || [] }));
         }
       });
     }
-  }, [setExercises, data]);
+  }, [data, isSuccess]);
 
   useEffect(() => {
     if (isSuccess && uuid) {
@@ -241,12 +244,6 @@ function Workout() {
     navigate(`${APPROACHES_URL}/${id}`);
   };
 
-  const deleteExercise = (index: number) => {
-    const tempExercises = [...exercises];
-    tempExercises.splice(index, 1);
-    setExercises(tempExercises);
-  };
-
   useEffect(() => {
     formik.setValues(fields);
   }, [fields]);
@@ -292,6 +289,7 @@ function Workout() {
             <select
               className="select-box-wider"
               value={formik.values.type}
+              disabled={uuid || workoutInfo.exercises.length !== 0}
               onChange={(type) => formik.setFieldValue('type', type.target.value)}
             >
               <option

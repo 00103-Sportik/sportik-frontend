@@ -23,6 +23,12 @@ export const workoutsSlice = createSlice({
       const exercise = action.payload;
       state.exercises = [...state.exercises, exercise];
     },
+    unsetExercise: (state: Draft<WorkoutState>, action: PayloadAction<{ index: number }>) => {
+      const { index } = action.payload;
+      const toState = [...state.exercises];
+      state.exercises = [];
+      state.exercises = toState.slice(0, index).concat(toState.slice(index + 1));
+    },
     setApproaches: (
       state: Draft<WorkoutState>,
       action: PayloadAction<{ exerciseId: string; approaches: ApproachRequest[] }>,
@@ -57,6 +63,7 @@ export const workoutsSlice = createSlice({
 });
 
 export const {
+  unsetExercise,
   discardWorkoutInfo,
   setApproaches,
   setCountWorkouts,
