@@ -29,13 +29,17 @@ function Approaches() {
     if (approachesFromState) {
       if (combParams.param2 === 'Time') {
         toApproaches = approachesFromState.map((approach) => {
-          const hours = Math.floor(approach.param2 / 3600);
-          const minutes = Math.floor((approach.param2 % 3600) / 60);
-          const seconds = approach.param2 % 60;
-          const time = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${
-            seconds < 10 ? '0' + seconds : seconds
-          }`;
-          return { param1: String(approach.param1), param2: time } as ApproachState;
+          if (approach.param2 !== null) {
+            const hours = Math.floor(approach.param2 / 3600);
+            const minutes = Math.floor((approach.param2 % 3600) / 60);
+            const seconds = approach.param2 % 60;
+            const time = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${
+              seconds < 10 ? '0' + seconds : seconds
+            }`;
+            return { param1: String(approach.param1), param2: time } as ApproachState;
+          } else {
+            return { param1: String(approach.param1), param2: '00:00:00' } as ApproachState;
+          }
         });
       } else {
         toApproaches = approachesFromState.map((approach) => {
@@ -72,9 +76,13 @@ function Approaches() {
     let toApproaches: ApproachRequest[];
     if (combParams.param2 === 'Time') {
       toApproaches = approaches.map((approach) => {
-        const parts = approach.param2.split(':');
-        const time = Number(parts[0]) * 3600 + Number(parts[1]) * 60 + Number(parts[2]);
-        return { param1: Number(approach.param1), param2: time } as ApproachRequest;
+        if (approach.param2 !== '') {
+          const parts = approach.param2.split(':');
+          const time = Number(parts[0]) * 3600 + Number(parts[1]) * 60 + Number(parts[2]);
+          return { param1: Number(approach.param1), param2: time } as ApproachRequest;
+        } else {
+          return { param1: Number(approach.param1), param2: 0 } as ApproachRequest;
+        }
       });
     } else {
       toApproaches = approaches.map((approach) => {
