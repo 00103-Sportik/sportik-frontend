@@ -56,7 +56,12 @@ function Profile() {
         surname: data?.data.surname || '',
         sex: data?.data.sex || '',
         age: data?.data.age !== null ? String(data?.data.age) : '',
-        height: data?.data.height !== null ? (data?.data.height < 10 ? '0' + String(data?.data.height) : '') : '',
+        height:
+          data?.data.height !== null
+            ? data?.data.height < 10
+              ? '0' + String(data?.data.height)
+              : String(data?.data.height)
+            : '',
         weight: data?.data.weight !== null ? String(data?.data.weight) : '',
         image: data?.data.image || '',
       });

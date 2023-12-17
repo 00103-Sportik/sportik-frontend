@@ -58,7 +58,7 @@ function Workout() {
 
   const [fields, setFields] = useState<WorkoutFields>({
     name: workoutInfo.name || `Workout ${count}`,
-    date: workoutInfo.date ? convertToLocalDate(workoutInfo.date) : new Date().toLocaleDateString(),
+    date: workoutInfo.date ? workoutInfo.date : new Date().toLocaleDateString(),
     type: workoutInfo.type || 'strength',
     comment: workoutInfo.comment || '',
   });

@@ -220,11 +220,7 @@ function Exercise() {
           >
             {subtypes.length !== 0 ? (
               subtypes.map((subtype) => (
-                <option
-                  value={formik.values.name}
-                  selected={formik.values.name === subtype.name}
-                  className="select-option"
-                >
+                <option value={subtype.name} className="select-option">
                   {subtype.name}
                 </option>
               ))
