@@ -1,4 +1,4 @@
-import { AiFillFilter } from 'react-icons/ai';
+import { AiFillFilter, AiOutlineClose } from 'react-icons/ai';
 import React, { useEffect, useState } from 'react';
 import { useGetWorkoutsQuery } from '../../store/workouts/workouts.api.ts';
 import { Dialog } from '@ariakit/react';
@@ -139,9 +139,21 @@ function Workouts() {
                       )}
                     </Field>
                   </div>
-                  <div className={styles2.applyButton}>
-                    <button className="btn-black-less-margin" type="submit">
+                  <div className={styles.sideButtonsBox}>
+                    <button className="btn-black" type="submit">
                       Apply
+                    </button>
+                    <button
+                      className="btn-black"
+                      type="reset"
+                      onClick={() => {
+                        setFrom('');
+                        setTo('');
+                        setOffset(0);
+                        setOpen(false);
+                      }}
+                    >
+                      <AiOutlineClose />
                     </button>
                   </div>
                 </Form>

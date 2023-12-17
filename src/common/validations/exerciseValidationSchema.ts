@@ -24,7 +24,7 @@ export const exerciseValidationSchema = Yup.object().shape({
   name: Yup.string()
     .min(MIN_NAME_LENGTH, `Min length ${MIN_NAME_LENGTH} characters`)
     .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`)
-    .nonNullable(),
-  description: Yup.string().max(MAX_DESCRIPTION_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),
-  combination_params: Yup.string().required('Required field'),
+    .required('Required field'),
+  description: Yup.string().max(MAX_DESCRIPTION_LENGTH, `Max length ${MAX_DESCRIPTION_LENGTH} characters`),
+  combination_params: Yup.string(),
 });

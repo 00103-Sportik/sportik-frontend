@@ -1,14 +1,13 @@
-import { Field, FieldProps, Form, Formik } from 'formik';
+import { useFormik } from 'formik';
 import { Input } from '../../common/components/input/Input.tsx';
 import {
   ExerciseFields,
   exerciseInitialValue,
   exerciseValidationSchema,
 } from '../../common/validations/exerciseValidationSchema.ts';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../store/hooks.ts';
 import { selectSubtype, selectType } from '../../store/workouts/workouts.selectors.ts';
-import { produce } from 'immer';
 import { useGetSubtypesQuery } from '../../store/subtype/subtype.api.ts';
 import { combinationParams, ExerciseRequest } from '../../common/types/workouts.ts';
 import {
@@ -63,6 +62,10 @@ function Exercise() {
       setSubtypes(data?.data.subtypes);
     }
   }, [isSuccess, data]);
+
+  useEffect(() => {
+    formik.setValues(fields);
+  }, [fields]);
 
   useEffect(() => {
     if (isSuccessCreate) {
@@ -174,13 +177,11 @@ function Exercise() {
     }
   };
 
-  const changeField = useCallback((field: keyof ExerciseFields, value: string) => {
-    setFields(
-      produce((draft) => {
-        draft[field] = value;
-      }),
-    );
-  }, []);
+  const formik = useFormik({
+    initialValues: exerciseInitialValue,
+    onSubmit,
+    validationSchema: exerciseValidationSchema,
+  });
 
   const deleteExercise = async (uuid: string) => {
     await delExercise({ uuid });
@@ -188,121 +189,90 @@ function Exercise() {
 
   return (
     <>
-      <Formik initialValues={exerciseInitialValue} onSubmit={onSubmit} validationSchema={exerciseValidationSchema}>
-        {(props) => {
-          return (
-            <Form>
-              <Field name="name">
-                {({ field, meta }: FieldProps) => (
-                  <Input
-                    type="text"
-                    {...field}
-                    value={fields.name}
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('name', event.target.value);
-                    }}
-                    placeholder="Name"
-                    error={meta.touched && !!meta.error}
-                    errorText={meta.error}
-                    className="form-input-wider"
-                  />
-                )}
-              </Field>
-              <div className="select-container-wider">
-                <select
-                  className="select-box-wider"
-                  onChange={(event) => {
-                    props.handleChange(event);
-                    changeField('type', event.target.value);
-                  }}
+      <form id="exercise-form" onSubmit={formik.handleSubmit}>
+        <Input
+          type="text"
+          {...formik.getFieldProps('name')}
+          error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
+          errorText={formik.getFieldMeta('name').error}
+          placeholder="Name"
+          className="form-input-wider"
+        />
+        <div className="select-container-wider">
+          <select
+            className="select-box-wider"
+            value={formik.values.type}
+            onChange={(type) => formik.setFieldValue('type', type.target.value)}
+          >
+            <option value="strength" selected={formik.values.type === 'strength'} className="select-option">
+              strength
+            </option>
+            <option value="cardio" selected={formik.values.type === 'cardio'} className="select-option">
+              cardio
+            </option>
+          </select>
+        </div>
+        <div className="select-container-wider">
+          <select
+            className="select-box-wider"
+            value={formik.values.subtype}
+            onChange={(subtype) => formik.setFieldValue('subtype', subtype.target.value)}
+          >
+            {subtypes.length !== 0 ? (
+              subtypes.map((subtype) => (
+                <option
+                  value={formik.values.name}
+                  selected={formik.values.name === subtype.name}
+                  className="select-option"
                 >
-                  <option value="strength" selected={fields.type === 'strength'} className="select-option">
-                    strength
-                  </option>
-                  <option value="cardio" selected={fields.type === 'cardio'} className="select-option">
-                    cardio
-                  </option>
-                </select>
-              </div>
-              <div className="select-container-wider">
-                <select
-                  className="select-box-wider"
-                  onChange={(event) => {
-                    props.handleChange(event);
-                    changeField('subtype', event.target.value);
-                  }}
-                >
-                  {subtypes.length !== 0 ? (
-                    subtypes.map((subtype) => (
-                      <option value={subtype.name} selected={fields.name === subtype.name} className="select-option">
-                        {subtype.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" selected disabled hidden className="select-option">
-                      Subtype
-                    </option>
-                  )}
-                </select>
-              </div>
-              <div className="select-container-wider">
-                <select
-                  className="select-box-wider"
-                  onChange={(event) => {
-                    props.handleChange(event);
-                    changeField('combination_params', event.target.value);
-                  }}
-                >
-                  {combinationParams.map((combination) => (
-                    <option
-                      value={combination.params}
-                      selected={fields.combination_params === combination.params}
-                      className="select-option"
-                    >
-                      {combination.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <Field name="description">
-                {({ field, meta }: FieldProps) => (
-                  <Input
-                    type="text"
-                    {...field}
-                    value={fields.description}
-                    onChange={(event) => {
-                      props.handleChange(event);
-                      changeField('description', event.target.value);
-                    }}
-                    placeholder="Description"
-                    error={meta.touched && !!meta.error}
-                    errorText={meta.error}
-                    className="form-input-wider"
-                  />
-                )}
-              </Field>
-              <div className={styles.buttonsBox}>
-                <button
-                  className="btn-black"
-                  onClick={() => {
-                    if (fields.name) {
-                      onSubmit(fields);
-                    }
-                  }}
-                >
-                  Save
-                </button>
-                {uuid && (
-                  <button className="btn-red" onClick={() => deleteExercise(uuid)}>
-                    Delete
-                  </button>
-                )}
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
+                  {subtype.name}
+                </option>
+              ))
+            ) : (
+              <option value="" selected disabled hidden className="select-option">
+                Subtype
+              </option>
+            )}
+          </select>
+        </div>
+        <div className="select-container-wider">
+          <select
+            className="select-box-wider"
+            value={formik.values.combination_params}
+            onChange={(combination_params) =>
+              formik.setFieldValue('combination_params', combination_params.target.value)
+            }
+          >
+            {combinationParams.map((combination) => (
+              <option
+                value={combination.params}
+                selected={formik.values.combination_params === combination.params}
+                className="select-option"
+              >
+                {combination.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <Input
+          type="text"
+          {...formik.getFieldProps('description')}
+          error={formik.getFieldMeta('description').touched && !!formik.getFieldMeta('description').error}
+          errorText={formik.getFieldMeta('description').error}
+          placeholder="Description"
+          className="form-input-wider"
+        />
+        <div className={styles.buttonsBox}>
+          <button className="btn-black" type="submit">
+            Save
+          </button>
+          {uuid && (
+            <button className="btn-red" onClick={() => deleteExercise(uuid)}>
+              Delete
+            </button>
+          )}
+        </div>
+      </form>
     </>
   );
 }

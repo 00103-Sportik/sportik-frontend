@@ -89,7 +89,8 @@ function Registration() {
         progress: undefined,
         theme: 'dark',
       });
-      setTimerActive(!timerActive);
+      setTimerActive(false);
+      setTimerActive(true);
     }
   }, [isSuccessResend]);
 

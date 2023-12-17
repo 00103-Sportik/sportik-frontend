@@ -1,11 +1,11 @@
-import { Field, FieldProps, Form, Formik } from 'formik';
+import { useFormik } from 'formik';
 import { Input } from '../../common/components/input/Input.tsx';
 import {
   WorkoutFields,
   workoutInitialValues,
   workoutValidationSchema,
 } from '../../common/validations/workoutValidationSchema.ts';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useCreateWorkoutMutation,
   useDeleteWorkoutMutation,
@@ -13,7 +13,6 @@ import {
   useUpdateWorkoutMutation,
 } from '../../store/workouts/workouts.api.ts';
 import { useNavigate, useParams } from 'react-router-dom';
-import { produce } from 'immer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks.ts';
 import {
   selectExercises,
@@ -35,6 +34,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import styles from '../../styles/base.module.css';
 import styles2 from './Workout.module.css';
 import { IMask } from 'react-imask';
+import { subtypeInitialValue, subtypeValidationSchema } from '../../common/validations/subtypeValidationSchema.ts';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
@@ -58,7 +58,7 @@ function Workout() {
   };
 
   const [fields, setFields] = useState<WorkoutFields>({
-    name: workoutInfo.name || `Новая тренировка ${count}`,
+    name: workoutInfo.name || `Workout ${count}`,
     date: workoutInfo.date ? convertToLocalDate(workoutInfo.date) : new Date().toLocaleDateString(),
     type: workoutInfo.type || 'strength',
     comment: workoutInfo.comment || '',
@@ -84,7 +84,7 @@ function Workout() {
     if (isSuccess && uuid) {
       setFields({
         uuid: data?.data.uuid || '',
-        name: data?.data.name || `Новая тренировка ${count}`,
+        name: data?.data.name || `Workout ${count}`,
         date: data?.data.date ? convertToLocalDate(data?.data.date) : new Date().toLocaleDateString(),
         type: data?.data.type || 'strength',
         comment: data?.data.comment || '',
@@ -220,14 +220,6 @@ function Workout() {
     }
   };
 
-  const changeField = useCallback((field: keyof WorkoutFields, value: string) => {
-    setFields(
-      produce((draft) => {
-        draft[field] = value;
-      }),
-    );
-  }, []);
-
   const deleteWorkout = async () => {
     await delWorkout({ uuid });
   };
@@ -256,150 +248,130 @@ function Workout() {
     setExercises(tempExercises);
   };
 
+  useEffect(() => {
+    formik.setValues(fields);
+  }, [fields]);
+
+  const formik = useFormik({
+    initialValues: workoutInitialValues,
+    onSubmit,
+    validationSchema: workoutValidationSchema,
+  });
+
   return (
     <>
-      <Formik initialValues={workoutInitialValues} onSubmit={onSubmit} validationSchema={workoutValidationSchema}>
-        {(props) => {
-          return (
-            <Form>
-              <div className={styles2.parametersBox}>
-                <Field name="name">
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      value={fields.name}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        changeField('name', event.target.value);
-                      }}
-                      placeholder="Name"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      className="form-input-wider"
-                    ></Input>
-                  )}
-                </Field>
-                <Field name="date">
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      id="workout-date"
-                      type="text"
-                      {...field}
-                      value={fields.date}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        const element = document.getElementById(`workout-date`);
-                        const maskOptions = {
-                          mask: '00.00.0000',
-                        };
-                        // @ts-ignore
-                        IMask(element, maskOptions);
-                        changeField('date', event.target.value);
-                      }}
-                      placeholder="Date"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      className="form-input-wider"
-                    />
-                  )}
-                </Field>
-                <div className="select-container-wider">
-                  <select
-                    className="select-box-wider"
-                    onChange={(event) => {
-                      changeField('type', event.target.value);
-                    }}
-                  >
-                    <option
-                      value="strength"
-                      selected={fields.type === 'strength'}
-                      className="select-option"
-                      hidden={exercises.length !== 0 && fields.type !== 'strength'}
-                    >
-                      strength
-                    </option>
-                    <option
-                      value="cardio"
-                      selected={fields.type === 'cardio'}
-                      className="select-option"
-                      hidden={exercises.length !== 0 && fields.type !== 'cardio'}
-                    >
-                      cardio
-                    </option>
-                  </select>
+      <form id="workout-form" onSubmit={formik.handleSubmit}>
+        <div className={styles2.parametersBox}>
+          <Input
+            type="text"
+            {...formik.getFieldProps('name')}
+            error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
+            errorText={formik.getFieldMeta('name').error}
+            placeholder="Name"
+            className="form-input-wider"
+          ></Input>
+          <Input
+            id="workout-date"
+            type="text"
+            {...formik.getFieldProps('date')}
+            error={formik.getFieldMeta('date').touched && !!formik.getFieldMeta('date').error}
+            errorText={formik.getFieldMeta('date').error}
+            onChange={(event) => {
+              formik.handleChange(event);
+              const element = document.getElementById(`workout-date`);
+              const maskOptions = {
+                mask: '00.00.0000',
+              };
+              // @ts-ignore
+              IMask(element, maskOptions);
+              formik.setFieldValue('inputFile', event.target.value);
+            }}
+            placeholder="Date"
+            className="form-input-wider"
+          />
+          <div className="select-container-wider">
+            <select
+              className="select-box-wider"
+              value={formik.values.type}
+              onChange={(type) => formik.setFieldValue('type', type.target.value)}
+            >
+              <option
+                value="strength"
+                selected={formik.values.type === 'strength'}
+                className="select-option"
+                hidden={exercises.length !== 0 && formik.values.type !== 'strength'}
+              >
+                strength
+              </option>
+              <option
+                value="cardio"
+                selected={formik.values.type === 'cardio'}
+                className="select-option"
+                hidden={exercises.length !== 0 && formik.values.type !== 'cardio'}
+              >
+                cardio
+              </option>
+            </select>
+          </div>
+        </div>
+        <div className={styles2.mainBox}>
+          {exercises.length !== 0 ? (
+            exercises.map((exercise, index) => (
+              <div className={styles.itemBox}>
+                <div
+                  className={styles.boxItems}
+                  onClick={(event) => {
+                    const target = event.target as HTMLElement;
+                    const button = target.closest('button');
+                    if (button) {
+                      if (button.classList.contains('delete-from-workout')) {
+                        deleteExercise(index);
+                      }
+                    } else {
+                      goToApproaches(exercise.uuid || '', exercise.approaches || []);
+                    }
+                  }}
+                >
+                  <div className={styles.boxContent}>
+                    <div className={styles.boxInfo}>
+                      <span>{exercise.name}</span>
+                      <span>approaches: {exercise?.approaches?.length || 0}</span>
+                    </div>
+                    <div className={styles.deleteButton}>
+                      <button className="delete-from-workout">
+                        <AiOutlineClose />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className={styles2.mainBox}>
-                {exercises.length !== 0 ? (
-                  exercises.map((exercise, index) => (
-                    <div className={styles.itemBox}>
-                      <div
-                        className={styles.boxItems}
-                        onClick={(event) => {
-                          const target = event.target as HTMLElement;
-                          const button = target.closest('button');
-                          if (button) {
-                            if (button.classList.contains('delete-from-workout')) {
-                              deleteExercise(index);
-                            }
-                          } else {
-                            goToApproaches(exercise.uuid || '', exercise.approaches || []);
-                          }
-                        }}
-                      >
-                        <div className={styles.boxContent}>
-                          <div className={styles.boxInfo}>
-                            <span>{exercise.name}</span>
-                            <span>approaches: {exercise?.approaches?.length || 0}</span>
-                          </div>
-                          <div className={styles.deleteButton}>
-                            <button className="delete-from-workout">
-                              <AiOutlineClose />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <h1 className={styles.noEntities}>There are no exercises yet</h1>
-                )}
-              </div>
-              <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
-                Add
-              </button>
-              <div className={styles2.parametersBox}>
-                <Field name="comment">
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      value={fields.comment}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        changeField('comment', event.target.value);
-                      }}
-                      placeholder="Comment"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      className="form-input-wider"
-                    ></Input>
-                  )}
-                </Field>
-              </div>
-              <div className={styles.buttonsBox}>
-                <button className="btn-black-less-margin" type="submit">
-                  Save
-                </button>
-                <button className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
-                  Delete
-                </button>
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
+            ))
+          ) : (
+            <h1 className={styles.noEntities}>There are no exercises yet</h1>
+          )}
+        </div>
+        <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
+          Add
+        </button>
+        <div className={styles2.parametersBox}>
+          <Input
+            type="text"
+            {...formik.getFieldProps('comment')}
+            error={formik.getFieldMeta('comment').touched && !!formik.getFieldMeta('comment').error}
+            errorText={formik.getFieldMeta('comment').error}
+            placeholder="Comment"
+            className="form-input-wider"
+          ></Input>
+        </div>
+        <div className={styles.buttonsBox}>
+          <button className="btn-black-less-margin" type="submit" form="workout-form">
+            Save
+          </button>
+          <button className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
+            Delete
+          </button>
+        </div>
+      </form>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
