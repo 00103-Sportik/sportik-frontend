@@ -311,10 +311,20 @@ function Workout() {
                       changeField('type', event.target.value);
                     }}
                   >
-                    <option value="strength" selected={fields.type === 'strength'} className="select-option">
+                    <option
+                      value="strength"
+                      selected={fields.type === 'strength'}
+                      className="select-option"
+                      hidden={exercises.length !== 0 && fields.type !== 'strength'}
+                    >
                       strength
                     </option>
-                    <option value="cardio" selected={fields.type === 'cardio'} className="select-option">
+                    <option
+                      value="cardio"
+                      selected={fields.type === 'cardio'}
+                      className="select-option"
+                      hidden={exercises.length !== 0 && fields.type !== 'cardio'}
+                    >
                       cardio
                     </option>
                   </select>
