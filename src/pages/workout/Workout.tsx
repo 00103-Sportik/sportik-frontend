@@ -366,9 +366,11 @@ function Workout() {
           <button className="btn-black-less-margin" type="submit" form="workout-form">
             Save
           </button>
-          <button className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
-            Delete
-          </button>
+          {uuid && (
+            <button className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
+              Delete
+            </button>
+          )}
         </div>
       </form>
       <Dialog
