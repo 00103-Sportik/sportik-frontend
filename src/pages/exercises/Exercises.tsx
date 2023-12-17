@@ -7,12 +7,13 @@ import { AiFillEdit, AiOutlineClose } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import styles from '../../styles/base.module.css';
 import { useEffect, useState } from 'react';
-import { selectCurrentWorkout, selectType } from '../../store/workouts/workouts.selectors.ts';
+import { selectCurrentWorkout, selectExercises, selectType } from '../../store/workouts/workouts.selectors.ts';
 import { useGetSubtypesQuery } from '../../store/subtype/subtype.api.ts';
 import { EXERCISE_URL, EXERCISES_URL, WORKOUTS_URL } from '../../common/constants/api.ts';
 
 function Exercises() {
   const navigate = useNavigate();
+  const exercisesFromStore = useAppSelector(selectExercises);
   const { type } = useParams();
   const workoutUuid = useAppSelector(selectCurrentWorkout);
   const [subtypeName, setSubtypeName] = useState('');
@@ -35,8 +36,21 @@ function Exercises() {
   }, [isSuccessSub, dataSub]);
 
   const addToWorkout = (exercise: ExerciseRequestPost) => {
-    dispatch(setExercise(exercise));
-    navigate(`${WORKOUTS_URL}/${workoutUuid}`);
+    if (exercisesFromStore.filter((exerciseFromStore) => exerciseFromStore.name === exercise.name).length === 0) {
+      dispatch(setExercise(exercise));
+      navigate(`${WORKOUTS_URL}/${workoutUuid}`);
+    } else {
+      toast('Exercise has already been added to the workout!', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
   };
 
   useEffect(() => {

@@ -34,7 +34,6 @@ import { AiOutlineClose } from 'react-icons/ai';
 import styles from '../../styles/base.module.css';
 import styles2 from './Workout.module.css';
 import { IMask } from 'react-imask';
-import { subtypeInitialValue, subtypeValidationSchema } from '../../common/validations/subtypeValidationSchema.ts';
 
 function Workout() {
   const count = useAppSelector(selectWorkoutsCount) + 1;
@@ -234,7 +233,7 @@ function Workout() {
         comment: fields.comment,
       }),
     );
-    navigate(SUBTYPES_URL + '/' + fields.type);
+    navigate(SUBTYPES_URL + '/' + formik.getFieldProps('type').value);
   };
 
   const goToApproaches = (id: string, approaches: ApproachRequest[]) => {
@@ -284,7 +283,7 @@ function Workout() {
               };
               // @ts-ignore
               IMask(element, maskOptions);
-              formik.setFieldValue('inputFile', event.target.value);
+              formik.setFieldValue('date', event.target.value);
             }}
             placeholder="Date"
             className="form-input-wider"
@@ -338,7 +337,7 @@ function Workout() {
                       <span>approaches: {exercise?.approaches?.length || 0}</span>
                     </div>
                     <div className={styles.deleteButton}>
-                      <button className="delete-from-workout">
+                      <button className="delete-from-workout" type="reset">
                         <AiOutlineClose />
                       </button>
                     </div>
