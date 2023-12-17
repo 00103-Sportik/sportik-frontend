@@ -35,19 +35,27 @@ function Exercise() {
     useUpdateExerciseMutation();
   const [delExercise, { isSuccess: isSuccessDelete, error: errorDelete, isError: isErrorDelete }] =
     useDeleteExerciseMutation();
-  const [fields, setFields] = useState<ExerciseFields>({
-    name: '',
-    description: '',
-    type: type || '',
-    subtype: subtype || '',
-    combination_params: 'distant_time',
+  const onSubmit = async (values: ExerciseFields) => {
+    const toCreate: ExerciseRequest = getValues(values);
+    if (uuid) {
+      updateExercise(toCreate);
+    } else {
+      await addExercise(toCreate);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: exerciseInitialValue,
+    onSubmit,
+    validationSchema: exerciseValidationSchema,
   });
-  const { data, isSuccess } = useGetSubtypesQuery({ type: fields.type });
+
+  const { data, isSuccess } = useGetSubtypesQuery({ type: formik.values.type });
 
   useEffect(() => {
     if (isSuccessExercise && uuid) {
       const exercise = dataExercise.data.exercises.filter((exercise) => exercise.uuid === uuid)[0];
-      setFields({
+      formik.setValues({
         name: exercise.name,
         description: exercise.description,
         type: type || '',
@@ -60,12 +68,9 @@ function Exercise() {
   useEffect(() => {
     if (isSuccess) {
       setSubtypes(data?.data.subtypes);
+      formik.values.subtype = data?.data.subtypes[0].name;
     }
   }, [isSuccess, data]);
-
-  useEffect(() => {
-    formik.setValues(fields);
-  }, [fields]);
 
   useEffect(() => {
     if (isSuccessCreate) {
@@ -161,27 +166,12 @@ function Exercise() {
   }, [errorDelete, isErrorDelete]);
 
   const getValues = (values: ExerciseFields) => {
-    const { type: _, subtype: subtype_uuid, ...val } = values;
+    const { type: _, subtype: name, ...val } = values;
     if (uuid) {
-      return { ...val, subtype_uuid, uuid };
+      return { ...val, subtype_uuid: subtypes.filter((curSubtype) => curSubtype.name === name)[0].uuid, uuid };
     }
-    return { ...val, subtype_uuid };
+    return { ...val, subtype_uuid: subtypes.filter((curSubtype) => curSubtype.name === name)[0].uuid };
   };
-
-  const onSubmit = async (values: ExerciseFields) => {
-    const toCreate: ExerciseRequest = getValues(values);
-    if (uuid) {
-      updateExercise(toCreate);
-    } else {
-      await addExercise(toCreate);
-    }
-  };
-
-  const formik = useFormik({
-    initialValues: exerciseInitialValue,
-    onSubmit,
-    validationSchema: exerciseValidationSchema,
-  });
 
   const deleteExercise = async (uuid: string) => {
     await delExercise({ uuid });
@@ -220,7 +210,7 @@ function Exercise() {
           >
             {subtypes.length !== 0 ? (
               subtypes.map((subtype) => (
-                <option value={subtype.name} className="select-option">
+                <option value={subtype.name} className="select-option" selected={formik.values.name === subtype.name}>
                   {subtype.name}
                 </option>
               ))

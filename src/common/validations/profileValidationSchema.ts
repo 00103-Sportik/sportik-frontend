@@ -51,7 +51,7 @@ export const profileValidationSchema = Yup.object().shape({
   height: Yup.string()
     .min(MIN_HEIGHT, `Min length ${MIN_HEIGHT} characters`)
     .max(MAX_HEIGHT, `Max length ${MAX_HEIGHT} characters`)
-    .matches(/\d+/, 'Must be integer'),
+    .matches(/^\d{2,3}$/, 'Must be natural number'),
   weight: Yup.string().matches(containOneCharacterAfterComma, {
     message: `Weight must be an integer or fractional with one decimal place (min - ${MIN_WEIGHT}, max - ${MAX_WEIGHT})`,
   }),
