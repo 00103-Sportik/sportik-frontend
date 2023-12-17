@@ -202,18 +202,18 @@ function Workout() {
     if (uuid) {
       await updateWorkout({
         uuid,
-        date: convertDate(fields.date),
-        name: fields.name,
-        type: fields.type,
-        comment: fields.comment,
+        date: convertDate(formik.values.date),
+        name: formik.values.name,
+        type: formik.values.type,
+        comment: formik.values.comment,
         exercises: toExercises,
       });
     } else {
       await createWorkout({
-        date: convertDate(fields.date),
-        name: fields.name,
-        type: fields.type,
-        comment: fields.comment,
+        date: convertDate(formik.values.date),
+        name: formik.values.name,
+        type: formik.values.type,
+        comment: formik.values.comment,
         exercises: toExercises,
       });
     }
@@ -227,10 +227,10 @@ function Workout() {
     dispatch(
       setMainInfo({
         uuid: uuid,
-        date: convertDate(fields.date),
-        name: fields.name,
-        type: fields.type,
-        comment: fields.comment,
+        date: formik.values.date,
+        name: formik.values.name,
+        type: formik.values.type,
+        comment: formik.values.comment,
       }),
     );
     navigate(SUBTYPES_URL + '/' + formik.getFieldProps('type').value);
