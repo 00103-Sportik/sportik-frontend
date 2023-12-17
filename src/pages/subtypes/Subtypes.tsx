@@ -11,7 +11,7 @@ import {
 } from '../../store/subtype/subtype.api.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { Input } from '../../common/components/input/Input.tsx';
-import { Field, FieldProps, Form, Formik } from 'formik';
+import { useFormik } from 'formik';
 import {
   SubtypeField,
   subtypeInitialValue,
@@ -44,6 +44,8 @@ function Subtypes() {
 
   useEffect(() => {
     if (isSuccessCreate) {
+      setOpen(false);
+      setSubtype('');
       toast('Created successfully!', {
         position: 'top-center',
         autoClose: 1000,
@@ -59,6 +61,7 @@ function Subtypes() {
 
   useEffect(() => {
     if (isSuccessUpdate) {
+      setOpen(false);
       setSubtype('');
       toast('Updated successfully!', {
         position: 'top-center',
@@ -142,6 +145,16 @@ function Subtypes() {
     }
   };
 
+  useEffect(() => {
+    formik.setValues({ name: subtype });
+  }, [subtype]);
+
+  const formik = useFormik({
+    initialValues: subtypeInitialValue,
+    onSubmit,
+    validationSchema: subtypeValidationSchema,
+  });
+
   const deleteSubtype = async (uuid: string) => {
     await delSubtype({ uuid });
   };
@@ -193,46 +206,31 @@ function Subtypes() {
           <h1 className={styles.noEntities}>There are no subtypes yet</h1>
         )}
       </div>
-      <Formik initialValues={subtypeInitialValue} onSubmit={onSubmit} validationSchema={subtypeValidationSchema}>
-        {(props) => {
-          return (
-            <Dialog
-              open={open}
-              onClose={() => setOpen(false)}
-              getPersistentElements={() => document.querySelectorAll('.Toastify')}
-              backdrop={<div className="backdrop" />}
-              className="dialog"
-            >
-              <p className={styles.p}>Input subtype name:</p>
-              <Form>
-                <Field name="name" className={styles.formInput}>
-                  {({ field, meta }: FieldProps) => (
-                    <Input
-                      type="text"
-                      {...field}
-                      value={subtype}
-                      onChange={(event) => {
-                        props.handleChange(event);
-                        setSubtype(event.target.value);
-                      }}
-                      placeholder="Name"
-                      error={meta.touched && !!meta.error}
-                      errorText={meta.error}
-                      className="form-input-modal"
-                    ></Input>
-                  )}
-                </Field>
-              </Form>
-              <div className={styles.buttonsBox}>
-                <DialogDismiss className="btn-black" onClick={() => onSubmit({ name: subtype })}>
-                  Save
-                </DialogDismiss>
-                <DialogDismiss className="btn-red">Exit</DialogDismiss>
-              </div>
-            </Dialog>
-          );
-        }}
-      </Formik>
+      <form id="subtype-form" onSubmit={formik.handleSubmit}>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          getPersistentElements={() => document.querySelectorAll('.Toastify')}
+          backdrop={<div className="backdrop" />}
+          className="dialog"
+        >
+          <p className={styles.p}>Input subtype name:</p>
+          <Input
+            type="text"
+            {...formik.getFieldProps('name')}
+            error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
+            errorText={formik.getFieldMeta('name').error}
+            placeholder="Name"
+            className="form-input-modal"
+          ></Input>
+          <div className={styles.buttonsBox}>
+            <button className="btn-black" type="submit" form="subtype-form">
+              Save
+            </button>
+            <DialogDismiss className="btn-red">Exit</DialogDismiss>
+          </div>
+        </Dialog>
+      </form>
       <button className="btn-black" onClick={() => setOpen(true)}>
         Add
       </button>

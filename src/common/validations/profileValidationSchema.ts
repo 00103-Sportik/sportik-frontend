@@ -34,13 +34,9 @@ const MAX_AGE = 150;
 const MAX_HEIGHT = 3;
 const MAX_WEIGHT = 999.9;
 
-const containsWhiteSpaces = /\s/;
 const containOneCharacterAfterComma = /^-?\d{1,3}(\.\d)?$/;
 
 export const profileValidationSchema = Yup.object().shape({
-  email: Yup.string()
-    .test('noSpaces', 'No spaces allowed', (value) => !containsWhiteSpaces.test(value || ''))
-    .email('Incorrect email'),
   name: Yup.string()
     .min(MIN_NAME_LENGTH, `Min length ${MIN_NAME_LENGTH} characters`)
     .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),

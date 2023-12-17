@@ -14,5 +14,6 @@ export const subtypeInitialValue: SubtypeField = {
 export const subtypeValidationSchema = Yup.object().shape({
   name: Yup.string()
     .min(MIN_NAME_LENGTH, `Min length ${MIN_NAME_LENGTH} characters`)
-    .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`),
+    .max(MAX_NAME_LENGTH, `Max length ${MAX_NAME_LENGTH} characters`)
+    .required('Required field'),
 });
