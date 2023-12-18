@@ -50,7 +50,7 @@ function Exercise() {
     validationSchema: exerciseValidationSchema,
   });
 
-  const { data, isSuccess } = useGetSubtypesQuery({ type: formik.values.type });
+  const { data, isSuccess } = useGetSubtypesQuery({ type: formik.values.type || type });
 
   useEffect(() => {
     if (isSuccessExercise && uuid) {
@@ -69,6 +69,13 @@ function Exercise() {
     if (isSuccess) {
       setSubtypes(data?.data.subtypes);
       formik.values.subtype = data?.data.subtypes[0].name;
+    }
+  }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSubtypes(data?.data.subtypes);
+      formik.setFieldValue('subtype', data?.data.subtypes[0].name);
     }
   }, [isSuccess, data]);
 
