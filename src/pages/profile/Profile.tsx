@@ -129,12 +129,6 @@ function Profile() {
     }
   }, [errorUpdate, isErrorUpdate]);
 
-  const saveInfo = async (values: ProfileFields) => {
-    const valuesToUpdate = getValuesToUpdate(values);
-    await updateProfile(valuesToUpdate);
-    setOpen(false);
-  };
-
   const discard = async () => {
     await refetch();
     setOpen2(false);
@@ -263,7 +257,7 @@ function Profile() {
           >
             <p className={styles.p}>Save changes?</p>
             <div className="flex gap-[10px]">
-              <button className="btn-red" onClick={() => saveInfo(fields)}>
+              <button className="btn-red" type="submit" form="profile-form">
                 Yes
               </button>
               <DialogDismiss className="btn-black">No</DialogDismiss>
@@ -285,7 +279,15 @@ function Profile() {
         </div>
       </div>
       <div className="flex gap-[70px]">
-        <button className="btn-black" type="submit" form="profile-form">
+        <button
+          className="btn-black"
+          onClick={() => {
+            if (!formik.isValid && !!formik.submitCount) {
+            } else {
+              setOpen(true);
+            }
+          }}
+        >
           Save
         </button>
         <button className="btn-red" onClick={() => setOpen2(true)}>
