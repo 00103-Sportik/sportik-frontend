@@ -66,11 +66,11 @@ function Exercise() {
   }, [isSuccessExercise, dataExercise, uuid]);
 
   useEffect(() => {
-    if (isSuccess) {
-      setSubtypes(data?.data.subtypes);
-      formik.values.subtype = data?.data.subtypes[0].name;
+    if (type) {
+      formik.setFieldValue('type', type);
+      formik.setFieldValue('combination_params', combinationParams[0].params);
     }
-  }, [isSuccess, data]);
+  }, [type]);
 
   useEffect(() => {
     if (isSuccess) {
