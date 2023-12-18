@@ -1,6 +1,6 @@
 interface AuthResponse {
-  accessToken: string | null;
-  refreshToken: string | null;
+  access_token: string | null;
+  refresh_token: string | null;
 }
 
 interface AuthRequest {
@@ -8,9 +8,18 @@ interface AuthRequest {
   password: string;
 }
 
+interface UpdateRequest {
+  refresh_token: string;
+}
+
 interface SuccessAuthResponse {
   message: string;
-  data: {};
+  data: AuthResponse | {};
+}
+
+interface ActivateRequest {
+  email: string;
+  activation_code: string;
 }
 
 export const mapPathToTitle = {
@@ -18,4 +27,9 @@ export const mapPathToTitle = {
   '/signup': 'Registration',
 };
 
-export type { AuthRequest, AuthResponse, SuccessAuthResponse };
+export const hPathToTitle = {
+  '/signin': 'Just take a step!',
+  '/signup': 'Start your journey!',
+};
+
+export type { AuthRequest, UpdateRequest, ActivateRequest, AuthResponse, SuccessAuthResponse };

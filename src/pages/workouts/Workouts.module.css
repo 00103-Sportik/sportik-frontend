@@ -1,0 +1,20 @@
+.mainBox {
+  @apply w-[370px] h-[570px] flex flex-col items-center overflow-y-auto;
+}
+
+.boxItems {
+  @apply w-[350px] min-h-[120px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray;
+}
+
+.sortFilter {
+  @apply flex items-end gap-[40px] mb-4;
+}
+
+.dateRange {
+  @apply flex flex-col justify-center items-center;
+}
+
+/*!!!The text is subject to change!!!*/
+.selectBox {
+  @apply select-box w-[220px] bg-transparent text-[white] text-base transition-[left] duration-[0.2s] ease-linear mb-0 mr-6 border-b-[white] border-[none] border-b border-solid;
+}

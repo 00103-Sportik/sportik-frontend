@@ -1,8 +1,8 @@
 import React, { ChangeEventHandler, InputHTMLAttributes, MouseEventHandler, useCallback, useState } from 'react';
-import { AiFillEyeInvisible, AiOutlineClose, AiOutlineEye } from 'react-icons/ai';
+import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  type?: 'email' | 'password' | 'text';
+  type?: 'email' | 'password' | 'text' | 'file';
   value?: string;
   placeholder?: string;
   error?: boolean;
@@ -13,41 +13,42 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 export function Input(props: InputProps) {
+  const { children, disabled, placeholder, errorText, error, type, required, onClear, ...otherProps } = props;
   const [isVisible, setIsVisible] = useState(false);
   const onClickChangeVisible = useCallback(() => {
     setIsVisible(!isVisible);
   }, [isVisible]);
 
-  const isPassword = props.type === 'password' && !isVisible ? 'password' : 'text';
-  const inpClassName = `$props.inputClassName || ''} ${'input'} ${props.disabled ? 'input-disabled' : 'input'} ${
-    props.error ? 'input-error' : 'input'
+  const isPassword = type === 'password' && !isVisible ? 'password' : 'text';
+  const inpClassName = `${'form-input'} ${disabled ? 'form-input-disabled' : 'form-input'} ${
+    error ? 'form-input-err' : 'form-input'
   }`;
+  const labelClassName = `${'form-label'} ${disabled ? 'form-label-disabled' : 'form-label'} ${
+    error ? 'text-error' : 'form-label'
+  } ${type === 'text' || type === 'email' ? 'items-start' : 'form-label'}`;
   return (
     <div>
-      <div>
+      <div className="form-group">
         <input
-          type={props.type !== 'password' ? props.type : isPassword}
+          type={type !== 'password' ? type : isPassword}
           className={inpClassName}
-          disabled={props.disabled}
-          placeholder={props.placeholder}
-          required={props.required}
-          {...props}
+          disabled={disabled}
+          placeholder={' '}
+          required={required}
+          {...otherProps}
         />
-        {props.children}
+        {children}
+        <label className={labelClassName}>{placeholder}</label>
 
-        {(props.type === 'text' || props.type === 'email') && (
-          <button type="button" onClick={props.onClear} className="">
-            <AiOutlineClose />
-          </button>
-        )}
-
-        {props.type === 'password' && (
+        {type === 'password' && (
           <button type="button" onClick={onClickChangeVisible}>
             {isVisible ? <AiOutlineEye /> : <AiFillEyeInvisible />}
           </button>
         )}
       </div>
-      <p className="text-error">{props.error && props.errorText}</p>
+      <p id="err" className="text-error break-word max-w-[200px]">
+        {error && errorText}
+      </p>
     </div>
   );
 }

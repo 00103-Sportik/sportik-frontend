@@ -3,6 +3,8 @@ import { logout } from '../../../store/auth/auth.slice.ts';
 import { useState } from 'react';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
+import styles from './Menu.module.css';
+import { discardWorkoutInfo } from '../../../store/workouts/workouts.slice.ts';
 
 export function Menu() {
   const [open, setOpen] = useState(false);
@@ -10,6 +12,7 @@ export function Menu() {
   const dispatch = useAppDispatch();
 
   const exit = () => {
+    dispatch(discardWorkoutInfo());
     dispatch(logout());
     navigate('/signin');
   };
@@ -18,17 +21,17 @@ export function Menu() {
     <>
       <ul className="menu">
         <li>
-          <a href="/profile" className="menu-link">
+          <a href="/profile" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
             Profile
           </a>
         </li>
         <li>
-          <a href="/hr-calc" className="menu-link">
-            Heart Rate Calculator
+          <a href="/hr-calc" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
+            HR Calculator
           </a>
         </li>
         <li>
-          <a href="javascript:void(0);" onClick={() => setOpen(true)} className="menu-link">
+          <a href={undefined} onClick={() => setOpen(true)} className="menu-link @apply cursor-pointer">
             Sign out
           </a>
         </li>
@@ -40,8 +43,8 @@ export function Menu() {
         backdrop={<div className="backdrop" />}
         className="dialog"
       >
-        <p className="description">Are you sure?</p>
-        <div className="buttons">
+        <p className={styles.p}>Are you sure?</p>
+        <div className="flex gap-[10px]">
           <DialogDismiss className="btn-red" onClick={exit}>
             Sign out
           </DialogDismiss>

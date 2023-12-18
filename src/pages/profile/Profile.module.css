@@ -1,0 +1,3 @@
+.img {
+    @apply w-[100px] h-[100px] rounded-[10%];
+}

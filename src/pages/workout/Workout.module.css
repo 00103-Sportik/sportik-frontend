@@ -1,0 +1,7 @@
+.mainBox {
+  @apply w-[370px] h-[370px] flex flex-col items-center overflow-y-auto mt-2;
+}
+
+.parametersBox {
+  @apply text-[16px] ml-[16px]
+}

@@ -1,5 +1,5 @@
 import { AppRootStateType } from '../types.ts';
 
-export const selectIsAuthenticated = (state: AppRootStateType) => state.auth.accessToken !== null;
+export const selectIsAuthenticated = (state: AppRootStateType) => state.auth.access_token !== null;
 
-export const selectUserAuth = (state: AppRootStateType) => state.auth.refreshToken;
+export const selectRefreshToken = (state: AppRootStateType) => state.auth.refresh_token;

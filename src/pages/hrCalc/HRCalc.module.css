@@ -1,0 +1,24 @@
+.tableLayout {
+  @apply w-[300px] h-[374px] bg-[radial-gradient(165.81%_165.81%_at_-13.5%_-44.62%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_100%)]
+  rounded-[20px] p-7 text-center;
+}
+
+.secondCol {
+  @apply pl-14;
+}
+
+.buttonsContainer {
+  @apply flex items-center justify-center gap-5;
+}
+
+.tableConfig {
+  @apply w-[230px] h-[300px];
+}
+
+.tableConfig th {
+  @apply font-[bold] p-[5px];
+}
+
+.tableConfig td {
+  @apply p-[15px];
+}

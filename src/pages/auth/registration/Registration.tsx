@@ -3,58 +3,174 @@ import {
   SignUpFields,
   signUpInitialValues,
   signUpValidationSchema,
-} from '../../../common/validations/validationSchema.ts';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useRegistrationMutation } from '../../../store/auth/auth.api.ts';
+} from '../../../common/validations/authValidationSchema.ts';
+import { NavLink } from 'react-router-dom';
+import { useRegistrationMutation, useResendEmailMutation } from '../../../store/auth/auth.api.ts';
 import { mapPathToTitle } from '../../../common/types/auth.ts';
 import { Input } from '../../../common/components/input/Input.tsx';
+import { useEffect, useState } from 'react';
+import { Dialog } from '@ariakit/react';
+import { toast } from 'react-toastify';
+import styles from '../../../pages/auth/authLayout/AuthLayout.module.css';
 
 function Registration() {
-  const [register, { isSuccess }] = useRegistrationMutation();
-  const navigate = useNavigate();
-  const onSubmit = (values: SignUpFields) => {
-    register(values);
+  const [open, setOpen] = useState(false);
+  const [seconds, setSeconds] = useState(60);
+  const [timerActive, setTimerActive] = useState(false);
+  const [email, setEmail] = useState('');
+  const [registration, { isSuccess, error, isError }] = useRegistrationMutation();
+  const [resendEmail, { isSuccess: isSuccessResend, error: errorResend, isError: isErrorResend }] =
+    useResendEmailMutation();
+
+  useEffect(() => {
+    if (seconds > 0 && timerActive) {
+      setTimeout(setSeconds, 1000, seconds - 1);
+    } else {
+      setTimerActive(false);
+    }
+  }, [seconds, timerActive]);
+
+  useEffect(() => {
+    if (isError && error) {
+      toast('message' in error ? error && error.message : 'Registration failed! Incorrect email or password', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [error, isError]);
+
+  useEffect(() => {
+    if (isErrorResend && errorResend) {
+      toast('message' in errorResend ? errorResend && errorResend.message : 'Resend failed!', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    }
+  }, [errorResend, isErrorResend]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast('Registration successfully! Activation link sent to your email!', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      setOpen(true);
+      setTimerActive(!timerActive);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isSuccessResend) {
+      toast('Activation link sent to your email!', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+      setTimerActive(false);
+      setTimerActive(true);
+    }
+  }, [isSuccessResend]);
+
+  const onSubmit = async (values: SignUpFields) => {
+    setEmail(values.email);
+    await registration(values);
   };
 
-  if (isSuccess) {
-    navigate('/signin');
-  }
   return (
     <>
       <Formik initialValues={signUpInitialValues} onSubmit={onSubmit} validationSchema={signUpValidationSchema}>
-        {({ isValid, submitCount }) => (
-          <Form className="layout">
-            <h1>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
-            {!isValid && !!submitCount && <div>Введите корректный email или пароль.</div>}
-            <Field name="email">
-              {({ field, form, meta }: FieldProps) => (
-                <Input
-                  autoComplete="email"
-                  type="text"
-                  {...field}
-                  placeholder="Email"
-                  error={meta.touched && !!meta.error}
-                  errorText={meta.error}
-                  onClear={() => form.setFieldValue('email', '')}
-                />
-              )}
-            </Field>
-            <Field name="password">
-              {({ field, meta }: FieldProps) => (
-                <Input
-                  autoComplete="new-password"
-                  type="password"
-                  {...field}
-                  placeholder="Password"
-                  error={meta.touched && !!meta.error}
-                  errorText={meta.error}
-                />
-              )}
-            </Field>
+        {() => (
+          <Form>
+            <div className={styles.titleLayout}>
+              <h1 className={styles.titleSize}>{mapPathToTitle[location.pathname as keyof typeof mapPathToTitle]}</h1>
+            </div>
+            <div className={styles.inputsBox}>
+              <Field name="email">
+                {({ field, form, meta }: FieldProps) => (
+                  <Input
+                    autoComplete="email"
+                    type="text"
+                    {...field}
+                    placeholder="Email"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                    onClear={() => form.setFieldValue('email', '')}
+                  />
+                )}
+              </Field>
+              <Field name="password">
+                {({ field, meta }: FieldProps) => (
+                  <Input
+                    autoComplete="new-password"
+                    type="password"
+                    {...field}
+                    placeholder="Password"
+                    error={meta.touched && !!meta.error}
+                    errorText={meta.error}
+                  />
+                )}
+              </Field>
+            </div>
             <button className="btn-black" type="submit">
               Sign Up
             </button>
-            <NavLink to="/signin">Already have an account? Sign In</NavLink>
+            <Dialog
+              open={open}
+              getPersistentElements={() => document.querySelectorAll('.Toastify')}
+              backdrop={<div className="backdrop" />}
+              className="dialog"
+            >
+              <p className="description">
+                An activation link has been sent to your email. If you did not receive it, click on the "Send again":
+              </p>
+              <div className="buttons">
+                {seconds ? (
+                  <div className="@apply flex flex-col">
+                    <button disabled className="btn-black">
+                      Send again
+                    </button>
+                    <p className="@apply flex justify-center">Time to resend: {seconds} sec.</p>
+                  </div>
+                ) : (
+                  <button
+                    className="btn-black"
+                    onClick={() => {
+                      resendEmail({ email });
+                      setSeconds(60);
+                      setTimerActive(true);
+                    }}
+                  >
+                    Send again
+                  </button>
+                )}
+              </div>
+            </Dialog>
+            <NavLink to="/signin" className={styles.referenceBack}>
+              Already have an account? Sign In
+            </NavLink>
           </Form>
         )}
       </Formik>

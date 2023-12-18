@@ -1,0 +1,3 @@
+.p {
+  @apply text-xl text-center align-middle table-cell mt-2.5;
+}
