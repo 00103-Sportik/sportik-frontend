@@ -111,6 +111,7 @@ function Registration() {
               <Field name="email">
                 {({ field, form, meta }: FieldProps) => (
                   <Input
+                    testid="email"
                     autoComplete="email"
                     type="text"
                     {...field}
@@ -124,6 +125,7 @@ function Registration() {
               <Field name="password">
                 {({ field, meta }: FieldProps) => (
                   <Input
+                    testid="password"
                     autoComplete="new-password"
                     type="password"
                     {...field}
@@ -134,7 +136,7 @@ function Registration() {
                 )}
               </Field>
             </div>
-            <button className="btn-black" type="submit">
+            <button data-testid="signup-btn" className="btn-black" type="submit">
               Sign Up
             </button>
             <Dialog
@@ -148,14 +150,17 @@ function Registration() {
               </p>
               <div className="buttons">
                 {seconds ? (
-                  <div className="@apply flex flex-col">
+                  <div data-testid="resend-btn" className="@apply flex flex-col">
                     <button disabled className="btn-black">
                       Send again
                     </button>
-                    <p className="@apply flex justify-center">Time to resend: {seconds} sec.</p>
+                    <p data-testid="timer-p" className="@apply flex justify-center">
+                      Time to resend: {seconds} sec.
+                    </p>
                   </div>
                 ) : (
                   <button
+                    data-testid="resend-btn"
                     className="btn-black"
                     onClick={() => {
                       resendEmail({ email });
@@ -168,7 +173,7 @@ function Registration() {
                 )}
               </div>
             </Dialog>
-            <NavLink to="/signin" className={styles.referenceBack}>
+            <NavLink data-testid="signin-link" to="/signin" className={styles.referenceBack}>
               Already have an account? Sign In
             </NavLink>
           </Form>

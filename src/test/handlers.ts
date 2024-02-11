@@ -38,4 +38,46 @@ export const handlers = [
       { status: 200 },
     );
   }),
+  http.post(`${BASE_URL}auth/signup`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {},
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.post(`${BASE_URL}auth/signin`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {
+          access_token: 'k9sdgkskg93merwei',
+          refresh_token: 'k9sdsfsdg93mfdsfi',
+        },
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.put(`${BASE_URL}auth/resend-email`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {},
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.put(`${BASE_URL}auth/activate`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {},
+      },
+      { status: 200 },
+    );
+  }),
 ];
