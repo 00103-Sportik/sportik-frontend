@@ -3,6 +3,7 @@ import { AiFillEyeInvisible, AiOutlineEye } from 'react-icons/ai';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: 'email' | 'password' | 'text' | 'file';
+  testid?: string;
   value?: string;
   placeholder?: string;
   error?: boolean;
@@ -13,7 +14,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 export function Input(props: InputProps) {
-  const { children, disabled, placeholder, errorText, error, type, required, onClear, ...otherProps } = props;
+  const { children, disabled, placeholder, errorText, error, type, required, onClear, testid, ...otherProps } = props;
   const [isVisible, setIsVisible] = useState(false);
   const onClickChangeVisible = useCallback(() => {
     setIsVisible(!isVisible);
@@ -31,6 +32,7 @@ export function Input(props: InputProps) {
       <div className="form-group">
         <input
           type={type !== 'password' ? type : isPassword}
+          data-testid={testid + '-input'}
           className={inpClassName}
           disabled={disabled}
           placeholder={' '}
@@ -46,7 +48,7 @@ export function Input(props: InputProps) {
           </button>
         )}
       </div>
-      <p id="err" className="text-error break-word max-w-[200px]">
+      <p data-testid={testid + '-error'} id="err" className="text-error break-word max-w-[200px]">
         {error && errorText}
       </p>
     </div>
