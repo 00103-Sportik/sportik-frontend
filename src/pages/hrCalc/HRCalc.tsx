@@ -75,6 +75,7 @@ function HRCalc() {
                 {({ field, meta }: FieldProps) => (
                   <Input
                     type="text"
+                    testid="hr"
                     {...field}
                     value={hr}
                     onChange={(event) => {
@@ -93,10 +94,10 @@ function HRCalc() {
         }}
       </Formik>
       <div className={styles.buttonsContainer}>
-        <button className="btn-black-calc" onClick={calcByAge}>
+        <button data-testid="age-calc-btn" className="btn-black-calc" onClick={calcByAge}>
           Calculate by age
         </button>
-        <button className="btn-black-calc" onClick={calcByHR}>
+        <button data-testid="hr-calc-btn" className="btn-black-calc" onClick={calcByHR}>
           Calculate
         </button>
       </div>
@@ -112,23 +113,33 @@ function HRCalc() {
           <tbody>
             <tr>
               <td>90% - 100%</td>
-              <td className={styles.secontCol}>{fields.zone5}</td>
+              <td data-testid="row1" className={styles.secontCol}>
+                {fields.zone5}
+              </td>
             </tr>
             <tr>
               <td>80% - 90%</td>
-              <td className={styles.secontCol}>{fields.zone4}</td>
+              <td data-testid="row2" className={styles.secontCol}>
+                {fields.zone4}
+              </td>
             </tr>
             <tr>
               <td>70% - 80%</td>
-              <td className={styles.secontCol}>{fields.zone3}</td>
+              <td data-testid="row3" className={styles.secontCol}>
+                {fields.zone3}
+              </td>
             </tr>
             <tr>
               <td>60% - 70%</td>
-              <td className={styles.secontCol}>{fields.zone2}</td>
+              <td data-testid="row4" className={styles.secontCol}>
+                {fields.zone2}
+              </td>
             </tr>
             <tr>
               <td>50% - 60%</td>
-              <td className={styles.secontCol}>{fields.zone1}</td>
+              <td data-testid="row5" className={styles.secontCol}>
+                {fields.zone1}
+              </td>
             </tr>
           </tbody>
         </table>

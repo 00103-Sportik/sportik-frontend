@@ -24,18 +24,18 @@ function AppRoutes() {
             <Route path="signin" element={<Login />} />
             <Route path="signup" element={<Registration />} />
           </Route>
-          <Route element={<ProtectedRoute />}>
-            <Route path="profile" element={<Profile />} />
-            <Route index element={<Workouts />} />
-            <Route path="workouts" element={<Workout />} />
-            <Route path="workouts/:uuid" element={<Workout />} />
-            <Route path="subtypes/:type" element={<Subtypes />} />
-            <Route path="exercises/:type" element={<Exercises />} />
-            <Route path="exercise/:uuid" element={<Exercise />} />
-            <Route path="exercises" element={<Exercise />} />
-            <Route path="approaches/:uuid" element={<Approaches />} />
-            <Route path="hr-calc" element={<HRCalc />} />
-          </Route>
+          {/* <Route element={<ProtectedRoute />}> */}
+          <Route path="profile" element={<Profile />} />
+          <Route index element={<Workouts />} />
+          <Route path="workouts" element={<Workout />} />
+          <Route path="workouts/:uuid" element={<Workout />} />
+          <Route path="subtypes/:type" element={<Subtypes />} />
+          <Route path="exercises/:type" element={<Exercises />} />
+          <Route path="exercise/:uuid" element={<Exercise />} />
+          <Route path="exercises" element={<Exercise />} />
+          <Route path="approaches/:uuid" element={<Approaches />} />
+          <Route path="hr-calc" element={<HRCalc />} />
+          {/* </Route> */}
         </Route>
       </Route>
     </Routes>

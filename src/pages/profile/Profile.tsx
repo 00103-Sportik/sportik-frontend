@@ -57,7 +57,7 @@ function Profile() {
         sex: data?.data.sex || '',
         age: data?.data.age !== null ? String(data?.data.age) : '',
         height:
-          data?.data.height !== null
+          data?.data.height !== null && data?.data.height !== undefined
             ? data?.data.height < 10
               ? '0' + String(data?.data.height)
               : String(data?.data.height)
@@ -144,7 +144,7 @@ function Profile() {
     });
   };
 
-  const convertBase64 = ({ file }: { file: any }) => {
+  const convertBase64 = (file: Blob) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -162,9 +162,23 @@ function Profile() {
   async function changeAvatar(e: React.ChangeEvent) {
     const target = e.target as HTMLInputElement;
     const file = (target.files as FileList)[0];
-    const base64 = (await convertBase64({ file: file })) as string;
-    setFields({ ...fields, image: base64 });
-    dispatch(updateAvatar({ image: base64 } as AvatarUpdate));
+    console.log(file);
+    if (file.type.split('/')[0] != 'image') {
+      toast('Error! This is not an image!', {
+        position: 'top-center',
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+    } else {
+      const base64 = (await convertBase64(file)) as string;
+      setFields({ ...fields, image: base64 });
+      dispatch(updateAvatar({ image: base64 } as AvatarUpdate));
+    }
   }
 
   return (
@@ -173,6 +187,7 @@ function Profile() {
       <div className="@apply flex flex-row">
         <form id="profile-form" onSubmit={formik.handleSubmit}>
           <Input
+            testid="email"
             autoComplete="email"
             disabled={true}
             type="text"
@@ -182,6 +197,7 @@ function Profile() {
             placeholder="Email"
           />
           <Input
+            testid="name"
             type="text"
             {...formik.getFieldProps('name')}
             error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
@@ -189,6 +205,7 @@ function Profile() {
             placeholder="Name"
           />
           <Input
+            testid="surname"
             type="text"
             {...formik.getFieldProps('surname')}
             error={formik.getFieldMeta('surname').touched && !!formik.getFieldMeta('surname').error}
@@ -196,6 +213,7 @@ function Profile() {
             placeholder="Surname"
           />
           <Input
+            testid="age"
             type="text"
             {...formik.getFieldProps('age')}
             error={formik.getFieldMeta('age').touched && !!formik.getFieldMeta('age').error}
@@ -204,6 +222,7 @@ function Profile() {
           />
           <div className="select-container">
             <select
+              data-testid="sex-select"
               className="select-box"
               value={formik.values.sex}
               onChange={(sex) => formik.setFieldValue('sex', sex.target.value)}
@@ -220,6 +239,7 @@ function Profile() {
             </select>
           </div>
           <Input
+            testid="height"
             type="text"
             {...formik.getFieldProps('height')}
             error={formik.getFieldMeta('height').touched && !!formik.getFieldMeta('height').error}
@@ -227,6 +247,7 @@ function Profile() {
             placeholder="Height"
           />
           <Input
+            testid="weight"
             type="text"
             {...formik.getFieldProps('weight')}
             error={formik.getFieldMeta('weight').touched && !!formik.getFieldMeta('weight').error}
@@ -234,6 +255,7 @@ function Profile() {
             placeholder="Weight"
           />
           <Dialog
+            data-testid="discard-dialog"
             open={open2}
             onClose={() => setOpen2(false)}
             getPersistentElements={() => document.querySelectorAll('.Toastify')}
@@ -242,13 +264,16 @@ function Profile() {
           >
             <p className={styles.p}>Discard changes?</p>
             <div className="flex gap-[10px]">
-              <button className="btn-red" onClick={discard}>
+              <button data-testid="discard-dialog-btn" className="btn-red" onClick={discard}>
                 Yes
               </button>
-              <DialogDismiss className="btn-black">No</DialogDismiss>
+              <DialogDismiss data-testid="not-discard-dialog-btn" className="btn-black">
+                No
+              </DialogDismiss>
             </div>
           </Dialog>
           <Dialog
+            data-testid="saving-dialog"
             open={open}
             onClose={() => setOpen(false)}
             getPersistentElements={() => document.querySelectorAll('.Toastify')}
@@ -257,15 +282,18 @@ function Profile() {
           >
             <p className={styles.p}>Save changes?</p>
             <div className="flex gap-[10px]">
-              <button className="btn-red" type="submit" form="profile-form">
+              <button data-testid="saving-dialog-btn" className="btn-red" type="submit" form="profile-form">
                 Yes
               </button>
-              <DialogDismiss className="btn-black">No</DialogDismiss>
+              <DialogDismiss data-testid="not-saving-dialog-btn" className="btn-black">
+                No
+              </DialogDismiss>
             </div>
           </Dialog>
         </form>
         <div>
           <img
+            data-testid="avatar-img"
             className={styles2.img}
             width={100}
             height={100}
@@ -273,13 +301,14 @@ function Profile() {
             alt="avatar"
           />
           <label className="@apply btn-black w-[100px] cursor-pointer my-4">
-            <input className="@apply hidden" onChange={changeAvatar} type="file" />
+            <input data-testid="avatar-input" className="@apply hidden" onChange={changeAvatar} type="file" />
             <span>Upload avatar</span>
           </label>
         </div>
       </div>
       <div className="flex gap-[70px]">
         <button
+          data-testid="saving-btn"
           className="btn-black"
           onClick={() => {
             if (!formik.isValid && !!formik.submitCount) {
@@ -290,7 +319,7 @@ function Profile() {
         >
           Save
         </button>
-        <button className="btn-red" onClick={() => setOpen2(true)}>
+        <button data-testid="discard-btn" className="btn-red" onClick={() => setOpen2(true)}>
           Discard
         </button>
       </div>
