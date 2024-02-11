@@ -58,6 +58,7 @@ function Login() {
                 <Field name="email">
                   {({ field, form }: FieldProps) => (
                     <Input
+                      testid="email"
                       autoComplete="email"
                       type="text"
                       {...field}
@@ -68,19 +69,30 @@ function Login() {
                 </Field>
                 <Field name="password">
                   {({ field }: FieldProps) => (
-                    <Input autoComplete="current-password" type="password" {...field} placeholder="Password" />
+                    <Input
+                      testid="password"
+                      autoComplete="current-password"
+                      type="password"
+                      {...field}
+                      placeholder="Password"
+                    />
                   )}
                 </Field>
               </div>
-              {!isValid && !!submitCount && <p className="text-error pl-5">Incorrect email or password!</p>}
+              {!isValid && !!submitCount && (
+                <p data-testid="error-p" className="text-error pl-5">
+                  Incorrect email or password!
+                </p>
+              )}
               <button
+                data-testid="signin-btn"
                 disabled={values.email.length === 0 || values.password.length === 0}
                 className="btn-black"
                 type="submit"
               >
                 Sign In
               </button>
-              <NavLink to="/signup" className={styles.referenceBack}>
+              <NavLink data-testid="signup-link" to="/signup" className={styles.referenceBack}>
                 You do not have an account? Sign Up
               </NavLink>
             </Form>
