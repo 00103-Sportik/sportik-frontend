@@ -17,10 +17,10 @@ export function Navbar() {
 
   return (
     <nav className="nav">
-      <a href="/" className="@apply z-[3]" onClick={() => dispatch(discardWorkoutInfo())}>
+      <a data-testid="link-a" href="/" className="@apply z-[3]" onClick={() => dispatch(discardWorkoutInfo())}>
         <p>Sportik+</p>
       </a>
-      <button className="menu-btn" onClick={menu}>
+      <button data-testid="menu-btn" className="menu-btn" onClick={menu}>
         <span className="span top-1"></span>
         <span className="span top-2 hidden"></span>
         <span className="span top-2 hidden"></span>
