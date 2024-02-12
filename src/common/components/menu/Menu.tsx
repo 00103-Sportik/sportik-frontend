@@ -21,17 +21,27 @@ export function Menu() {
     <>
       <ul className="menu">
         <li>
-          <a href="/profile" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
+          <a
+            data-testid="profile-a"
+            href="/profile"
+            className="menu-link"
+            onClick={() => dispatch(discardWorkoutInfo())}
+          >
             Profile
           </a>
         </li>
         <li>
-          <a href="/hr-calc" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
+          <a data-testid="hr-a" href="/hr-calc" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
             HR Calculator
           </a>
         </li>
         <li>
-          <a href={undefined} onClick={() => setOpen(true)} className="menu-link @apply cursor-pointer">
+          <a
+            data-testid="signout-a"
+            href={undefined}
+            onClick={() => setOpen(true)}
+            className="menu-link @apply cursor-pointer"
+          >
             Sign out
           </a>
         </li>
@@ -45,7 +55,7 @@ export function Menu() {
       >
         <p className={styles.p}>Are you sure?</p>
         <div className="flex gap-[10px]">
-          <DialogDismiss className="btn-red" onClick={exit}>
+          <DialogDismiss data-testid="signout-btn" className="btn-red" onClick={exit}>
             Sign out
           </DialogDismiss>
           <DialogDismiss className="btn-black">Back</DialogDismiss>

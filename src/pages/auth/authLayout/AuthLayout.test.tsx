@@ -32,7 +32,7 @@ async function renderAuthLayout() {
   });
 }
 
-describe('AuthLayout - General', () => {
+describe('AuthLayout', () => {
   test('Переход на основную страницу при наличии JWT-токенов', async () => {
     useLocation.mockReturnValue({ search: '/' } as any);
     store.dispatch(

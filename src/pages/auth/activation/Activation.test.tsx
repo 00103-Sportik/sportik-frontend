@@ -42,7 +42,7 @@ async function renderActivationPage() {
   });
 }
 
-describe('Activation - General', () => {
+describe('Activation', () => {
   test('Успешная активация', async () => {
     await renderActivationPage();
     await waitFor(() => {

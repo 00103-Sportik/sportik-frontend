@@ -43,7 +43,7 @@ async function renderLoginPage() {
   });
 }
 
-describe('Login - General', () => {
+describe('Login', () => {
   test('Поля email и password - пустые', async () => {
     await renderLoginPage();
     await userEvent.click(screen.getByTestId('signin-btn'));
