@@ -103,7 +103,7 @@ export const handlers = [
                       uuid: 'fssf9sdfj9sjaf9s',
                       name: 'Train 1',
                       date: '2024-02-10',
-                      type: 'strong',
+                      type: 'strength',
                       comment: 'dfhfghdfghfghfghf',
                     },
                   ],
@@ -122,7 +122,7 @@ export const handlers = [
                       uuid: 'fssf9sdfj9sjaf9s',
                       name: 'Train 1',
                       date: '2024-02-10',
-                      type: 'strong',
+                      type: 'strength',
                       comment: 'dfhfghdfghfghfghf',
                     },
                     {
@@ -157,7 +157,7 @@ export const handlers = [
                 uuid: 'fssf9sdfj9sjaf9s',
                 name: 'Train 1',
                 date: '2024-02-10',
-                type: 'strong',
+                type: 'strength',
                 comment: 'dfhfghdfghfghfghf',
               },
             ],
@@ -176,7 +176,7 @@ export const handlers = [
                 uuid: 'fssf9sdfj9sjaf9s',
                 name: 'Train 1',
                 date: '2024-02-10',
-                type: 'strong',
+                type: 'strength',
                 comment: 'dfhfghdfghfghfghf',
               },
               {
@@ -192,5 +192,92 @@ export const handlers = [
         { status: 200 },
       );
     }
+  }),
+
+  http.get(`${BASE_URL}workouts/:id`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {
+          uuid: 'fssf9sdfj9sjaf9s',
+          name: 'My train',
+          date: '2024-02-10',
+          type: 'strength',
+          comment: 'dfhfghdfghfghfghf',
+          exercises: [
+            {
+              uuid: 'wrrwrwerwe',
+              name: 'exercise 1',
+              combination_params: 'count_weight',
+              approaches: [
+                {
+                  uuid: 'mofgmifgmi',
+                  param1: 1123.78,
+                  param2: 789.78,
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.post(`${BASE_URL}workouts`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {
+          uuid: 'fssf9sdfj9sjaf9s',
+          name: 'Train 1',
+          date: '2024-02-10',
+          type: 'strength',
+          comment: 'dfhfghdfghfghfghf',
+          exercises: [],
+        },
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.put(`${BASE_URL}workouts/:id`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {
+          uuid: 'fssf9sdfj9sjaf9s',
+          name: 'Train 1',
+          date: '2024-02-10',
+          type: 'strength',
+          comment: 'dfhfghdfghfghfghf',
+          exercises: [
+            {
+              uuid: 'wrrwrwerwe',
+              name: 'exercise 1',
+              combination_params: 'count_weight',
+              approaches: [
+                {
+                  uuid: 'mofgmifgmi',
+                  param1: 1123.78,
+                  param2: 789.78,
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.delete(`${BASE_URL}workouts/:id`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {},
+      },
+      { status: 200 },
+    );
   }),
 ];

@@ -1,14 +1,12 @@
 const { TextDecoder, TextEncoder } = require('node:util');
 const { clearImmediate } = require('node:timers');
+const { performance } = require('node:perf_hooks');
 
 Object.defineProperties(globalThis, {
   TextDecoder: { value: TextDecoder },
   TextEncoder: { value: TextEncoder },
   clearImmediate: { value: clearImmediate },
-});
-
-Object.defineProperty(global, 'performance', {
-  writable: true,
+  performance: { value: performance },
 });
 
 const { Blob, File } = require('node:buffer');

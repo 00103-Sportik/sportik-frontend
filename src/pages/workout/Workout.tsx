@@ -259,6 +259,7 @@ function Workout() {
       <form id="workout-form" onSubmit={formik.handleSubmit}>
         <div className={styles2.parametersBox}>
           <Input
+            testid="name"
             type="text"
             {...formik.getFieldProps('name')}
             error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
@@ -267,6 +268,7 @@ function Workout() {
             className="form-input-wider"
           ></Input>
           <Input
+            testid="date"
             id="workout-date"
             type="text"
             {...formik.getFieldProps('date')}
@@ -287,9 +289,10 @@ function Workout() {
           />
           <div className="select-container-wider">
             <select
+              data-testid="type-select"
               className="select-box-wider"
               value={formik.values.type}
-              disabled={uuid || workoutInfo.exercises.length !== 0}
+              disabled={!!(uuid || workoutInfo.exercises.length !== 0)}
               onChange={(type) => formik.setFieldValue('type', type.target.value)}
             >
               <option
@@ -330,12 +333,12 @@ function Workout() {
                   }}
                 >
                   <div className={styles.boxContent}>
-                    <div className={styles.boxInfo}>
+                    <div data-testid={`goto-exercise${index}-div`} className={styles.boxInfo}>
                       <span>{exercise.name}</span>
                       <span>approaches: {exercise?.approaches?.length || 0}</span>
                     </div>
                     <div className={styles.deleteButton}>
-                      <button className="delete-from-workout" type="reset">
+                      <button data-testid={`delete-exercise${index}-btn`} className="delete-from-workout" type="reset">
                         <AiOutlineClose />
                       </button>
                     </div>
@@ -344,14 +347,17 @@ function Workout() {
               </div>
             ))
           ) : (
-            <h1 className={styles.noEntities}>There are no exercises yet</h1>
+            <h1 data-testid="no-entities-h1" className={styles.noEntities}>
+              There are no exercises yet
+            </h1>
           )}
         </div>
-        <button className="btn-black-less-margin" onClick={() => goToSubtypes()}>
+        <button data-testid="add-exercise-btn" className="btn-black-less-margin" onClick={() => goToSubtypes()}>
           Add
         </button>
         <div className={styles2.parametersBox}>
           <Input
+            testid="comment"
             type="text"
             {...formik.getFieldProps('comment')}
             error={formik.getFieldMeta('comment').touched && !!formik.getFieldMeta('comment').error}
@@ -361,11 +367,11 @@ function Workout() {
           ></Input>
         </div>
         <div className={styles.buttonsBox}>
-          <button className="btn-black-less-margin" type="submit" form="workout-form">
+          <button data-testid="save-btn" className="btn-black-less-margin" type="submit" form="workout-form">
             Save
           </button>
           {uuid && (
-            <button className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
+            <button data-testid="delete-btn" className="btn-red-less-margin" onClick={() => setOpen(true)} type="reset">
               Delete
             </button>
           )}
@@ -380,7 +386,7 @@ function Workout() {
       >
         <p className={styles.p}>Delete workout?</p>
         <div className={styles.buttonsBox}>
-          <DialogDismiss className="btn-black" onClick={deleteWorkout}>
+          <DialogDismiss data-testid="delete-dialog-btn" className="btn-black" onClick={deleteWorkout}>
             Yes
           </DialogDismiss>
           <DialogDismiss className="btn-red">No</DialogDismiss>
