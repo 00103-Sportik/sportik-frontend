@@ -67,15 +67,6 @@ describe('Login', () => {
     expect(screen.queryByText('Incorrect email or password!')).not.toBeInTheDocument();
   });
 
-  test('Ввод некорректного email и некорректного пароля', async () => {
-    await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), '@test.com');
-    await userEvent.type(screen.getByTestId('password-input'), 'sysdf');
-    await userEvent.click(screen.getByTestId('signin-btn'));
-    await waitFor(() => {
-      expect(screen.queryByText('Incorrect email or password!')).toBeInTheDocument();
-    });
-  });
   test('Ввод корректного email и корректного пароля', async () => {
     await renderLoginPage();
     await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');

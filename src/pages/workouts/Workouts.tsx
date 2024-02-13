@@ -78,7 +78,7 @@ function Workouts() {
   return (
     <>
       <div className={styles2.sortFilter}>
-        <button className="btn-black-filter" onClick={() => setOpen(true)}>
+        <button data-testid="filter-btn" className="btn-black-filter" onClick={() => setOpen(true)}>
           <AiFillFilter />
         </button>
         <Formik initialValues={dateInitialValues} onSubmit={onSubmit} validationSchema={dateValidationSchema}>
@@ -97,6 +97,7 @@ function Workouts() {
                     <Field name="from">
                       {({ field, meta }: FieldProps) => (
                         <Input
+                          testid="from"
                           id="date-from"
                           type="text"
                           {...field}
@@ -119,6 +120,7 @@ function Workouts() {
                     <Field name="to">
                       {({ field, meta }: FieldProps) => (
                         <Input
+                          testid="to"
                           id="date-to"
                           type="text"
                           {...field}
@@ -140,10 +142,11 @@ function Workouts() {
                     </Field>
                   </div>
                   <div className={styles.sideButtonsBox}>
-                    <button className="btn-black" type="submit">
+                    <button data-testid="apply-btn" className="btn-black" type="submit">
                       Apply
                     </button>
                     <button
+                      data-testid="discard-btn"
                       className="btn-black"
                       type="reset"
                       onClick={() => {
@@ -162,7 +165,7 @@ function Workouts() {
           }}
         </Formik>
         <div className="select-container">
-          <select className={styles2.selectBox} onChange={changeWorkouts}>
+          <select data-testid="sort-select" className={styles2.selectBox} onChange={changeWorkouts}>
             <option value="new" selected className="select-option">
               Newest
             </option>
@@ -175,11 +178,12 @@ function Workouts() {
           </select>
         </div>
       </div>
-      <div className={styles2.mainBox} id="box">
+      <div data-testid="box-div" className={styles2.mainBox} id="box">
         {data && data.data.workouts.length !== 0 ? (
-          data.data.workouts.map((workout) => (
+          data.data.workouts.map((workout, index) => (
             <div className={styles.itemBox} key={workout.uuid}>
               <div
+                data-testid={`workout${index}-div`}
                 className={styles2.boxItems}
                 onClick={() => {
                   dispatch(discardWorkoutInfo());
@@ -190,7 +194,7 @@ function Workouts() {
                 <div className={styles.boxContent}>
                   <div className={styles.boxInfo}>
                     <span>{workout.name}</span>
-                    <span>{convertToLocalDate(workout.date)}</span>
+                    <span data-testid={`workout${index}-date`}>{convertToLocalDate(workout.date)}</span>
                     <span>{workout.type}</span>
                   </div>
                 </div>
@@ -198,10 +202,13 @@ function Workouts() {
             </div>
           ))
         ) : (
-          <h1 className={styles.noEntities}>There are no workouts yet</h1>
+          <h1 data-testid="no-workouts-h1" className={styles.noEntities}>
+            There are no workouts yet
+          </h1>
         )}
       </div>
       <button
+        data-testid="add-btn"
         className="btn-black-less-margin"
         onClick={() => {
           dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
