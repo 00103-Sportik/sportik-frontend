@@ -20,6 +20,7 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
   http.put(`${BASE_URL}profile`, () => {
     return HttpResponse.json(
       {
@@ -38,6 +39,7 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
   http.post(`${BASE_URL}auth/signup`, () => {
     return HttpResponse.json(
       {
@@ -79,5 +81,116 @@ export const handlers = [
       },
       { status: 200 },
     );
+  }),
+
+  http.get(`${BASE_URL}workouts`, ({ request }) => {
+    const url = new URL(request.url);
+    const sort = url.searchParams.get('sort');
+    const from = url.searchParams.get('from');
+    const to = url.searchParams.get('to');
+
+    if (sort === 'new') {
+      if (from && to) {
+        if (from === '2024-02-10') {
+          if (to === '2024-02-10') {
+            return HttpResponse.json(
+              {
+                message: 'Успешное завершение операции',
+                data: {
+                  workouts_count: 1,
+                  workouts: [
+                    {
+                      uuid: 'fssf9sdfj9sjaf9s',
+                      name: 'Train 1',
+                      date: '2024-02-10',
+                      type: 'strong',
+                      comment: 'dfhfghdfghfghfghf',
+                    },
+                  ],
+                },
+              },
+              { status: 200 },
+            );
+          } else if (to === '2024-02-12') {
+            return HttpResponse.json(
+              {
+                message: 'Успешное завершение операции',
+                data: {
+                  workouts_count: 2,
+                  workouts: [
+                    {
+                      uuid: 'fssf9sdfj9sjaf9s',
+                      name: 'Train 1',
+                      date: '2024-02-10',
+                      type: 'strong',
+                      comment: 'dfhfghdfghfghfghf',
+                    },
+                    {
+                      uuid: 'odfgdfolgdflg',
+                      name: 'Train 2',
+                      date: '2024-02-12',
+                      type: 'cardio',
+                      comment: 'pfdgpdf;gp',
+                    },
+                  ],
+                },
+              },
+              { status: 200 },
+            );
+          }
+        }
+      }
+      return HttpResponse.json(
+        {
+          message: 'Успешное завершение операции',
+          data: {
+            workouts_count: 2,
+            workouts: [
+              {
+                uuid: 'odfgdfolgdflg',
+                name: 'Train 2',
+                date: '2024-02-12',
+                type: 'cardio',
+                comment: 'pfdgpdf;gp',
+              },
+              {
+                uuid: 'fssf9sdfj9sjaf9s',
+                name: 'Train 1',
+                date: '2024-02-10',
+                type: 'strong',
+                comment: 'dfhfghdfghfghfghf',
+              },
+            ],
+          },
+        },
+        { status: 200 },
+      );
+    } else if (sort === 'old') {
+      return HttpResponse.json(
+        {
+          message: 'Успешное завершение операции',
+          data: {
+            workouts_count: 2,
+            workouts: [
+              {
+                uuid: 'fssf9sdfj9sjaf9s',
+                name: 'Train 1',
+                date: '2024-02-10',
+                type: 'strong',
+                comment: 'dfhfghdfghfghfghf',
+              },
+              {
+                uuid: 'odfgdfolgdflg',
+                name: 'Train 2',
+                date: '2024-02-12',
+                type: 'cardio',
+                comment: 'pfdgpdf;gp',
+              },
+            ],
+          },
+        },
+        { status: 200 },
+      );
+    }
   }),
 ];
