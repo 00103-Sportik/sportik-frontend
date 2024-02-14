@@ -188,6 +188,7 @@ function Exercise() {
     <>
       <form id="exercise-form" onSubmit={formik.handleSubmit}>
         <Input
+          testid="name"
           type="text"
           {...formik.getFieldProps('name')}
           error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
@@ -197,6 +198,7 @@ function Exercise() {
         />
         <div className="select-container-wider">
           <select
+            data-testid="type-select"
             className="select-box-wider"
             value={formik.values.type}
             onChange={(type) => formik.setFieldValue('type', type.target.value)}
@@ -211,6 +213,7 @@ function Exercise() {
         </div>
         <div className="select-container-wider">
           <select
+            data-testid="subtype-select"
             className="select-box-wider"
             value={formik.values.subtype}
             onChange={(subtype) => formik.setFieldValue('subtype', subtype.target.value)}
@@ -230,6 +233,7 @@ function Exercise() {
         </div>
         <div className="select-container-wider">
           <select
+            data-testid="params-select"
             className="select-box-wider"
             value={formik.values.combination_params}
             onChange={(combination_params) =>
@@ -248,6 +252,7 @@ function Exercise() {
           </select>
         </div>
         <Input
+          testid="comment"
           type="text"
           {...formik.getFieldProps('description')}
           error={formik.getFieldMeta('description').touched && !!formik.getFieldMeta('description').error}
@@ -256,11 +261,11 @@ function Exercise() {
           className="form-input-wider"
         />
         <div className={styles.buttonsBox}>
-          <button className="btn-black" type="submit">
+          <button data-testid="save-btn" className="btn-black" type="submit">
             Save
           </button>
           {uuid && (
-            <button className="btn-red" onClick={() => deleteExercise(uuid)}>
+            <button data-testid="delete-btn" className="btn-red" onClick={() => deleteExercise(uuid)}>
               Delete
             </button>
           )}

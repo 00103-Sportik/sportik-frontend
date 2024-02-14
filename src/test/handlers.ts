@@ -280,4 +280,100 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+  http.get(`${BASE_URL}exercises`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Success',
+        data: {
+          exercises: [
+            {
+              uuid: 'wrrwrwerwe',
+              user_uuid: null,
+              name: 'exercise 1',
+              description: 'Descr',
+              combination_params: 'count_weight',
+            },
+            {
+              uuid: 'wrrw23rwerwe',
+              user_uuid: 'fosdmfosfmo',
+              name: 'exercise 2',
+              description: 'Descrdfg',
+              combination_params: 'count_weight',
+            },
+          ],
+        },
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.get(`${BASE_URL}exercises/:uuid`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Success',
+        data: {
+          uuid: 'wrrw23rwerwe',
+          user_uuid: 'fosdmfosfmo',
+          name: 'exercise 2',
+          description: 'Descrdfg',
+          combination_params: 'count_weight',
+        },
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.post(`${BASE_URL}exercises`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Success',
+        data: {},
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.put(`${BASE_URL}exercises/:uuid`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Success',
+        data: {},
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.delete(`${BASE_URL}exercises/:uuid`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Success',
+        data: {},
+      },
+      { status: 200 },
+    );
+  }),
+
+  http.get(`${BASE_URL}subtypes`, () => {
+    return HttpResponse.json(
+      {
+        message: 'Успешное завершение операции',
+        data: {
+          subtypes: [
+            {
+              uuid: 'kodfgkodkgodf',
+              user_uuid: null,
+              name: 'Butterfly',
+            },
+            {
+              uuid: 'kodfgkodkgodf',
+              user_uuid: null,
+              name: 'Freestyle',
+            },
+          ],
+        },
+      },
+      { status: 200 },
+    );
+  }),
 ];

@@ -98,9 +98,10 @@ function Exercises() {
       <p className={styles.p2}>Exercises</p>
       <div className={styles.mainBox}>
         {exercises.length !== 0 ? (
-          exercises?.map((exercise) => (
+          exercises?.map((exercise, index) => (
             <div className={styles.itemBox}>
               <div
+                data-testid={`exercise${index}-div`}
                 className={styles.boxItems}
                 onClick={(event) => {
                   const target = event.target as HTMLElement;
@@ -126,10 +127,10 @@ function Exercises() {
                     <span>{exercise.name}</span>
                   </div>
                   <div className={styles.sideButtonsBox} hidden={exercise.user_uuid === null}>
-                    <button className="update-exercise">
+                    <button data-testid={`update${index}-btn`} className="update-exercise">
                       <AiFillEdit />
                     </button>
-                    <button className="delete-exercise">
+                    <button data-testid={`delete${index}-btn`} className="delete-exercise">
                       <AiOutlineClose />
                     </button>
                   </div>
@@ -138,10 +139,12 @@ function Exercises() {
             </div>
           ))
         ) : (
-          <h1 className={styles.noEntities}>There are no exercises yet</h1>
+          <h1 data-testid="no-entities-h1" className={styles.noEntities}>
+            There are no exercises yet
+          </h1>
         )}
       </div>
-      <button className="btn-black" onClick={() => goToCreateExercises()}>
+      <button data-testid="add-btn" className="btn-black" onClick={() => goToCreateExercises()}>
         Add
       </button>
     </>
