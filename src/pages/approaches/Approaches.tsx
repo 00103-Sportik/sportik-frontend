@@ -13,7 +13,6 @@ import { AiOutlineClose, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { IMask } from 'react-imask';
 import { WORKOUTS_URL } from '../../common/constants/api.ts';
 import { useGetExerciseQuery } from '../../store/exercise/exercise.api.ts';
-import { toast } from 'react-toastify';
 
 function Approaches() {
   const { uuid } = useParams();
@@ -115,11 +114,12 @@ function Approaches() {
       <p className={styles.p1}>{data?.data.name || ''}</p>
       <form id="approach-form" onSubmit={formik.handleSubmit}>
         <div className={styles.sideButtonsBox}>
-          <p className="text-[22px]">{`Approaches: ${formik.values.initial.length}`}</p>
-          <button className="btn-black mt-0" onClick={addApproach} type="reset">
+          <p data-testid="count-p" className="text-[22px]">{`Approaches: ${formik.values.initial.length}`}</p>
+          <button data-testid="add-btn" className="btn-black mt-0" onClick={addApproach} type="reset">
             <AiOutlinePlus />
           </button>
           <button
+            data-testid="delete-btn"
             className="btn-black mt-0"
             disabled={formik.values.initial.length === 0}
             type="button"
@@ -141,6 +141,7 @@ function Approaches() {
                   <div className={styles.boxContent}>
                     <div className={styles2.boxInfo}>
                       <Input
+                        testid={`param1-${index}`}
                         type="text"
                         {...formik.getFieldProps(`initial[${index}].param1`)}
                         error={
@@ -161,6 +162,7 @@ function Approaches() {
                       ></Input>
                       {combParams.param2 === 'Time' ? (
                         <Input
+                          testid={`param2-${index}`}
                           id={`time.${index}`}
                           type="text"
                           {...formik.getFieldProps(`initial[${index}].param2`)}
@@ -188,6 +190,7 @@ function Approaches() {
                         ></Input>
                       ) : (
                         <Input
+                          testid={`param2-${index}`}
                           type="text"
                           {...formik.getFieldProps(`initial[${index}].param2`)}
                           error={
@@ -209,7 +212,7 @@ function Approaches() {
                       )}
                     </div>
                     <div className={styles.sideButtonsBox}>
-                      <button type="reset" onClick={() => deleteApproach(index)}>
+                      <button data-testid={`delete${index}-btn`} type="reset" onClick={() => deleteApproach(index)}>
                         <AiOutlineClose />
                       </button>
                     </div>
@@ -218,11 +221,13 @@ function Approaches() {
               </div>
             ))
           ) : (
-            <h1 className={styles.noEntities}>There are no approaches yet</h1>
+            <h1 data-testid="no-entities-h1" className={styles.noEntities}>
+              There are no approaches yet
+            </h1>
           )}
         </div>
         <div className={styles.buttonsBox}>
-          <button className="btn-black" type="submit" form="approach-form">
+          <button data-testid="save-btn" className="btn-black" type="submit" form="approach-form">
             Save
           </button>
         </div>

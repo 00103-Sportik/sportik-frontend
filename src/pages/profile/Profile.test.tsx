@@ -82,7 +82,7 @@ async function inputProfileInfo() {
   expect(screen.getByTestId('weight-input')).toHaveValue('10.1');
 }
 
-describe('Profile - general', () => {
+describe('Profile - General', () => {
   test('Пустые поля', async () => {
     await renderProfilePage();
     await waitFor(() => {
