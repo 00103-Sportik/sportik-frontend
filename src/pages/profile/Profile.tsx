@@ -162,7 +162,6 @@ function Profile() {
   async function changeAvatar(e: React.ChangeEvent) {
     const target = e.target as HTMLInputElement;
     const file = (target.files as FileList)[0];
-    console.log(file);
     if (file.type.split('/')[0] != 'image') {
       toast('Error! This is not an image!', {
         position: 'top-center',

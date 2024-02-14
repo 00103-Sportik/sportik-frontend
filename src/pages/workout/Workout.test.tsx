@@ -51,6 +51,9 @@ async function renderNewWorkoutPage() {
       </BrowserRouter>,
     );
   });
+  await waitFor(() => {
+    expect(dispatchRequest).toHaveBeenCalledTimes(1);
+  });
 }
 
 async function renderWorkoutPage() {
