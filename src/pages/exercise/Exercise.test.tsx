@@ -6,35 +6,35 @@ import { Provider } from 'react-redux';
 import store from '../../store/store.ts';
 import { ToastContainer } from 'react-toastify';
 import userEvent from '@testing-library/user-event';
-import Workout from './Workout.tsx';
-import { discardWorkoutInfo } from '../../store/workouts/workouts.slice.ts';
-import { http, HttpResponse } from 'msw';
-import { BASE_URL } from '../../common/constants/api.ts';
+import Exercise from './Exercise.tsx';
 
 const mockedNavigation = jest.fn();
 jest.spyOn(router, 'useNavigate').mockImplementation(() => mockedNavigation);
 
 beforeAll(() => server.listen());
 
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  jest.clearAllMocks();
+});
 
 afterAll(() => server.close());
 
 let dispatchRequest: jest.Mock;
 
-async function renderNewWorkoutPage() {
+async function renderNewExercisePage() {
   dispatchRequest = jest.fn();
   server.events.on('request:end', dispatchRequest);
-  store.dispatch(discardWorkoutInfo());
+  jest.spyOn(router, 'useParams').mockReturnValue({ uuid: undefined });
   // @ts-ignore
   delete global.window.location;
   // @ts-ignore
-  global.window.location = new URL('http://localhost:5173/workouts');
+  global.window.location = new URL('http://localhost:5173/exercises');
   act(() => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <Workout />
+          <Exercise />
           <ToastContainer
             position="top-center"
             autoClose={3000}
@@ -52,23 +52,23 @@ async function renderNewWorkoutPage() {
     );
   });
   await waitFor(() => {
-    expect(dispatchRequest).toHaveBeenCalledTimes(1);
+    expect(dispatchRequest).toHaveBeenCalled();
   });
 }
 
-async function renderWorkoutPage() {
+async function renderExercisePage() {
   dispatchRequest = jest.fn();
   server.events.on('request:end', dispatchRequest);
-  store.dispatch(discardWorkoutInfo());
+  jest.spyOn(router, 'useParams').mockReturnValue({ uuid: 'wrrw23rwerwe' });
   // @ts-ignore
   delete global.window.location;
   // @ts-ignore
-  global.window.location = new URL('http://localhost:5173/workouts/fssf9sdfj9sjaf9s');
+  global.window.location = new URL('http://localhost:5173/exercise/wrrw23rwerwe');
   act(() => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <Workout />
+          <Exercise />
           <ToastContainer
             position="top-center"
             autoClose={3000}
@@ -87,205 +87,143 @@ async function renderWorkoutPage() {
   });
 }
 
-describe('Workout - General', () => {
-  test('Переход на страницу с подходами упражнения', async () => {
-    await renderWorkoutPage();
+describe('Exercise - General', () => {
+  test('Удаление упражнения', async () => {
+    await renderExercisePage();
+    await userEvent.click(screen.getByTestId('delete-btn'));
     await waitFor(() => {
-      expect(screen.getByTestId('goto-exercise0-div')).toBeInTheDocument();
-    });
-    await userEvent.click(screen.getByTestId('goto-exercise0-div'));
-    expect(mockedNavigation).toHaveBeenCalledWith(`/approaches/wrrwrwerwe`);
-  });
-
-  test('Переход на страницу с выбором подтипа упражнения', async () => {
-    await renderWorkoutPage();
-    await userEvent.click(screen.getByTestId('add-exercise-btn'));
-    expect(mockedNavigation).toHaveBeenCalledWith('/subtypes/strength');
-  });
-
-  test('Удаление упражнения из тренировки', async () => {
-    await renderWorkoutPage();
-    await userEvent.click(screen.getByTestId('delete-exercise0-btn'));
-    await waitFor(() => {
-      expect(screen.getByTestId('no-entities-h1')).toBeInTheDocument();
+      expect(screen.queryByText('Deleted successfully!')).toBeInTheDocument();
     });
   });
 
-  test('Сохранение новой тренировки', async () => {
-    server.use(
-      http.get(`${BASE_URL}workouts`, () => {
-        return HttpResponse.json(
-          {
-            message: 'Успешное завершение операции',
-            data: {
-              name: 'My train',
-              date: '2024-02-10',
-              type: 'strength',
-              comment: 'dfhfghdfghfghfghf',
-              exercises: [
-                {
-                  uuid: 'wrrwrwerwe',
-                  name: 'exercise 1',
-                  combination_params: 'count_weight',
-                  approaches: [
-                    {
-                      uuid: 'mofgmifgmi',
-                      param1: 1123.78,
-                      param2: 789.78,
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-          { status: 200 },
-        );
-      }),
-    );
-    await renderNewWorkoutPage();
+  test('Сохранение нового упражнения', async () => {
+    await renderNewExercisePage();
+    await userEvent.type(screen.getByTestId('name-input'), 'adaw');
     await userEvent.click(screen.getByTestId('save-btn'));
     await waitFor(() => {
-      expect(mockedNavigation).toHaveBeenCalledWith('/workouts/fssf9sdfj9sjaf9s');
+      expect(screen.queryByText('Created successfully!')).toBeInTheDocument();
     });
   });
 
-  test('Обновление информации о тренировке', async () => {
-    await renderWorkoutPage();
+  test('Обновление информации об упражнении', async () => {
+    await renderExercisePage();
     await userEvent.click(screen.getByTestId('save-btn'));
     await waitFor(() => {
-      expect(mockedNavigation).toHaveBeenCalledWith('/workouts/fssf9sdfj9sjaf9s');
-    });
-  });
-
-  test('Удаление тренировки', async () => {
-    await renderWorkoutPage();
-    await userEvent.click(screen.getByTestId('delete-dialog-btn'));
-    await waitFor(() => {
-      expect(mockedNavigation).toHaveBeenCalledWith('/');
+      expect(screen.queryByText('Updated successfully!')).toBeInTheDocument();
     });
   });
 });
 
-describe('Workout - Name', () => {
-  test('Постановка дефолтного названия тренировки', async () => {
-    await renderNewWorkoutPage();
-    await waitFor(() => {
-      expect(screen.getByTestId('name-input')).toHaveValue('Workout 7');
-    });
-  });
-
+describe('Exercise - Name', () => {
   test('Минимальная длина поля Name', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     await userEvent.type(screen.getByTestId('name-input'), 'adaw');
     expect(screen.getByTestId('name-input')).toHaveValue('adaw');
     expect((screen.getByTestId('name-input') as HTMLInputElement).value).toHaveLength(4);
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).toBeEmptyDOMElement();
   });
 
   test('Длина поля Name меньше минимальной', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('name-input'), 'ada');
     expect(screen.getByTestId('name-input')).toHaveValue('ada');
     expect((screen.getByTestId('name-input') as HTMLInputElement).value).toHaveLength(3);
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).not.toBeEmptyDOMElement();
   });
 
   test('Максимальная длина поля Name', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('name-input'), 'qwertyuiopasdfghjklzxcvbngmhdkss');
     expect(screen.getByTestId('name-input')).toHaveValue('qwertyuiopasdfghjklzxcvbngmhdkss');
     expect((screen.getByTestId('name-input') as HTMLInputElement).value).toHaveLength(32);
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).toBeEmptyDOMElement();
   });
 
   test('Длина поля Name больше максимальной', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('name-input'), 'qwertyuiopasdfghjklzxcvbngmhdksas');
     expect(screen.getByTestId('name-input')).toHaveValue('qwertyuiopasdfghjklzxcvbngmhdksas');
     expect((screen.getByTestId('name-input') as HTMLInputElement).value).toHaveLength(33);
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).not.toBeEmptyDOMElement();
   });
 
   test('Значение поля Name - пустое', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
-    await userEvent.click(screen.getByTestId('date-input'));
-    expect(screen.getByTestId('name-error')).toBeEmptyDOMElement();
+    await userEvent.click(screen.getByTestId('comment-input'));
+    expect(screen.getByTestId('name-error')).not.toBeEmptyDOMElement();
   });
 
   test('Значение поля Name содержит буквы русского алфавита', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('name-input'), 'фыфыы');
     expect(screen.getByTestId('name-input')).toHaveValue('фыфыы');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).toBeEmptyDOMElement();
   });
 
   test('Значение поля Name содержит цифры', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('name-input'), '1212');
     expect(screen.getByTestId('name-input')).toHaveValue('1212');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).toBeEmptyDOMElement();
   });
 
   test('Значение поля Name содержит спец символы', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('name-input'));
     expect(screen.getByTestId('name-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('name-input'), '*.№№');
     expect(screen.getByTestId('name-input')).toHaveValue('*.№№');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('name-error')).toBeEmptyDOMElement();
   });
 });
 
-describe('Workout - Date', () => {
-  test('Постановка текущей даты при создании новой тренировки', async () => {
-    await renderNewWorkoutPage();
-    await waitFor(() => {
-      expect(screen.getByTestId('date-input')).toHaveValue(new Date().toLocaleDateString());
-    });
-  });
-
-  test('Ввод некорректной даты', async () => {
-    await renderNewWorkoutPage();
-    await userEvent.clear(screen.getByTestId('date-input'));
-    await userEvent.type(screen.getByTestId('date-input'), '99.99.9999');
-    await userEvent.click(screen.getByTestId('name-input'));
-    await waitFor(() => {
-      expect(screen.getByTestId('date-error')).toHaveTextContent('Incorrect date');
-    });
-  });
-});
-
-describe('Workout - Type', () => {
-  test('Изменение типа тренировки', async () => {
-    await renderNewWorkoutPage();
+describe('Exercise - Type', () => {
+  test('Изменение типа упражнения', async () => {
+    await renderNewExercisePage();
     await userEvent.selectOptions(screen.getByTestId('type-select'), 'cardio');
     expect(screen.getByTestId('type-select')).toHaveTextContent('cardio');
   });
 });
 
-describe('Workout - Comment', () => {
+describe('Exercise - Subtype', () => {
+  test('Изменение подтипа упражнения', async () => {
+    await renderNewExercisePage();
+    await userEvent.selectOptions(screen.getByTestId('subtype-select'), 'Butterfly');
+    expect(screen.getByTestId('subtype-select')).toHaveTextContent('Butterfly');
+  });
+});
+
+describe('Exercise - Params', () => {
+  test('Изменение параметров упражнения', async () => {
+    await renderNewExercisePage();
+    await userEvent.selectOptions(screen.getByTestId('params-select'), 'distant_time');
+    expect(screen.getByTestId('params-select')).toHaveTextContent('Distant/Time');
+  });
+});
+
+describe('Exercise - Comment', () => {
   test('Максимальная длина поля Comment', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('comment-input')).toHaveValue('');
     await userEvent.type(
@@ -296,12 +234,12 @@ describe('Workout - Comment', () => {
       'jKxbdKXximkvggPhAKkVgamKfCZqovhpjBEbyUYXYVtWLmBAOQuyReaMhbunjWWFhzmoBBoCjCdSRCYvilJUygAfhUTCJGWvohBCqEnWORYbCpaiXFoVLoADjcJrhkTkHkEJpiesmkSELIuNghXMIcrlfBOGVTGZWJYqmBuGSDONSTMBLPrjeNvlMkxmbuIvoXrGYzjSUXJkHUnOayiAAevEiTLTHMmQzqVNcjAJEfEDXhNfRmoKJlSKehHNZPJ',
     );
     expect((screen.getByTestId('comment-input') as HTMLInputElement).value).toHaveLength(255);
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('name-input'));
     expect(screen.getByTestId('comment-error')).toBeEmptyDOMElement();
   }, 20000);
 
   test('Длина поля Comment больше максимальной', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('comment-input')).toHaveValue('');
     await userEvent.type(
@@ -312,45 +250,45 @@ describe('Workout - Comment', () => {
       'jKxbdKXximkvggPhAKkVgamKfCZqovhpjBEbyUYXYVtWLmBAOQuyReaMhbunjWWFhzmoBBoCjCdSRCYvilJUygAfhUTCJGWvohBCqEnWORYbCpaiXFoVLoADjcJrhkTkHkEJpiesmkSELIuNghXMIcrlfBOGVTGZWJYqmBuGSDONSTMBLPrjeNvlMkxmbuIvoXrGYzjSUXJkHUnOayiAAevEiTLTHMmQzqVNcjAJEfEDXhNfRmoKJlSKehHNZPJs',
     );
     expect((screen.getByTestId('comment-input') as HTMLInputElement).value).toHaveLength(256);
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('name-input'));
     expect(screen.getByTestId('comment-error')).not.toBeEmptyDOMElement();
   }, 20000);
 
   test('Значение поля Comment - пустое', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('comment-input')).toHaveValue('');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('name-input'));
     expect(screen.getByTestId('comment-error')).toBeEmptyDOMElement();
   });
 
   test('Значение поля Comment содержит буквы русского алфавита', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('comment-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('comment-input'), 'фыфыы');
     expect(screen.getByTestId('comment-input')).toHaveValue('фыфыы');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('name-input'));
     expect(screen.getByTestId('comment-error')).toBeEmptyDOMElement();
   });
 
   test('Значение поля Comment содержит цифры', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('comment-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('comment-input'), '1212');
     expect(screen.getByTestId('comment-input')).toHaveValue('1212');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('name-input'));
     expect(screen.getByTestId('comment-error')).toBeEmptyDOMElement();
   });
 
   test('Значение поля Comment содержит спец символы', async () => {
-    await renderNewWorkoutPage();
+    await renderNewExercisePage();
     await userEvent.clear(screen.getByTestId('comment-input'));
     expect(screen.getByTestId('comment-input')).toHaveValue('');
     await userEvent.type(screen.getByTestId('comment-input'), '*.№№');
     expect(screen.getByTestId('comment-input')).toHaveValue('*.№№');
-    await userEvent.click(screen.getByTestId('date-input'));
+    await userEvent.click(screen.getByTestId('name-input'));
     expect(screen.getByTestId('comment-error')).toBeEmptyDOMElement();
   });
 });

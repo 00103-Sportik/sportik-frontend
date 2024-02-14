@@ -111,6 +111,13 @@ describe('Registration - Email', () => {
     expect(screen.getByTestId('email-error')).not.toBeEmptyDOMElement();
   });
 
+  test('Значение поля Email содержит пробелы', async () => {
+    await renderRegistrationPage();
+    await userEvent.type(screen.getByTestId('email-input'), ' test @test.com');
+    await userEvent.click(screen.getByTestId('password-input'));
+    expect(screen.getByTestId('email-error')).not.toBeEmptyDOMElement();
+  });
+
   test('Значение поля Email не содержит "@"', async () => {
     await renderRegistrationPage();
     await userEvent.type(screen.getByTestId('email-input'), 'testtest.com');
