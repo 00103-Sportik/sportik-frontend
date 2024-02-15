@@ -165,10 +165,11 @@ function Subtypes() {
       <p className={styles.p2}>Subtypes</p>
       <div className={styles.mainBox}>
         {subtypes.length !== 0 ? (
-          subtypes.map((subtype) => (
+          subtypes.map((subtype, index) => (
             <div className={styles.itemBox}>
               <div
                 className={styles.boxItems}
+                data-testid={`exercise${index}-div`}
                 onClick={(event) => {
                   const target = event.target as HTMLElement;
                   const button = target.closest('button');
@@ -191,10 +192,10 @@ function Subtypes() {
                     <span>{subtype.name}</span>
                   </div>
                   <div hidden={subtype.user_uuid === null} className={styles.sideButtonsBox}>
-                    <button className="update-subtype">
+                    <button data-testid={`update${index}-btn`} className="update-subtype">
                       <AiFillEdit />
                     </button>
-                    <button className="delete-subtype">
+                    <button data-testid={`delete${index}-btn`} className="delete-subtype">
                       <AiOutlineClose />
                     </button>
                   </div>
@@ -217,6 +218,7 @@ function Subtypes() {
           <p className={styles.p}>Input subtype name:</p>
           <Input
             type="text"
+            testid="name"
             {...formik.getFieldProps('name')}
             error={formik.getFieldMeta('name').touched && !!formik.getFieldMeta('name').error}
             errorText={formik.getFieldMeta('name').error}
@@ -224,14 +226,14 @@ function Subtypes() {
             className="form-input-modal"
           ></Input>
           <div className={styles.buttonsBox}>
-            <button className="btn-black" type="submit" form="subtype-form">
+            <button data-testid="save-btn" className="btn-black" type="submit" form="subtype-form">
               Save
             </button>
-            <DialogDismiss className="btn-red">Exit</DialogDismiss>
+            <DialogDismiss data-testid="exit-btn" className="btn-red">Exit</DialogDismiss>
           </div>
         </Dialog>
       </form>
-      <button className="btn-black" onClick={() => setOpen(true)}>
+      <button data-testid="add-btn" className="btn-black" onClick={() => setOpen(true)}>
         Add
       </button>
     </>
