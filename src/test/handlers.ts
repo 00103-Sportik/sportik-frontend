@@ -367,7 +367,7 @@ export const handlers = [
             },
             {
               uuid: 'kodfgkodkgodf',
-              user_uuid: null,
+              user_uuid: 'fsdfsfsfsdfs',
               name: 'Freestyle',
             },
           ],
@@ -379,31 +379,31 @@ export const handlers = [
 
   http.put(`${BASE_URL}subtypes/:uuid`, () => {
     return HttpResponse.json(
-        {
-          message: 'Success',
-          data: {},
-        },
-        { status: 200 },
+      {
+        message: 'Success',
+        data: {},
+      },
+      { status: 200 },
     );
   }),
 
   http.post(`${BASE_URL}subtypes`, () => {
     return HttpResponse.json(
-        {
-          message: 'Success',
-          data: {},
-        },
-        { status: 200 },
+      {
+        message: 'Success',
+        data: {},
+      },
+      { status: 200 },
     );
   }),
 
   http.delete(`${BASE_URL}subtypes/:uuid`, () => {
     return HttpResponse.json(
-        {
-          message: 'Success',
-          data: {},
-        },
-        { status: 200 },
+      {
+        message: 'Success',
+        data: {},
+      },
+      { status: 200 },
     );
-  })
+  }),
 ];

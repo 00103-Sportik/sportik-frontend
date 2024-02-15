@@ -101,6 +101,7 @@ function Exercises() {
           exercises?.map((exercise, index) => (
             <div className={styles.itemBox}>
               <div
+                key={index}
                 data-testid={`exercise${index}-div`}
                 className={styles.boxItems}
                 onClick={(event) => {

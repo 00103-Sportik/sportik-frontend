@@ -218,6 +218,29 @@ describe('Profile - General', () => {
       expect(screen.queryByText('Error on the server. Please try again later')).toBeInTheDocument();
     });
   });
+
+  test('Обработка неизвестной ошибки при обновлении профиля', async () => {
+    server.use(
+      http.put(`${BASE_URL}profile`, () => {
+        return HttpResponse.json(
+          {
+            message: '',
+            data: {},
+          },
+          { status: 52 },
+        );
+      }),
+    );
+    await renderProfilePage();
+    await inputProfileInfo();
+
+    await userEvent.click(screen.getByTestId('saving-btn'));
+    await userEvent.click(screen.getByTestId('saving-dialog-btn'));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Unexpected error')).toBeInTheDocument();
+    });
+  });
 });
 
 describe('Profile - Name', () => {
