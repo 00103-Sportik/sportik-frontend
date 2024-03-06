@@ -7,7 +7,7 @@ export default {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '\\.(css|scss)$': 'identity-obj-proxy',
-    '\\.(jpg)$': '<rootDir>/src/test/fileTransformer.js',
+    '\\.(jpg)$': '<rootDir>/src/test-utils/fileTransformer.js',
   },
   testEnvironmentOptions: {
     customExportConditions: [''],

@@ -1,4 +1,4 @@
-import { server } from '../../../test/server.ts';
+import { server } from '../../../test-utils/server.ts';
 import store from '../../../store/store.ts';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
@@ -43,7 +43,7 @@ async function renderRegistrationPage() {
 describe('Registration - General', () => {
   test('Ввод корректного email и пароля', async () => {
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signup-btn'));
     await waitFor(() => {
@@ -64,7 +64,7 @@ describe('Registration - General', () => {
       }),
     );
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signup-btn'));
     await waitFor(() => {
@@ -92,7 +92,7 @@ describe('Registration - General', () => {
 describe('Registration - Email', () => {
   test('Корректное значение Email', async () => {
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.click(screen.getByTestId('password-input'));
     expect(screen.getByTestId('email-error')).toBeEmptyDOMElement();
   });
@@ -106,14 +106,14 @@ describe('Registration - Email', () => {
 
   test('Значение поля Email содержит буквы русского алфавита', async () => {
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'аваыв@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'аваыв@test-utils.com');
     await userEvent.click(screen.getByTestId('password-input'));
     expect(screen.getByTestId('email-error')).not.toBeEmptyDOMElement();
   });
 
   test('Значение поля Email содержит пробелы', async () => {
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), ' test @test.com');
+    await userEvent.type(screen.getByTestId('email-input'), ' test-utils @test-utils.com');
     await userEvent.click(screen.getByTestId('password-input'));
     expect(screen.getByTestId('email-error')).not.toBeEmptyDOMElement();
   });
@@ -127,14 +127,14 @@ describe('Registration - Email', () => {
 
   test('Значение поля Email не содержит имени почтового ящика', async () => {
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), '@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), '@test-utils.com');
     await userEvent.click(screen.getByTestId('password-input'));
     expect(screen.getByTestId('email-error')).not.toBeEmptyDOMElement();
   });
 
   test('Значение поля Email не содержит доменного имени', async () => {
     await renderRegistrationPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@');
     await userEvent.click(screen.getByTestId('password-input'));
     expect(screen.getByTestId('email-error')).not.toBeEmptyDOMElement();
   });

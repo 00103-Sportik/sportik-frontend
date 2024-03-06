@@ -94,7 +94,9 @@ function Exercises() {
 
   return (
     <>
-      <p className={styles.p1}>{subtypeName}</p>
+      <p data-testid="subtype-p1" className={styles.p1}>
+        {subtypeName}
+      </p>
       <p className={styles.p2}>Exercises</p>
       <div className={styles.mainBox}>
         {exercises.length !== 0 ? (

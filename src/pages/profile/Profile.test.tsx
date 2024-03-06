@@ -5,12 +5,12 @@ import userEvent from '@testing-library/user-event';
 import Profile from './Profile.tsx';
 import { ToastContainer } from 'react-toastify';
 import '@testing-library/jest-dom';
-import { server } from '../../test/server.ts';
+import { server } from '../../test-utils/server.ts';
 import { BASE_URL } from '../../common/constants/api.ts';
 import { http, HttpResponse } from 'msw';
-import { image } from '../../test/constants.ts';
+import { image } from '../../test-utils/constants.ts';
 import { setProfile } from '../../store/profile/profile.slice.ts';
-import base64toUint8 from '../../test/utils.ts';
+import base64toUint8 from '../../test-utils/utils.ts';
 
 beforeAll(() => server.listen());
 
@@ -61,7 +61,7 @@ async function renderProfilePage() {
 
 async function inputProfileInfo() {
   await waitFor(() => {
-    expect(screen.getByTestId('email-input')).toHaveValue('test@test.ru');
+    expect(screen.getByTestId('email-input')).toHaveValue('test-utils@test-utils.ru');
   });
   await userEvent.type(screen.getByTestId('name-input'), 'name');
   expect(screen.getByTestId('name-input')).toHaveValue('name');
@@ -86,7 +86,7 @@ describe('Profile - General', () => {
   test('Пустые поля', async () => {
     await renderProfilePage();
     await waitFor(() => {
-      expect(screen.getByTestId('email-input')).toHaveValue('test@test.ru');
+      expect(screen.getByTestId('email-input')).toHaveValue('test-utils@test-utils.ru');
     });
     expect(screen.getByTestId('name-input')).toHaveValue('');
     expect(screen.getByTestId('surname-input')).toHaveValue('');
@@ -105,7 +105,7 @@ describe('Profile - General', () => {
             data: {
               height: 12,
               weight: 10.1,
-              email: 'test1@test.ru',
+              email: 'test1@test-utils.ru',
               name: 'name',
               surname: 'surname',
               age: 20,
@@ -119,7 +119,7 @@ describe('Profile - General', () => {
     );
     await renderProfilePage();
     await waitFor(() => {
-      expect(screen.getByTestId('email-input')).toHaveValue('test1@test.ru');
+      expect(screen.getByTestId('email-input')).toHaveValue('test1@test-utils.ru');
     });
     expect(screen.getByTestId('name-input')).toHaveValue('name');
     expect(screen.getByTestId('surname-input')).toHaveValue('surname');
@@ -405,58 +405,22 @@ describe('Profile - Sex', () => {
 });
 
 describe('Profile - Age', () => {
-  test('Значение поля Age граничное снизу', async () => {
+  test.each(['0', '1', '150', '149'])('Значение поля Age = %s', async (i) => {
     await renderProfilePage();
     expect(screen.getByTestId('age-input')).toHaveValue('');
-    await userEvent.type(screen.getByTestId('age-input'), '0');
-    expect(screen.getByTestId('age-input')).toHaveValue('0');
+    await userEvent.type(screen.getByTestId('age-input'), i);
+    expect(screen.getByTestId('age-input')).toHaveValue(i);
     await userEvent.click(screen.getByTestId('saving-btn'));
     expect(screen.getByTestId('age-error')).toBeEmptyDOMElement();
   });
 
-  test('Значение поля Age имеет минимальное отклонение от граничного значения снизу (-1)', async () => {
+  test.each(['-1', '151'])('Значение поля Age = %s', async (i) => {
     await renderProfilePage();
     expect(screen.getByTestId('age-input')).toHaveValue('');
-    await userEvent.type(screen.getByTestId('age-input'), '-1');
-    expect(screen.getByTestId('age-input')).toHaveValue('-1');
+    await userEvent.type(screen.getByTestId('age-input'), i);
+    expect(screen.getByTestId('age-input')).toHaveValue(i);
     await userEvent.click(screen.getByTestId('saving-btn'));
     expect(screen.getByTestId('age-error')).not.toBeEmptyDOMElement();
-  });
-
-  test('Значение поля Age имеет минимальное отклонение от граничного значения снизу (+1)', async () => {
-    await renderProfilePage();
-    expect(screen.getByTestId('age-input')).toHaveValue('');
-    await userEvent.type(screen.getByTestId('age-input'), '1');
-    expect(screen.getByTestId('age-input')).toHaveValue('1');
-    await userEvent.click(screen.getByTestId('saving-btn'));
-    expect(screen.getByTestId('age-error')).toBeEmptyDOMElement();
-  });
-
-  test('Значение поля Age граничное сверху', async () => {
-    await renderProfilePage();
-    expect(screen.getByTestId('age-input')).toHaveValue('');
-    await userEvent.type(screen.getByTestId('age-input'), '150');
-    expect(screen.getByTestId('age-input')).toHaveValue('150');
-    await userEvent.click(screen.getByTestId('saving-btn'));
-    expect(screen.getByTestId('age-error')).toBeEmptyDOMElement();
-  });
-
-  test('Значение поля Age имеет минимальное отклонение от граничного значения сверху (+1)', async () => {
-    await renderProfilePage();
-    expect(screen.getByTestId('age-input')).toHaveValue('');
-    await userEvent.type(screen.getByTestId('age-input'), '151');
-    expect(screen.getByTestId('age-input')).toHaveValue('151');
-    await userEvent.click(screen.getByTestId('saving-btn'));
-    expect(screen.getByTestId('age-error')).not.toBeEmptyDOMElement();
-  });
-
-  test('Значение поля Age имеет минимальное отклонение от граничного значения сверху (-1)', async () => {
-    await renderProfilePage();
-    expect(screen.getByTestId('age-input')).toHaveValue('');
-    await userEvent.type(screen.getByTestId('age-input'), '149');
-    expect(screen.getByTestId('age-input')).toHaveValue('149');
-    await userEvent.click(screen.getByTestId('saving-btn'));
-    expect(screen.getByTestId('age-error')).toBeEmptyDOMElement();
   });
 
   test('Значение поля Age - пустое', async () => {
@@ -702,7 +666,7 @@ describe('Profile - Avatar', () => {
 
   test('Загрузка не изображения', async () => {
     await renderProfilePage();
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const file = new File(['test'], 'test-utils.txt', { type: 'text/plain' });
     await userEvent.upload(screen.getByTestId('avatar-input'), file);
     expect(screen.queryByText('Error! This is not an image!')).toBeInTheDocument();
   });
@@ -716,7 +680,7 @@ describe('Profile - Avatar', () => {
             data: {
               height: undefined,
               weight: undefined,
-              email: 'test@test.ru',
+              email: 'test-utils@test-utils.ru',
               name: undefined,
               surname: undefined,
               age: undefined,

@@ -30,7 +30,7 @@ export function Menu() {
             Profile
           </a>
         </li>
-        <li>
+        <li data-testid="hr-btn">
           <a data-testid="hr-a" href="/hr-calc" className="menu-link" onClick={() => dispatch(discardWorkoutInfo())}>
             HR Calculator
           </a>

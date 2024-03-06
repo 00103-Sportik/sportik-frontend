@@ -1,5 +1,5 @@
 import * as router from 'react-router';
-import { server } from '../../test/server.ts';
+import { server } from '../../test-utils/server.ts';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';

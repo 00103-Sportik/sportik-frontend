@@ -1,4 +1,4 @@
-import { server } from '../../test/server.ts';
+import { server } from '../../test-utils/server.ts';
 import store from '../../store/store.ts';
 import {
   discardWorkoutInfo,

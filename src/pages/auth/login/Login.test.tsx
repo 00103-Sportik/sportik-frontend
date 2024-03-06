@@ -1,4 +1,4 @@
-import { server } from '../../../test/server.ts';
+import { server } from '../../../test-utils/server.ts';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -53,7 +53,7 @@ describe('Login', () => {
 
   test('Ввод корректного email при пустом поле password', async () => {
     await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.click(screen.getByTestId('signin-btn'));
     expect(screen.queryByText('Login successfully!')).not.toBeInTheDocument();
     expect(screen.queryByText('Incorrect email or password!')).not.toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('Login', () => {
 
   test('Ввод корректного email и корректного пароля', async () => {
     await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {
@@ -79,7 +79,7 @@ describe('Login', () => {
 
   test('Ввод корректного email и некорректного пароля', async () => {
     await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'fsdf');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {
@@ -89,7 +89,7 @@ describe('Login', () => {
 
   test('Ввод некорректного email и корректного пароля', async () => {
     await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), '@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), '@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {
@@ -99,7 +99,7 @@ describe('Login', () => {
 
   test('Ввод некорректного email и некорректного пароля', async () => {
     await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), '@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), '@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'sysdf');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {
@@ -120,7 +120,7 @@ describe('Login', () => {
       }),
     );
     await renderLoginPage();
-    await userEvent.type(screen.getByTestId('email-input'), 'test@test.com');
+    await userEvent.type(screen.getByTestId('email-input'), 'test-utils@test-utils.com');
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {

@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "jest --coverage"
+    "test:unit": "jest src --coverage",
+    "test:int": "jest tests/int-tests",
+    "test:e2e": "npx playwright test && npx playwright show-report"
   },
   "dependencies": {
     "@ariakit/react": "^0.3.8",
@@ -16,7 +18,6 @@
     "bootstrap": "^5.3.2",
     "formik": "^2.4.5",
     "immer": "^10.0.3",
-    "msw": "^2.1.7",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
@@ -34,10 +35,12 @@
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
+    "@playwright/test": "^1.41.2",
     "@testing-library/jest-dom": "^6.4.1",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.20",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/text-encoding": "^0.0.39",
@@ -48,6 +51,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "msw": "^2.1.7",
     "postcss": "^8.4.31",
     "prettier": "^3.1.0",
     "react-test-renderer": "^18.2.0",
@@ -56,6 +60,7 @@
     "tailwindcss": "^3.3.5",
     "text-encoding": "^0.7.0",
     "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "undici": "^5.28.2",
     "vite": "^4.4.5"

@@ -9,7 +9,7 @@ export const handlers = [
         data: {
           height: null,
           weight: null,
-          email: 'test@test.ru',
+          email: 'test-utils@test-utils.ru',
           name: '',
           surname: '',
           age: null,
@@ -28,7 +28,7 @@ export const handlers = [
         data: {
           height: null,
           weight: null,
-          email: 'test@test.ru',
+          email: 'test-utils@test-utils.ru',
           name: '',
           surname: '',
           age: null,
@@ -194,7 +194,7 @@ export const handlers = [
     }
   }),
 
-  http.get(`${BASE_URL}workouts/:id`, () => {
+  http.get(`${BASE_URL}workouts/:uuid`, () => {
     return HttpResponse.json(
       {
         message: 'Успешное завершение операции',
@@ -308,7 +308,7 @@ export const handlers = [
     );
   }),
 
-  http.get(`${BASE_URL}exercises/:uuid`, () => {
+  http.get(`${BASE_URL}exercise/:uuid`, () => {
     return HttpResponse.json(
       {
         message: 'Success',
