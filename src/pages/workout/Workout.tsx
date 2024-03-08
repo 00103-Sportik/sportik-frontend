@@ -334,8 +334,10 @@ function Workout() {
                 >
                   <div className={styles.boxContent}>
                     <div data-testid={`goto-exercise${index}-div`} className={styles.boxInfo}>
-                      <span>{exercise.name}</span>
-                      <span>approaches: {exercise?.approaches?.length || 0}</span>
+                      <span data-testid={`exercise${index}-name`}>{exercise.name}</span>
+                      <span data-testid={`exercise${index}-approaches`}>
+                        approaches: {exercise?.approaches?.length || 0}
+                      </span>
                     </div>
                     <div className={styles.deleteButton}>
                       <button data-testid={`delete-exercise${index}-btn`} className="delete-from-workout" type="reset">

@@ -169,7 +169,7 @@ function Subtypes() {
             <div className={styles.itemBox}>
               <div
                 className={styles.boxItems}
-                data-testid={`exercise${index}-div`}
+                data-testid={`subtype${index}-div`}
                 onClick={(event) => {
                   const target = event.target as HTMLElement;
                   const button = target.closest('button');
@@ -229,7 +229,9 @@ function Subtypes() {
             <button data-testid="save-btn" className="btn-black" type="submit" form="subtype-form">
               Save
             </button>
-            <DialogDismiss data-testid="exit-btn" className="btn-red">Exit</DialogDismiss>
+            <DialogDismiss data-testid="exit-btn" className="btn-red">
+              Exit
+            </DialogDismiss>
           </div>
         </Dialog>
       </form>

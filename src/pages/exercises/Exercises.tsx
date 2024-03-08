@@ -127,7 +127,7 @@ function Exercises() {
               >
                 <div className={styles.boxContent}>
                   <div className={styles.boxInfo}>
-                    <span>{exercise.name}</span>
+                    <span data-testid={`exercise${index}-name`}>{exercise.name}</span>
                   </div>
                   <div className={styles.sideButtonsBox} hidden={exercise.user_uuid === null}>
                     <button data-testid={`update${index}-btn`} className="update-exercise">

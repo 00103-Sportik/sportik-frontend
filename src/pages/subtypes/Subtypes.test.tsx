@@ -56,9 +56,9 @@ describe('Subtypes - General', () => {
   test('Выбор подтипов', async () => {
     await renderSubtypesPage();
     await waitFor(() => {
-      expect(screen.getByTestId('exercise1-div')).toBeInTheDocument();
+      expect(screen.getByTestId('subtype1-div')).toBeInTheDocument();
     });
-    await userEvent.click(screen.getByTestId('exercise1-div'));
+    await userEvent.click(screen.getByTestId('subtype1-div'));
     expect(mockedNavigation).toHaveBeenCalledWith(`/exercises/kodfgkodkgodf`);
   });
 
