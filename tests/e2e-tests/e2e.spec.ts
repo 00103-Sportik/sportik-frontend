@@ -88,6 +88,9 @@ test('Создание новой тренировки', async ({ page }) => {
   await expect(page.getByTestId('comment-input')).toBeEmpty();
   await expect(page.getByTestId('delete-btn')).not.toBeVisible();
 
+  const workoutName = (await page.getByTestId('name-input').textContent()) as string;
+  const workoutDate = (await page.getByTestId('date-input').textContent()) as string;
+
   await page.getByTestId('save-btn').click();
   await expect(page.getByText('Created successfully!')).toBeVisible();
   await expect(page.getByTestId('delete-btn')).toBeVisible();
@@ -102,6 +105,8 @@ test('Создание новой тренировки', async ({ page }) => {
 
   await expect(page.getByTestId('no-workouts-h1')).not.toBeVisible();
   await expect(page.getByTestId('workout0-div')).toBeVisible();
+  await expect(page.getByTestId('workout0-name')).toHaveText(workoutName);
+  await expect(page.getByTestId('workout0-date')).toHaveText(workoutDate);
 });
 
 test('Обновление информации профиля', async ({ page }) => {
@@ -276,6 +281,9 @@ test('Добавление нового подхода в существующу
   await page.getByTestId('save-btn').click();
   await expect(page).toHaveURL(/.*workouts\/./);
   await expect(page.getByTestId('exercise0-approaches')).toHaveText('approaches: 1');
+
+  await page.getByTestId('save-btn').click();
+  await expect(page.getByText('Updated successfully!')).toBeVisible();
 });
 
 test('Удаление пользовательского упражнения', async ({ page }) => {

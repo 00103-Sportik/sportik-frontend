@@ -193,7 +193,7 @@ function Workouts() {
               >
                 <div className={styles.boxContent}>
                   <div className={styles.boxInfo}>
-                    <span>{workout.name}</span>
+                    <span data-testid={`workout${index}-name`}>{workout.name}</span>
                     <span data-testid={`workout${index}-date`}>{convertToLocalDate(workout.date)}</span>
                     <span>{workout.type}</span>
                   </div>
