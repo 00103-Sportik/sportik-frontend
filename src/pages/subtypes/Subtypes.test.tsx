@@ -95,7 +95,7 @@ describe('Subtypes - General', () => {
 
   test('Удаление подтипа', async () => {
     await renderSubtypesPage();
-    await userEvent.click(screen.getByTestId('delete1-btn'));
+    await userEvent.click(screen.getByTestId('delete-Freestyle-btn'));
     await waitFor(() => {
       expect(screen.queryByText('Deleted successfully!')).toBeInTheDocument();
     });

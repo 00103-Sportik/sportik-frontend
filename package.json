@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test:unit": "jest src --coverage",
     "test:int": "jest tests/int-tests",
-    "test:e2e": "npx playwright test && npx playwright show-report"
+    "test:e2e": "npx playwright test"
   },
   "dependencies": {
     "@ariakit/react": "^0.3.8",

@@ -195,7 +195,7 @@ function Subtypes() {
                     <button data-testid={`update${index}-btn`} className="update-subtype">
                       <AiFillEdit />
                     </button>
-                    <button data-testid={`delete${index}-btn`} className="delete-subtype">
+                    <button data-testid={`delete-${subtype.name}-btn`} className="delete-subtype">
                       <AiOutlineClose />
                     </button>
                   </div>

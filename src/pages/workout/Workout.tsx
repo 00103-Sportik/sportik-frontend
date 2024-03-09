@@ -61,7 +61,7 @@ function Workout() {
 
   const [fields, setFields] = useState<WorkoutFields>({
     name: workoutInfo.name || `Workout ${count}`,
-    date: workoutInfo.date ? workoutInfo.date : new Date().toLocaleDateString(),
+    date: workoutInfo.date ? workoutInfo.date : new Date().toLocaleDateString('ru-RU'),
     type: workoutInfo.type || 'strength',
     comment: workoutInfo.comment || '',
   });
@@ -134,6 +134,7 @@ function Workout() {
 
   useEffect(() => {
     if (isSuccessDelete) {
+      dispatch(setCountWorkouts({ count: count - 1 }));
       navigate('/');
       toast('Deleted successfully!', {
         position: 'top-center',
