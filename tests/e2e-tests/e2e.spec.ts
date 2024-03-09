@@ -65,50 +65,6 @@ test('Регистрация нового пользователя', async ({ pa
   expect(JSON.parse((await getLocalStorage(page)).auth).refresh_token).not.toBeNull();
 });
 
-test('Создание новой тренировки', async ({ page }) => {
-  await login(page);
-  await expect(page.getByTestId('no-workouts-h1')).toBeVisible();
-  await expect(page.getByTestId('workout0-div')).not.toBeVisible();
-  await page.getByTestId('add-btn').click();
-
-  await expect(page).toHaveURL(/.*workouts/);
-
-  await expect(page.getByTestId('name-input')).toHaveValue(/.*Workout ./);
-  await expect(page.getByTestId('date-input')).toHaveValue(
-    `${(new Date().getDate() < 10
-      ? `0${new Date().getDate()}`
-      : new Date().getDate()
-    ).toString()}.${(new Date().getMonth() < 9
-      ? `0${new Date().getMonth() + 1}`
-      : new Date().getMonth() + 1
-    ).toString()}.${new Date().getFullYear().toString()}`,
-  );
-  await expect(page.getByTestId('type-select')).toHaveValue('strength');
-  await expect(page.getByTestId('no-entities-h1')).toBeVisible();
-  await expect(page.getByTestId('comment-input')).toBeEmpty();
-  await expect(page.getByTestId('delete-btn')).not.toBeVisible();
-
-  const workoutName = (await page.getByTestId('name-input').textContent()) as string;
-  const workoutDate = (await page.getByTestId('date-input').textContent()) as string;
-
-  await page.getByTestId('save-btn').click();
-  await expect(page.getByText('Created successfully!')).toBeVisible();
-  await expect(page.getByTestId('delete-btn')).toBeVisible();
-  await expect(page).toHaveURL(/.*workouts\/./);
-
-  await Promise.all([
-    page.waitForResponse((res) => res.url() === 'http://localhost:8080/api/v1/workouts?limit=10&offset=0&sort=new', {
-      timeout: 90000,
-    }),
-    page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' }),
-  ]);
-
-  await expect(page.getByTestId('no-workouts-h1')).not.toBeVisible();
-  await expect(page.getByTestId('workout0-div')).toBeVisible();
-  await expect(page.getByTestId('workout0-name')).toHaveText(workoutName);
-  await expect(page.getByTestId('workout0-date')).toHaveText(workoutDate);
-});
-
 test('Обновление информации профиля', async ({ page }) => {
   await login(page);
   await page.getByTestId('menu-btn').click();
@@ -137,7 +93,7 @@ test('Обновление информации профиля', async ({ page }
   expect(JSON.parse((await getLocalStorage(page)).profile).weight).toBe('85.5');
 });
 
-test('Рассчет пульсовых зон по возрасту', async ({ page }) => {
+test('Расчет пульсовых зон по возрасту', async ({ page }) => {
   await login(page);
   await page.getByTestId('menu-btn').click();
   await expect(page.getByTestId('profile-a')).toBeVisible();
@@ -185,6 +141,50 @@ test('Расчет пульсовых зон по максимальному п�
   await expect(page.getByTestId('row4')).toHaveText('120-140');
   await expect(page.getByTestId('row5')).toHaveText('100-120');
   await expect(page.getByTestId('hr-error')).toBeEmpty();
+});
+
+test('Создание новой тренировки', async ({ page }) => {
+  await login(page);
+  await expect(page.getByTestId('no-workouts-h1')).toBeVisible();
+  await expect(page.getByTestId('workout0-div')).not.toBeVisible();
+  await page.getByTestId('add-btn').click();
+
+  await expect(page).toHaveURL(/.*workouts/);
+
+  await expect(page.getByTestId('name-input')).toHaveValue(/.*Workout ./);
+  await expect(page.getByTestId('date-input')).toHaveValue(
+    `${(new Date().getDate() < 10
+      ? `0${new Date().getDate()}`
+      : new Date().getDate()
+    ).toString()}.${(new Date().getMonth() < 9
+      ? `0${new Date().getMonth() + 1}`
+      : new Date().getMonth() + 1
+    ).toString()}.${new Date().getFullYear().toString()}`,
+  );
+  await expect(page.getByTestId('type-select')).toHaveValue('strength');
+  await expect(page.getByTestId('no-entities-h1')).toBeVisible();
+  await expect(page.getByTestId('comment-input')).toBeEmpty();
+  await expect(page.getByTestId('delete-btn')).not.toBeVisible();
+
+  const workoutName = (await page.getByTestId('name-input').inputValue()) as string;
+  const workoutDate = (await page.getByTestId('date-input').inputValue()) as string;
+
+  await page.getByTestId('save-btn').click();
+  await expect(page.getByText('Created successfully!')).toBeVisible();
+  await expect(page.getByTestId('delete-btn')).toBeVisible();
+  await expect(page).toHaveURL(/.*workouts\/./);
+
+  await Promise.all([
+    page.waitForResponse((res) => res.url() === 'http://localhost:8080/api/v1/workouts?limit=10&offset=0&sort=new', {
+      timeout: 90000,
+    }),
+    page.goto('http://localhost:5173/', { waitUntil: 'domcontentloaded' }),
+  ]);
+
+  await expect(page.getByTestId('no-workouts-h1')).not.toBeVisible();
+  await expect(page.getByTestId('workout0-div')).toBeVisible();
+  await expect(page.getByTestId('workout0-name')).toHaveText(workoutName);
+  await expect(page.getByTestId('workout0-date')).toHaveText(workoutDate);
 });
 
 test('Создание нового подтипа тренировок', async ({ page }) => {
