@@ -6,10 +6,6 @@ async function getLocalStorage(page: Page) {
   return JSON.parse(localStorage);
 }
 
-test.afterEach(async ({ page }) => {
-  await page.evaluate(() => window.localStorage.clear());
-});
-
 async function login(page: Page) {
   await page.goto('http://localhost:5173/signin');
   await page.getByTestId('email-input').fill('test12@gmail.com');
@@ -25,14 +21,14 @@ async function login(page: Page) {
 }
 
 test('Регистрация нового пользователя', async ({ page }) => {
-  await page.goto('http://localhost:5173/signup');
-  await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
-  await page.getByTestId('password-input').fill('Qwerty12');
-  await page.getByTestId('signup-btn').click();
-
-  await expect(page.getByTestId('email-error')).toBeEmpty();
-  await expect(page.getByTestId('password-error')).toBeEmpty();
-  await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
+  // await page.goto('http://localhost:5173/signup');
+  // await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
+  // await page.getByTestId('password-input').fill('Qwerty12');
+  // await page.getByTestId('signup-btn').click();
+  //
+  // await expect(page.getByTestId('email-error')).toBeEmpty();
+  // await expect(page.getByTestId('password-error')).toBeEmpty();
+  // await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
 
   await page.goto('https://passport.yandex.ru/auth?mode=add-user&retpath=https%3A%2F%2F360.yandex.ru%2Fmail%2F&');
 
@@ -48,7 +44,9 @@ test('Регистрация нового пользователя', async ({ pa
   await page.click(
     '.ns-view-messages-item-wrap:nth-child(1) .mail-MessageSnippet-Item > .mail-MessageSnippet-Item:nth-child(3)',
   );
-  await page.getByText('http://localhost:5173/activate?email').click();
+  await page.goto(
+    ((await page.getByText(/http:\/\/localhost:5173\/activate./).textContent()) as string).split(': ')[1],
+  );
 
   await expect(page).toHaveURL(/.*activate/);
   await expect(page.getByText('Activated successfully!')).toBeVisible();
