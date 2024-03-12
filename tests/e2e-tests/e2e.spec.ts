@@ -21,14 +21,14 @@ async function login(page: Page) {
 }
 
 test('Регистрация нового пользователя', async ({ page }) => {
-  // await page.goto('http://localhost:5173/signup');
-  // await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
-  // await page.getByTestId('password-input').fill('Qwerty12');
-  // await page.getByTestId('signup-btn').click();
-  //
-  // await expect(page.getByTestId('email-error')).toBeEmpty();
-  // await expect(page.getByTestId('password-error')).toBeEmpty();
-  // await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
+  await page.goto('http://localhost:5173/signup');
+  await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
+  await page.getByTestId('password-input').fill('Qwerty12');
+  await page.getByTestId('signup-btn').click();
+
+  await expect(page.getByTestId('email-error')).toBeEmpty();
+  await expect(page.getByTestId('password-error')).toBeEmpty();
+  await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
 
   await page.goto('https://passport.yandex.ru/auth?mode=add-user&retpath=https%3A%2F%2F360.yandex.ru%2Fmail%2F&');
 
