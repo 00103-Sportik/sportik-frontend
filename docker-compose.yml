@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    container_name: sportik_postgres
+    ports:
+      - "5555:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=sportik
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: sportik_zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: sportik_kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+      - "29093:29093"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: EXTERNAL_SAME_HOST://:29092,EXTERNAL_DIFFERENT_HOST://:29093,INTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL_SAME_HOST://localhost:29092,EXTERNAL_DIFFERENT_HOST://host.docker.internal:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT,EXTERNAL_DIFFERENT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CREATE_TOPICS: "mail_topic:1:1"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.2
+    container_name: sportik_keycloak
+    command: [ "start-dev", "--import-realm" ]
+    ports:
+      - "8081:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./src/test/resources/keycloak-conf.json:/opt/keycloak/data/import/realm.json:ro
+  sportik-api:
+    image: sportik_api
+    container_name: sportik_api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - postgres
+      - kafka
+      - keycloak
+  sportik-mail-sender:
+    image: sportik_mail_sender
+    container_name: sportik_mail_sender
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      - kafka
