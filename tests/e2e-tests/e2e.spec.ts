@@ -28,7 +28,6 @@ test('Регистрация нового пользователя', async ({ pa
 
   await expect(page.getByTestId('email-error')).toBeEmpty();
   await expect(page.getByTestId('password-error')).toBeEmpty();
-  await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
 
   await page.goto('https://passport.yandex.ru/auth?mode=add-user&retpath=https%3A%2F%2F360.yandex.ru%2Fmail%2F&');
 

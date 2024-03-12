@@ -45,7 +45,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     volumes:
-      - ./src/test/resources/keycloak-conf.json:/opt/keycloak/data/import/realm.json:ro
+      - ./keycloak-conf.json:/opt/keycloak/data/import/realm.json:ro
   sportik-api:
     image: sportik_api
     container_name: sportik_api
