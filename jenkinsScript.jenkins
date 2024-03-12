@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+    }
+
+    tools {
+        nodejs "nodejs_sportik"
+    }
+
+    stages {
+        stage('Stage 1 - Checkout code') {
+            steps {
+                // Get some code from a GitHub repository
+                git branch: 'dev', url: 'git@github.com:00103-Sportik/sportik-frontend.git'
+            }
+        }
+        stage('Stage 2 - Create build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Stage 4 - Run unit tests') {
+            steps {
+                sh 'npm run test:unit'
+            }
+        }
+        stage('Stage 5 - Run integrational tests') {
+            steps {
+                sh 'npm run test:int'
+            }
+        }
+    }
+}
