@@ -36,7 +36,7 @@ services:
       KAFKA_CREATE_TOPICS: "mail_topic:1:1"
 
   keycloak:
-    image: quay.io/keycloak/keycloak:21.0.2
+    image: quay.io/keycloak/keycloak:20.0.5
     container_name: sportik_keycloak
     command: [ "start-dev", "--import-realm" ]
     ports:
