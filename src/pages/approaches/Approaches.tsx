@@ -1,5 +1,4 @@
 import styles from '../../styles/base.module.css';
-import styles2 from './Approaches.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Input } from '../../common/components/input/Input.tsx';
 import { useEffect, useState } from 'react';
@@ -139,7 +138,7 @@ function Approaches() {
               <div className={styles.itemBox}>
                 <div key={index} className={styles.boxItems}>
                   <div className={styles.boxContent}>
-                    <div className={styles2.boxInfo}>
+                    <div className="w-[350px] flex flex-row gap-[6px] text-[16px]">
                       <Input
                         testid={`param1-${index}`}
                         type="text"

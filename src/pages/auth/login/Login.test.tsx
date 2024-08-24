@@ -15,7 +15,10 @@ jest.spyOn(router, 'useNavigate').mockImplementation(() => mockedNavigation);
 
 beforeAll(() => server.listen());
 
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  jest.resetAllMocks();
+  server.resetHandlers();
+});
 
 afterAll(() => server.close());
 

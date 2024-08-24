@@ -15,7 +15,6 @@ import { selectAvatar } from '../../store/profile/profile.selectors.ts';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { toast } from 'react-toastify';
 import styles from '../../styles/base.module.css';
-import styles2 from './Profile.module.css';
 
 function Profile() {
   const [open, setOpen] = useState(false);
@@ -183,7 +182,7 @@ function Profile() {
   return (
     <>
       <h1 className={styles.h1}>Profile</h1>
-      <div className="@apply flex flex-row">
+      <div className="@apply flex flex-col-reverse items-center vsm:w-screen">
         <form id="profile-form" onSubmit={formik.handleSubmit}>
           <Input
             testid="email"
@@ -290,16 +289,16 @@ function Profile() {
             </div>
           </Dialog>
         </form>
-        <div>
+        <div className="flex items-center justify-center vsm:flex-col">
           <img
             data-testid="avatar-img"
-            className={styles2.img}
+            className="w-[100px] h-[100px] rounded-[10%]"
             width={100}
             height={100}
             src={!avatar ? logo : `data:image/*;base64,${avatar}`}
             alt="avatar"
           />
-          <label className="@apply btn-black w-[100px] cursor-pointer my-4">
+          <label className="@apply btn-black w-[100px] cursor-pointer vsm:h-auto my-4 vsm:my-1">
             <input data-testid="avatar-input" className="@apply hidden" onChange={changeAvatar} type="file" />
             <span>Upload avatar</span>
           </label>

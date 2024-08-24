@@ -5,6 +5,10 @@ export default {
   content: ['./src/**/*.{js,ts,tsx,jsx}'],
   theme: {
     extend: {
+      screens: {
+        vsm: '400px',
+        lt: '450px'
+      },
       colors: {
         layout: '#11141E',
         btnBlack: '#15171D',
@@ -46,7 +50,7 @@ export default {
           '@apply translate-y-0': {},
         },
         '.dialog': {
-          '@apply fixed z-50 flex h-fit max-h-[calc(100vh_-_2_*_0.75rem)] flex-col justify-center gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
+          '@apply fixed z-50 flex h-fit lt:w-[450px] flex-col justify-center items-center gap-4 overflow-auto bg-white text-black shadow-2xl m-auto p-4 rounded-xl inset-3':
             {},
         },
         '.text-err': {

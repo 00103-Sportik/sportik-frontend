@@ -12,7 +12,10 @@ import { BrowserRouter } from 'react-router-dom';
 
 beforeAll(() => server.listen());
 
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  jest.resetAllMocks();
+  server.resetHandlers();
+});
 
 afterAll(() => server.close());
 

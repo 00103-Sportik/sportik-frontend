@@ -1,4 +1,0 @@
-/*!!!The text is subject to change!!!*/
-.boxInfo {
-  @apply w-[350px] flex flex-row gap-[6px] text-[16px];
-}

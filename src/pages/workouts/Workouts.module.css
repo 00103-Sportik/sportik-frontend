@@ -1,13 +1,13 @@
 .mainBox {
-  @apply w-[370px] h-[570px] flex flex-col items-center overflow-y-auto;
+  @apply lt:w-[450px] vsm:w-screen w-[370px] h-[570px] flex flex-col items-center overflow-y-auto;
 }
 
 .boxItems {
-  @apply w-[350px] min-h-[120px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray;
+  @apply lt:w-[450px] vsm:w-screen w-[350px] min-h-[120px] flex flex-col justify-center gap-[10px] rounded-[20px] mb-1 pl-5 bg-gray;
 }
 
 .sortFilter {
-  @apply flex items-end gap-[40px] mb-4;
+  @apply lt:w-[450px] flex items-end gap-10 vsm:w-screen mb-4;
 }
 
 .dateRange {
