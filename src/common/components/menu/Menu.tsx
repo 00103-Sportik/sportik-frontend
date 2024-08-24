@@ -3,7 +3,6 @@ import { logout } from '../../../store/auth/auth.slice.ts';
 import { useState } from 'react';
 import { Dialog, DialogDismiss } from '@ariakit/react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Menu.module.css';
 import { discardWorkoutInfo } from '../../../store/workouts/workouts.slice.ts';
 
 export function Menu() {
@@ -53,7 +52,7 @@ export function Menu() {
         backdrop={<div className="backdrop" />}
         className="dialog"
       >
-        <p className={styles.p}>Are you sure?</p>
+        <p className="text-xl text-center align-middle table-cell mt-2.5">Are you sure?</p>
         <div className="flex gap-[10px]">
           <DialogDismiss data-testid="signout-btn" className="btn-red" onClick={exit}>
             Sign out

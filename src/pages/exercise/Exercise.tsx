@@ -18,7 +18,6 @@ import {
 } from '../../store/exercise/exercise.api.ts';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from './Exercise.module.css';
 import { EXERCISES_URL } from '../../common/constants/api.ts';
 import { SubtypeResponse } from '../../common/types/subtypes.ts';
 
@@ -260,7 +259,7 @@ function Exercise() {
           placeholder="Description"
           className="form-input-wider"
         />
-        <div className={styles.buttonsBox}>
+        <div className="flex flex-row mt-[250px]">
           <button data-testid="save-btn" className="btn-black" type="submit">
             Save
           </button>

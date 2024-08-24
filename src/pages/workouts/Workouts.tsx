@@ -202,18 +202,37 @@ function Workouts() {
             </div>
           ))
         ) : (
-          <h1 data-testid="no-workouts-h1" className={styles.noEntities}>
-            There are no workouts yet
-          </h1>
+            // <h1 data-testid="no-workouts-h1" className={styles.noEntities}>
+            //   There are no workouts yet
+            // </h1>
+            <div className={styles.itemBox} key='1'>
+              <div
+                  data-testid={`workout1-div`}
+                  className={styles2.boxItems}
+                  onClick={() => {
+                    dispatch(discardWorkoutInfo());
+                    dispatch(setCountWorkouts({count: data?.data.workouts_count || count}));
+                    navigate(`${WORKOUTS_URL}/1`);
+                  }}
+              >
+                <div className={styles.boxContent}>
+                  <div className={styles.boxInfo}>
+                    <span data-testid={`workout1-name`}>Name</span>
+                    <span data-testid={`workout1-date`}>{convertToLocalDate('2009-09-09')}</span>
+                    <span>Type</span>
+                  </div>
+                </div>
+              </div>
+            </div>
         )}
       </div>
       <button
-        data-testid="add-btn"
-        className="btn-black-less-margin"
-        onClick={() => {
-          dispatch(setCountWorkouts({ count: data?.data.workouts_count || count }));
-          navigate(WORKOUTS_URL);
-        }}
+          data-testid="add-btn"
+          className="btn-black-less-margin"
+          onClick={() => {
+            dispatch(setCountWorkouts({count: data?.data.workouts_count || count}));
+            navigate(WORKOUTS_URL);
+          }}
       >
         Add
       </button>

@@ -80,7 +80,6 @@ describe('Integration tests', () => {
           </>
         }
       />,
-      <Route index element={<Navbar></Navbar>} />,
       <Route path="/signin" element={<Login />} />,
     ]);
     await userEvent.click(screen.getByTestId('signout-btn'));
