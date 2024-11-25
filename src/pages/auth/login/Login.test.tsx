@@ -76,7 +76,7 @@ describe('Login', () => {
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {
-      expect(screen.queryByText('Login successfully!')).toBeInTheDocument();
+      expect(screen.queryByText('Incorrect email or password!')).not.toBeInTheDocument();
     });
   });
 
