@@ -16,7 +16,6 @@ jest.spyOn(router, 'useNavigate').mockImplementation(() => mockedNavigation);
 beforeAll(() => server.listen());
 
 afterEach(() => {
-  jest.resetAllMocks();
   server.resetHandlers();
 });
 
@@ -76,7 +75,7 @@ describe('Login', () => {
     await userEvent.type(screen.getByTestId('password-input'), 'Qwerty12');
     await userEvent.click(screen.getByTestId('signin-btn'));
     await waitFor(() => {
-      expect(screen.queryByText('Incorrect email or password!')).not.toBeInTheDocument();
+      expect(screen.queryByText('Login successfully!')).toBeInTheDocument();
     });
   });
 
