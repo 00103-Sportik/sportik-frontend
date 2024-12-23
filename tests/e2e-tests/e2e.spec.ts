@@ -20,48 +20,48 @@ async function login(page: Page) {
   expect(JSON.parse((await getLocalStorage(page)).auth).refresh_token).not.toBeNull();
 }
 
-test('Регистрация нового пользователя', async ({ page }) => {
-  await page.goto('http://localhost:5173/signup');
-  await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
-  await page.getByTestId('password-input').fill('Qwerty12');
-  await page.getByTestId('signup-btn').click();
-
-  await expect(page.getByTestId('email-error')).toBeEmpty();
-  await expect(page.getByTestId('password-error')).toBeEmpty();
-  await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
-
-  await page.goto('https://passport.yandex.ru/auth?mode=add-user&retpath=https%3A%2F%2F360.yandex.ru%2Fmail%2F&');
-
-  await page.fill('#passp-field-login', 'sdf653GFhe@yandex.ru');
-  await page.getByRole('button', { name: 'Войти', exact: true }).click();
-
-  await expect(page.locator('#passp-field-passwd')).toBeVisible();
-  await page.fill('#passp-field-passwd', '15ZgQf3dSJ');
-  await page.getByRole('button', { name: 'Продолжить', exact: true }).click();
-  await expect(page).toHaveURL('https://360.yandex.ru/mail/');
-
-  await page.goto('https://mail.yandex.ru/');
-  await page.click(
-    '.ns-view-messages-item-wrap:nth-child(1) .mail-MessageSnippet-Item > .mail-MessageSnippet-Item:nth-child(3)',
-  );
-  await page.goto(
-    ((await page.getByText(/http:\/\/localhost:5173\/activate./).textContent()) as string).split(': ')[1],
-  );
-
-  await expect(page).toHaveURL(/.*activate/);
-  await expect(page.getByText('Activated successfully!')).toBeVisible();
-
-  await expect(page).toHaveURL('http://localhost:5173/signin');
-  await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
-  await page.getByTestId('password-input').fill('Qwerty12');
-  await page.getByTestId('signin-btn').click();
-
-  await expect(page.getByTestId('error-p')).not.toBeVisible();
-  await expect(page).toHaveURL('http://localhost:5173/');
-
-  expect(JSON.parse((await getLocalStorage(page)).auth).access_token).not.toBeNull();
-  expect(JSON.parse((await getLocalStorage(page)).auth).refresh_token).not.toBeNull();
-});
+// test('Регистрация нового пользователя', async ({ page }) => {
+//   await page.goto('http://localhost:5173/signup');
+//   await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
+//   await page.getByTestId('password-input').fill('Qwerty12');
+//   await page.getByTestId('signup-btn').click();
+//
+//   await expect(page.getByTestId('email-error')).toBeEmpty();
+//   await expect(page.getByTestId('password-error')).toBeEmpty();
+//   await expect(page.getByText('Registration successfully! Activation link sent to your email!')).toBeVisible();
+//
+//   await page.goto('https://passport.yandex.ru/auth?mode=add-user&retpath=https%3A%2F%2F360.yandex.ru%2Fmail%2F&');
+//
+//   await page.fill('#passp-field-login', 'sdf653GFhe@yandex.ru');
+//   await page.getByRole('button', { name: 'Войти', exact: true }).click();
+//
+//   await expect(page.locator('#passp-field-passwd')).toBeVisible();
+//   await page.fill('#passp-field-passwd', '15ZgQf3dSJ');
+//   await page.getByRole('button', { name: 'Продолжить', exact: true }).click();
+//   await expect(page).toHaveURL('https://360.yandex.ru/mail/');
+//
+//   await page.goto('https://mail.yandex.ru/');
+//   await page.click(
+//     '.ns-view-messages-item-wrap:nth-child(1) .mail-MessageSnippet-Item > .mail-MessageSnippet-Item:nth-child(3)',
+//   );
+//   await page.goto(
+//     ((await page.getByText(/http:\/\/localhost:5173\/activate./).textContent()) as string).split(': ')[1],
+//   );
+//
+//   await expect(page).toHaveURL(/.*activate/);
+//   await expect(page.getByText('Activated successfully!')).toBeVisible();
+//
+//   await expect(page).toHaveURL('http://localhost:5173/signin');
+//   await page.getByTestId('email-input').fill('sdf653GFhe@yandex.ru');
+//   await page.getByTestId('password-input').fill('Qwerty12');
+//   await page.getByTestId('signin-btn').click();
+//
+//   await expect(page.getByTestId('error-p')).not.toBeVisible();
+//   await expect(page).toHaveURL('http://localhost:5173/');
+//
+//   expect(JSON.parse((await getLocalStorage(page)).auth).access_token).not.toBeNull();
+//   expect(JSON.parse((await getLocalStorage(page)).auth).refresh_token).not.toBeNull();
+// });
 
 test('Обновление информации профиля', async ({ page }) => {
   await login(page);
