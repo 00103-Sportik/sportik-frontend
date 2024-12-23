@@ -6,19 +6,19 @@ async function getLocalStorage(page: Page) {
   return JSON.parse(localStorage);
 }
 
-// async function login(page: Page) {
-//   await page.goto('http://localhost:5173/signin');
-//   await page.getByTestId('email-input').fill('test12@gmail.com');
-//   await page.getByTestId('password-input').fill('Qwerty12');
-//   await page.getByTestId('signin-btn').click();
-//
-//   await expect(page.getByTestId('error-p')).not.toBeVisible();
-//   await expect(page.getByRole('alert')).not.toBeVisible();
-//   await expect(page).toHaveURL('http://localhost:5173/');
-//
-//   expect(JSON.parse((await getLocalStorage(page)).auth).access_token).not.toBeNull();
-//   expect(JSON.parse((await getLocalStorage(page)).auth).refresh_token).not.toBeNull();
-// }
+async function login(page: Page) {
+  await page.goto('http://localhost:5173/signin');
+  await page.getByTestId('email-input').fill('test12@gmail.com');
+  await page.getByTestId('password-input').fill('Qwerty12');
+  await page.getByTestId('signin-btn').click();
+
+  await expect(page.getByTestId('error-p')).not.toBeVisible();
+  await expect(page.getByRole('alert')).not.toBeVisible();
+  await expect(page).toHaveURL('http://localhost:5173/');
+
+  expect(JSON.parse((await getLocalStorage(page)).auth).access_token).not.toBeNull();
+  expect(JSON.parse((await getLocalStorage(page)).auth).refresh_token).not.toBeNull();
+}
 
 test('Регистрация нового пользователя', async ({ page }) => {
   await page.goto('http://localhost:5173/signup');
